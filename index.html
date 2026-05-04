@@ -125,7 +125,6 @@
         .tl-time { font-size: 18px; font-weight: bold; color: var(--accent-gold); margin-bottom: 8px; letter-spacing: 1px; }
         .tl-title { font-size: 18px; color: #FFF; margin-bottom: 6px; font-weight: 500; }
         
-        /* 營業時間的專屬樣式 */
         .tl-hours { font-size: 13px; color: #BBB; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .tl-hours i { color: var(--accent-gold); font-size: 12px; }
 
@@ -201,13 +200,13 @@
                 <p class="day-desc">點擊左側天數，即可查看每日詳細導航、營業時間與攻略。</p>
                 <div class="summary-list">
                     <div class="sum-item"><div class="sum-day">Day 1</div><div class="sum-info"><b>名古屋</b><br>抵達取車，品嚐極致肝入鰻魚飯</div></div>
-                    <div class="sum-item"><div class="sum-day">Day 2</div><div class="sum-info"><b>下呂溫泉</b><br>朝聖冠軍拉麵，入住三大美人湯</div></div>
+                    <div class="sum-item"><div class="sum-day">Day 2</div><div class="sum-info"><b>下呂溫泉</b><br>預約冠軍拉麵，入住三大美人湯</div></div>
                     <div class="sum-item"><div class="sum-day">Day 3</div><div class="sum-info"><b>高山</b><br>飛驒古川巡禮，老街漫步與A5和牛</div></div>
                     <div class="sum-item"><div class="sum-day">Day 4</div><div class="sum-info"><b>上高地 / 奧飛驒</b><br>神之故鄉健行，搭乘雙層纜車登頂</div></div>
                     <div class="sum-item"><div class="sum-day">Day 5</div><div class="sum-info"><b>富山</b><br>鐵道單車熱血體驗，美術館與二星料理</div></div>
                     <div class="sum-item"><div class="sum-day">Day 6</div><div class="sum-info"><b>立山黑部</b><br>全日橫斷雪之大谷與黑部水壩</div></div>
                     <div class="sum-item"><div class="sum-day">Day 7</div><div class="sum-info"><b>金澤</b><br>雨晴海岸，千里濱沙灘自駕飆速</div></div>
-                    <div class="sum-item"><div class="sum-day">Day 8</div><div class="sum-info"><b>金澤</b><br>和服茶屋街漫步，21世紀美術館</div></div>
+                    <div class="sum-item"><div class="sum-day">Day 8</div><div class="sum-info"><b>金澤</b><br>和服茶屋街漫步，近江町市場海鮮丼</div></div>
                     <div class="sum-item"><div class="sum-day">Day 9</div><div class="sum-info"><b>白川鄉 / 犬山</b><br>合掌村童話世界，攻頂國寶犬山城</div></div>
                     <div class="sum-item"><div class="sum-day">Day 10</div><div class="sum-info"><b>鈴鹿 / 名花之里</b><br>F1賽道卡丁車體驗，夢幻燈海點燈</div></div>
                     <div class="sum-item"><div class="sum-day">Day 11</div><div class="sum-info"><b>名古屋</b><br>熱田神宮祈福，最後採買與登機</div></div>
@@ -277,7 +276,7 @@
 </div>
 
 <script>
-    // ================= 完整 11 天數據庫 (加入各景點/餐廳營業時間) =================
+    // ================= 完整 11 天數據庫 (時間與攻略已升級優化) =================
     const tripData = [
         {
             day: 1, dateStr: "5/20", icon: "fa-plane-arrival", title: "名古屋・鰻魚飯盛宴",
@@ -297,12 +296,12 @@
             day: 2, dateStr: "5/21", icon: "fa-hot-tub-person", title: "冠軍拉麵・下呂美人湯",
             desc: "品嚐名古屋全量第一的紫陽花醬油拉麵。午後沿著飛驒川自駕，入住日本三大名泉之一的下呂溫泉。",
             tags: ["👍 必吃：特製醬油拉麵", "♨️ 必泡：下呂美人湯"],
-            guide: "紫陽花拉麵無法預約，請務必在 10:15 前抵達現場排隊。抵達下呂後，可先去「ゆあみ屋」吃溫泉布丁泡足湯。",
+            guide: "紫陽花拉麵已經成功預約 11:00，行程超順暢！吃飽後沿著國道 41 號欣賞飛驒川風景前往下呂，可以先去「ゆあみ屋」吃溫泉布丁泡足湯。",
             bg: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "下呂 Gero", days: [{d:"5/21", i:"☀️", t:"22°"}, {d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"16°"}] },
             events: [
                 { time: "09:00", title: "GLITCH COFFEE 晨間咖啡", hours: "09:00–19:00", btns: ["nav"] },
-                { time: "11:00", title: "午餐：らぁ麺 紫陽花", hours: "11:00–15:00 (週一休)", btns: ["nav"] },
+                { time: "11:00", title: "午餐：らぁ麺 紫陽花 (已預約)", hours: "11:00–15:00 (週一休)", btns: ["nav"] },
                 { time: "14:45", title: "下呂溫泉街散策", hours: "足湯24小時開放，店家多營業至17:00", btns: ["nav", "web"] },
                 { time: "15:30", title: "入住 下呂温泉 しょうげつ", hours: "Check-in: 15:00, 晚餐時間需與櫃台確認", btns: ["nav", "voucher"] }
             ]
@@ -344,18 +343,19 @@
             bg: "https://images.unsplash.com/photo-1620619890664-4e92b34a6df9?q=80&w=1000&auto=format&fit=crop", 
             weather: { loc: "富山 Toyama", days: [{d:"5/24", i:"☀️", t:"21°"}, {d:"5/25", i:"⛅", t:"20°"}, {d:"5/26", i:"☁️", t:"19°"}] },
             events: [
+                { time: "08:00", title: "出發 奧飛驒 ➔ 神岡", hours: "山路駕駛請留意路況", btns: ["nav"] },
                 { time: "09:00", title: "Gattan Go!! 鐵道單車", hours: "09:00–15:30 (需對應預約班次)", btns: ["nav", "voucher"] },
                 { time: "12:00", title: "午餐：壽司榮 總曲輪店", hours: "11:30–14:00, 17:00–21:30", btns: ["nav"] },
                 { time: "13:45", title: "富山市玻璃美術館", hours: "09:30–18:00 (第一、三週的三休館)", btns: ["nav", "web"] },
-                { time: "17:15", title: "吳羽山展望台拍立山連峰", hours: "24小時開放", btns: ["nav"] },
+                { time: "15:30", title: "富岩運河環水公園 (最美星巴克)", hours: "公園24H，星巴克 08:00-22:30", btns: ["nav"] },
+                { time: "17:30", title: "吳羽山展望台拍立山連峰", hours: "24小時開放，黃昏景色最佳", btns: ["nav"] },
                 { time: "19:00", title: "晚餐：御料理 ふじ居", hours: "12:00–14:30, 18:00–21:30 (完全預約制)", btns: ["nav"] }
             ]
         },
         {
             day: 6, dateStr: "5/25", icon: "fa-snowflake", title: "立山黑部雪牆大冒險",
             desc: "全日橫斷日本屋脊，見證高達十幾公尺的壯觀雪之大谷與氣勢磅礴的黑部水壩。",
-            tags: ["❄️ 必備：太陽眼鏡(防雪盲)", "🧥 必備：防風保暖衣物"], 
-            guide: "立山站停車場容易客滿，請務必在早上 07:00 前抵達。山上紫外線極強，一定要戴墨鏡！",
+            tags: ["❄️ 必備：太陽眼鏡(防雪盲)", "🧥 必備：防風保暖衣物"], guide: "立山站停車場容易客滿，請務必在早上 07:00 前抵達。山上紫外線極強，一定要戴墨鏡！",
             bg: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "室堂 Murodo", days: [{d:"5/25", i:"❄️", t:"3°"}, {d:"5/26", i:"⛅", t:"5°"}, {d:"5/27", i:"☀️", t:"8°"}] },
             events: [ 
@@ -367,8 +367,7 @@
         {
             day: 7, dateStr: "5/26", icon: "fa-car-side", title: "沙灘飆速・金澤之夜",
             desc: "全日本唯一可合法行駛汽車的沙灘公路，享受海風與浪花。傍晚抵達充滿歷史底蘊的金澤。",
-            tags: ["🏎️ 體驗：8km沙灘自駕", "🧼 任務：金澤洗車"], 
-            guide: "在千里濱沙灘飆速後，當晚抵達金澤請務必尋找附有「下回り洗浄」的洗車場沖洗底盤，防止海水鹽分腐蝕。",
+            tags: ["🏎️ 體驗：8km沙灘自駕", "🧼 任務：金澤洗車"], guide: "在千里濱沙灘飆速後，當晚抵達金澤請務必尋找附有「下回り洗浄」的洗車場沖洗底盤，防止海水鹽分腐蝕。",
             bg: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "金澤 Kanazawa", days: [{d:"5/26", i:"⛅", t:"23°"}, {d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}] },
             events: [ 
@@ -380,27 +379,30 @@
         },
         {
             day: 8, dateStr: "5/27", icon: "fa-person-dress", title: "和服漫步・現代美學",
-            desc: "換上和服穿梭江戶時代的東茶屋街，下午跳躍至 21 世紀美術館感受現代幾何的衝突美。",
-            tags: ["🍦 必吃：金箔冰淇淋", "📸 必拍：美術館泳池"], 
-            guide: "21世紀美術館的「泳池地下部」非常熱門，如果有事先預約請提早 10 分鐘至報到處。",
+            desc: "換上和服穿梭江戶時代的東茶屋街，並到近江町市場享用海鮮丼。下午跳躍至 21 世紀美術館感受現代幾何的衝突美。",
+            tags: ["🦀 必吃：近江町市場", "📸 必拍：美術館泳池"], 
+            guide: "穿著和服在近江町市場吃海鮮丼時，請千萬小心醬油不要滴到和服上喔！",
             bg: "https://images.unsplash.com/photo-1580556272379-0dbf88c80528?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "金澤 Kanazawa", days: [{d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}, {d:"5/29", i:"☀️", t:"26°"}] },
             events: [ 
                 { time: "09:00", title: "東茶屋街和服租借", hours: "茶屋街店家多從 09:30-10:00 開始營業", btns: ["nav"] }, 
-                { time: "13:00", title: "兼六園 / 21世紀美術館", hours: "美術館: 09:00–22:00 (展區10:00-18:00，週一休)", btns: ["nav", "voucher"] }, 
-                { time: "15:45", title: "鈴木大拙館", hours: "09:30–17:00 (週一休館)", btns: ["nav"] }, 
+                { time: "10:15", title: "東茶屋街散策 (金箔冰淇淋)", hours: "吃冰拍照預留 1.5 小時", btns: ["nav"] }, 
+                { time: "12:00", title: "午餐：近江町市場", hours: "市場攤販多營業至 16:00", btns: ["nav"] }, 
+                { time: "14:00", title: "兼六園 / 21世紀美術館", hours: "美術館展區10:00-18:00", btns: ["nav", "voucher"] }, 
+                { time: "16:15", title: "鈴木大拙館", hours: "09:30–17:00 (感受禪意剛好)", btns: ["nav"] }, 
                 { time: "19:00", title: "晚餐：あぶり肉 がらん", hours: "17:30–23:00", btns: ["nav"] } 
             ]
         },
         {
             day: 9, dateStr: "5/28", icon: "fa-house", title: "童話聚落・國寶古城",
             desc: "走進白川鄉世界遺產的童話世界，下午趕赴現存最古老的天守閣「犬山城」並在神社洗錢祈福。",
-            tags: ["⚠️ 警告：14:15 必須離開白川鄉", "💰 祈福：神社洗錢"], 
-            guide: "行程銜接最緊繃的一天！犬山城 16:30 停止入場，請 Paul 務必在 14:15 踩下油門離開白川鄉。",
+            tags: ["🚨 警告：13:30 必須離開白川鄉", "💰 祈福：神社洗錢"], 
+            guide: "行程銜接最緊繃的一天！犬山城 16:30 停止入場，請 Paul 務必在 13:30 踩下油門離開白川鄉。",
             bg: "https://images.unsplash.com/photo-1613328006093-518d9633dd31?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "白川鄉 Shirakawa", days: [{d:"5/28", i:"🌥️", t:"18°"}, {d:"5/29", i:"☀️", t:"21°"}, {d:"5/30", i:"☀️", t:"24°"}] },
             events: [ 
                 { time: "10:45", title: "白川鄉合掌村散策", hours: "一般設施營業至 17:00", btns: ["nav"] }, 
+                { time: "13:30", title: "關鍵撤離！出發前往犬山城", hours: "車程約 1.5 - 2 小時", btns: ["nav"] }, 
                 { time: "16:00", title: "國寶 犬山城登頂", hours: "09:00–16:30 (最後入場，17:00關門)", btns: ["nav"] }, 
                 { time: "17:00", title: "三光稻荷神社洗錢", hours: "08:30–16:30 (洗錢體驗請注意時間)", btns: ["nav"] }, 
                 { time: "20:00", title: "晚餐：とんかつ 土本", hours: "17:30–21:00 (完全預約制)", btns: ["nav"] } 
@@ -409,8 +411,7 @@
         {
             day: 10, dateStr: "5/29", icon: "fa-flag-checkered", title: "賽道熱血・夢幻點燈",
             desc: "喚醒 Paul 的 F1 賽車魂，在國際級賽道體驗飆速。傍晚前往名花之里欣賞全日本最壯觀的燈海。",
-            tags: ["🏎️ 熱血：F1賽道體驗", "✨ 浪漫：名花之里"], 
-            guide: "鈴鹿賽道的 Circuit Challenger 是真的在 F1 東賽道上行駛，記得提早準備好預約憑證！",
+            tags: ["🏎️ 熱血：F1賽道體驗", "✨ 浪漫：名花之里"], guide: "鈴鹿賽道的 Circuit Challenger 是真的在 F1 東賽道上行駛，記得提早準備好預約憑證！",
             bg: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "鈴鹿 Suzuka", days: [{d:"5/29", i:"☀️", t:"26°"}, {d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}] },
             events: [ 
@@ -423,14 +424,16 @@
             day: 11, dateStr: "5/30", icon: "fa-plane-departure", title: "神宮祈福・滿載賦歸",
             desc: "在熱田神宮進行最後的參拜祈福，吃完名古屋發祥的鰻魚飯三吃後，帶著滿滿的回憶前往機場。",
             tags: ["⛩️ 參拜：清水社", "🍱 必吃：鰻魚飯三吃"], 
-            guide: "熱田蓬萊軒不能電話預約，建議早上參拜前先去店門口登記名字排位，再回去逛神宮。",
+            guide: "熱田蓬萊軒不能電話預約，先去店門口登記名字排位，再回去逛神宮剛剛好。",
             bg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "名古屋 Nagoya", days: [{d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}, {d:"6/1", i:"🌧️", t:"20°"}] },
             events: [ 
-                { time: "09:30", title: "熱田神宮參拜", hours: "24小時開放 (寶物館 09:00-16:30)", btns: ["nav"] }, 
+                { time: "09:45", title: "熱田蓬萊軒 (登記名字排隊)", hours: "11:30 開始營業", btns: ["nav"] }, 
+                { time: "10:00", title: "熱田神宮參拜", hours: "24小時開放 (寶物館 09:00-16:30)", btns: ["nav"] }, 
                 { time: "11:30", title: "午餐：熱田蓬萊軒", hours: "11:30–14:00, 16:30–20:30 (週二三休)", btns: ["nav"] }, 
-                { time: "13:30", title: "榮商圈最後採買", hours: "百貨公司多營業至 20:00", btns: ["nav"] }, 
-                { time: "16:30", title: "中部機場還車與登機", hours: "請提早預留 2 小時報到", btns: ["nav"] } 
+                { time: "13:00", title: "榮商圈最後採買", hours: "百貨公司多營業至 20:00", btns: ["nav"] }, 
+                { time: "16:00", title: "出發 ➔ 準備前往機場", hours: "時間充裕，順利避開塞車", btns: ["nav"] },
+                { time: "17:15", title: "中部機場還車與登機", hours: "UO671 航班 20:45 起飛", btns: ["nav"] } 
             ]
         }
     ];
@@ -528,7 +531,6 @@
                 return '';
             }).join('');
             
-            // 加入營業時間顯示
             const hoursHtml = ev.hours ? `<div class="tl-hours"><i class="fa-regular fa-clock"></i> 營業時間：${ev.hours}</div>` : '';
 
             return `
