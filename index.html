@@ -99,9 +99,15 @@
             font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 30px; 
             font-family: 'Noto Serif TC', serif;
         }
+        
+        .section-header {
+            font-family: 'Lato', sans-serif; font-size: 11px; text-transform: uppercase; 
+            letter-spacing: 2px; color: var(--text-sub); margin: 35px 0 15px; 
+            border-bottom: 1px solid var(--border-light); padding-bottom: 8px;
+        }
 
         /* 總覽列表 (極簡線條風) */
-        .summary-list { display: flex; flex-direction: column; margin-top: 10px; border-top: 2px solid var(--border-dark); }
+        .summary-list { display: flex; flex-direction: column; border-top: 2px solid var(--border-dark); }
         .sum-item { display: flex; align-items: flex-start; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border-light); }
         .sum-day { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: var(--accent); min-width: 40px; margin-top: 2px; }
         .sum-info { color: var(--text-sub); font-size: 13px; line-height: 1.6; }
@@ -153,7 +159,7 @@
         .action-btn i { color: var(--text-main); }
 
         /* ================= 航班機票設計 (極簡機票) ================= */
-        .flight-card { border: 1px solid var(--border-dark); padding: 25px; margin-bottom: 25px; background: #FFF; position: relative; }
+        .flight-card { border: 1px solid var(--border-dark); padding: 25px; margin-bottom: 20px; background: #FFF; position: relative; }
         .flight-card::before, .flight-card::after { content: ''; position: absolute; top: 50%; width: 12px; height: 24px; background: var(--bg-paper); border: 1px solid var(--border-dark); }
         .flight-card::before { left: -7px; border-radius: 0 12px 12px 0; border-left: none; }
         .flight-card::after { right: -7px; border-radius: 12px 0 0 12px; border-right: none; }
@@ -197,7 +203,7 @@
         .record-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
         .r-info { display: flex; flex-direction: column; gap: 4px; }
         .r-title { font-size: 15px; font-family: 'Noto Serif TC', serif; color: var(--text-main); }
-        .r-jpy { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); text-transform: uppercase; }
+        .r-jpy { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
         .r-right { display: flex; align-items: center; gap: 15px; }
         .r-hkd { font-size: 16px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--text-main); }
         .delete-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; cursor: pointer; transition: 0.2s; padding: 5px; }
@@ -223,10 +229,7 @@
                 <span class="day-lbl">Index</span>
                 <span class="date-lbl">總覽</span>
             </div>
-            <div class="nav-item" id="nav-item-flight" onclick="showFlightView()" style="margin-top: 10px; margin-bottom: 10px;">
-                <span class="day-lbl"><i class="fa-solid fa-plane"></i></span>
-                <span class="date-lbl">航班</span>
-            </div>
+            <!-- 航班已移至首頁，側邊欄不再需要航班按鈕 -->
             <!-- 天數由 JS 生成 -->
         </div>
     </aside>
@@ -235,12 +238,13 @@
     <main class="main-content">
         <div class="content-scroll">
             
-            <!-- 航班資訊 (極簡機票) -->
-            <div id="flight-view" class="view-section">
-                <div class="day-badge">Flight Details</div>
-                <h1 class="day-title">機票資訊</h1>
-                <p class="day-desc">香港 ⇄ 名古屋中部國際機場</p>
+            <!-- 總覽主頁 (包含航班資訊) -->
+            <div id="home-view" class="view-section active">
+                <div class="day-badge">Table of Contents</div>
+                <h1 class="day-title">北陸自駕大綱</h1>
                 
+                <!-- 航班區塊 -->
+                <div class="section-header">Flight Details / 航班資訊</div>
                 <div class="flight-card">
                     <div class="flight-label">Outbound / 去程</div>
                     <div class="flight-route">
@@ -258,17 +262,14 @@
                         <div class="flight-city"><span class="city-code">HKG</span><span class="city-name">香港</span><span class="flight-time">23:55</span></div>
                     </div>
                 </div>
-                <div class="guide-box">
+                
+                <div class="guide-box" style="margin-top: 10px;">
                     <div class="guide-box-title">Attention</div>
                     <div class="guide-box-text">回程航班於 20:45 起飛，請最晚於 17:45 抵達航廈報到。中部國際機場租車還車處距離航廈約有步程，請預留充足時間。</div>
                 </div>
-            </div>
 
-            <!-- 總覽主頁 (雜誌目錄) -->
-            <div id="home-view" class="view-section active">
-                <div class="day-badge">Table of Contents</div>
-                <h1 class="day-title">北陸自駕大綱</h1>
-                <p class="day-desc">點擊左側索引，閱讀每日詳細導航與攻略。</p>
+                <!-- 每日行程列表 -->
+                <div class="section-header">Itinerary / 每日行程</div>
                 <div class="summary-list">
                     <div class="sum-item"><div class="sum-day">01</div><div class="sum-info"><b>名古屋</b>抵達取車，品嚐極致肝入鰻魚飯</div></div>
                     <div class="sum-item"><div class="sum-day">02</div><div class="sum-info"><b>下呂溫泉</b>預約冠軍拉麵，入住三大美人湯</div></div>
@@ -534,12 +535,6 @@
         document.getElementById('nav-item-home').classList.add('active');
     }
 
-    function showFlightView() {
-        deactivateAll();
-        document.getElementById('flight-view').classList.add('active');
-        document.getElementById('nav-item-flight').classList.add('active');
-    }
-
     function showItineraryView() {
         deactivateAll();
         document.getElementById('itinerary-view').classList.add('active');
@@ -621,11 +616,15 @@
 
         const hkd = (jpy * exchangeRate).toFixed(2);
         
+        // 獲取當前手機時間
+        const now = new Date();
+        const timeString = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        
         const recordHtml = `
             <div class="record-item">
                 <div class="r-info">
                     <div class="r-title">${item}</div>
-                    <div class="r-jpy">${day} // JPY ${jpy}</div>
+                    <div class="r-jpy">${day} // ${timeString} // JPY ${jpy}</div>
                 </div>
                 <div class="r-right">
                     <div class="r-hkd">HK$ ${hkd}</div>
