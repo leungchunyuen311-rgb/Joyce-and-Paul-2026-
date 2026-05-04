@@ -27,12 +27,14 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; }
-        body { background-color: #000; display: flex; justify-content: center; height: 100vh; overflow: hidden; color: var(--text-main); }
+        
+        /* 修正 Android 底部導航列遮擋問題，使用 100dvh (動態視窗高度) */
+        body { background-color: #000; display: flex; justify-content: center; height: 100dvh; overflow: hidden; color: var(--text-main); }
 
         /* ================= 佈局容器 ================= */
         #app-container {
             width: 100%; max-width: 480px; /* 模擬手機寬度 */
-            height: 100vh; display: flex; background: var(--bg-dark);
+            height: 100dvh; display: flex; background: var(--bg-dark);
             position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
@@ -49,10 +51,21 @@
         .countdown {
             width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.05);
             border: 2px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            justify-content: center; align-items: center; margin-bottom: 20px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         .countdown span:first-child { font-size: 10px; color: var(--text-sub); }
         .countdown span:last-child { font-size: 16px; font-weight: bold; color: var(--text-main); }
+
+        /* --- 修改：將記帳按鈕移至上方並加入底線分隔 --- */
+        .expense-btn { 
+            width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; 
+            color: var(--text-sub); margin-bottom: 20px; padding-bottom: 20px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; transition: 0.3s;
+        }
+        .expense-btn i { font-size: 20px; margin-bottom: 5px; }
+        .expense-btn .day-lbl { font-size: 11px; font-weight: bold; }
+        .expense-btn.active { color: var(--accent-gold); }
+        .expense-btn.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 60%; width: 3px; background: var(--accent-gold); border-radius: 0 4px 4px 0; }
 
         /* 天數列表 (可滑動) */
         .nav-days { flex: 1; overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px; }
@@ -64,12 +77,6 @@
         
         .nav-item.active { color: var(--accent-gold); }
         .nav-item.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px; background: var(--accent-gold); border-radius: 0 4px 4px 0; }
-
-        /* 底部記帳按鈕 */
-        .expense-btn { margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); }
-        .expense-btn.active { color: var(--accent-gold); }
-        .expense-btn i { font-size: 20px; margin-bottom: 5px; }
-        .expense-btn span { font-size: 11px; }
 
         /* ================= 右側主內容區 ================= */
         .main-content {
@@ -87,9 +94,6 @@
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .day-section { display: none; animation: fadeIn 0.4s ease; }
-        .day-section.active { display: block; }
 
         /* --- 頂部標題區 --- */
         .day-badge { display: inline-block; background: var(--accent-gold); color: #000; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
@@ -188,6 +192,12 @@
             <span id="countdown-days">16天</span>
         </div>
 
+        <!-- 把記帳助手移到上方，保證 Android 看得到 -->
+        <div class="expense-btn" onclick="showExpenseView()">
+            <i class="fa-solid fa-wallet"></i>
+            <span class="day-lbl">記帳助手</span>
+        </div>
+
         <div class="nav-days" id="sidebar-nav">
             <!-- 總覽按鈕 -->
             <div class="nav-item active" id="nav-item-home" onclick="showHome()">
@@ -195,11 +205,6 @@
                 <span class="day-lbl">總覽</span>
             </div>
             <!-- 其他天數由 JS 動態生成 -->
-        </div>
-
-        <div class="expense-btn" onclick="showExpenseView()">
-            <i class="fa-solid fa-wallet"></i>
-            <span>記帳助手</span>
         </div>
     </aside>
 
@@ -210,7 +215,7 @@
 
         <div class="content-scroll">
             
-            <!-- 總覽主頁 (預設顯示) -->
+            <!-- 總覽主頁 -->
             <div id="home-view" class="view-section active">
                 <div class="day-badge">Trip Overview</div>
                 <h1 class="day-title">11日北陸自駕大綱</h1>
