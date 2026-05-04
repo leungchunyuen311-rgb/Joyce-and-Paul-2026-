@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta name="apple-mobile-web-app-title" content="北陸自駕">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DriveLog: Paul & Joyce 北陸自駕</title>
+    <!-- 讓網頁可以被加入主畫面並隱藏瀏覽器網址列 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="北陸自駕">
+    <!-- 引入 FontAwesome 圖示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ================= 核心變數 & 重置 ================= */
@@ -57,7 +59,7 @@
         .nav-days::-webkit-scrollbar { display: none; }
         .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); transition: 0.3s; width: 100%; position: relative; }
         .nav-item i { font-size: 20px; margin-bottom: 5px; }
-        .nav-item .day-lbl { font-size: 12px; font-weight: bold; }
+        .nav-item .day-lbl { font-size: 12px; font-weight: bold; text-align: center; }
         .nav-item .date-lbl { font-size: 10px; }
         
         .nav-item.active { color: var(--accent-gold); }
@@ -85,11 +87,21 @@
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .day-section { display: none; animation: fadeIn 0.4s ease; }
+        .day-section.active { display: block; }
 
         /* --- 頂部標題區 --- */
         .day-badge { display: inline-block; background: var(--accent-gold); color: #000; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
         .day-title { font-size: 32px; font-weight: bold; margin-bottom: 15px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
         .day-desc { font-size: 14px; color: #CCC; line-height: 1.6; margin-bottom: 25px; text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
+
+        /* 總覽列表樣式 */
+        .summary-list { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .sum-item { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; backdrop-filter: blur(10px); }
+        .sum-day { background: var(--accent-gold); color: #000; font-weight: bold; padding: 6px 10px; border-radius: 6px; font-size: 12px; white-space: nowrap; text-align: center; }
+        .sum-info { color: #FFF; font-size: 14px; line-height: 1.4; }
+        .sum-info b { color: var(--accent-gold); font-size: 15px; }
 
         /* 標籤 (👍 必吃) */
         .tags-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
@@ -167,6 +179,7 @@
 
 <div id="app-container">
     
+    <!-- 左側邊欄 -->
     <aside class="sidebar">
         <div class="trip-title">Paul & Joyce<br>2026<br>北陸之旅</div>
         
@@ -176,7 +189,13 @@
         </div>
 
         <div class="nav-days" id="sidebar-nav">
+            <!-- 總覽按鈕 -->
+            <div class="nav-item active" id="nav-item-home" onclick="showHome()">
+                <i class="fa-solid fa-house"></i>
+                <span class="day-lbl">總覽</span>
             </div>
+            <!-- 其他天數由 JS 動態生成 -->
+        </div>
 
         <div class="expense-btn" onclick="showExpenseView()">
             <i class="fa-solid fa-wallet"></i>
@@ -184,40 +203,92 @@
         </div>
     </aside>
 
+    <!-- 主內容區 -->
     <main class="main-content">
         <div class="bg-layer" id="bg-layer" style="background-image: url('https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop');"></div>
         <div class="bg-overlay"></div>
 
         <div class="content-scroll">
             
-            <div id="itinerary-view" class="view-section active">
-                <div class="day-badge" id="v-badge">Day 1 · 5/20 (三)</div>
-                <h1 class="day-title" id="v-title">名古屋・鰻魚飯盛宴</h1>
-                <p class="day-desc" id="v-desc">抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。</p>
+            <!-- 總覽主頁 (預設顯示) -->
+            <div id="home-view" class="view-section active">
+                <div class="day-badge">Trip Overview</div>
+                <h1 class="day-title">11日北陸自駕大綱</h1>
+                <p class="day-desc">點擊左側天數，即可查看每日詳細導航、餐廳預約與導遊攻略。</p>
 
-                <div class="tags-container" id="v-tags">
-                    <div class="tag"><i class="fa-solid fa-thumbs-up"></i>必吃：肝入鰻魚飯</div>
-                    <div class="tag"><i class="fa-solid fa-car"></i>取車確認 CEP</div>
+                <div class="summary-list">
+                    <div class="sum-item">
+                        <div class="sum-day">Day 1</div>
+                        <div class="sum-info"><b>名古屋</b><br>抵達取車，品嚐極致肝入鰻魚飯</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 2</div>
+                        <div class="sum-info"><b>下呂溫泉</b><br>朝聖冠軍拉麵，入住三大美人湯</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 3</div>
+                        <div class="sum-info"><b>高山</b><br>飛驒古川巡禮，老街漫步與A5和牛</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 4</div>
+                        <div class="sum-info"><b>上高地 / 奧飛驒</b><br>神之故鄉健行，搭乘雙層纜車登頂</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 5</div>
+                        <div class="sum-info"><b>富山</b><br>鐵道單車熱血體驗，美術館與二星料理</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 6</div>
+                        <div class="sum-info"><b>立山黑部</b><br>全日橫斷雪之大谷與黑部水壩</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 7</div>
+                        <div class="sum-info"><b>金澤</b><br>雨晴海岸，千里濱沙灘自駕飆速</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 8</div>
+                        <div class="sum-info"><b>金澤</b><br>和服茶屋街漫步，21世紀美術館</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 9</div>
+                        <div class="sum-info"><b>白川鄉 / 犬山</b><br>合掌村童話世界，攻頂國寶犬山城</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 10</div>
+                        <div class="sum-info"><b>鈴鹿 / 名花之里</b><br>F1賽道卡丁車體驗，夢幻燈海點燈</div>
+                    </div>
+                    <div class="sum-item">
+                        <div class="sum-day">Day 11</div>
+                        <div class="sum-info"><b>名古屋</b><br>熱田神宮祈福，最後採買與登機</div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- 單日行程視圖 (由 JS 抽換內容) -->
+            <div id="itinerary-view" class="view-section">
+                <div class="day-badge" id="v-badge"></div>
+                <h1 class="day-title" id="v-title"></h1>
+                <p class="day-desc" id="v-desc"></p>
+
+                <div class="tags-container" id="v-tags"></div>
 
                 <div class="guide-box" id="v-guide-box">
                     <div class="guide-box-title"><i class="fa-solid fa-lightbulb"></i>導遊小撇步：</div>
-                    <div class="guide-box-text" id="v-guide">機場取車後，請確認 ETC 卡是否正確插入。前往市區注意左駕適應，導航可輸入電話號碼定位最準確。</div>
+                    <div class="guide-box-text" id="v-guide"></div>
                 </div>
 
                 <div class="weather-card">
                     <div class="weather-header">
-                        <span class="weather-loc" id="v-w-loc"><i class="fa-solid fa-location-dot"></i>名古屋 Nagoya</span>
+                        <span class="weather-loc" id="v-w-loc"></span>
                         <span class="weather-subtitle">未來 3 天</span>
                     </div>
-                    <div class="weather-forecast" id="v-weather">
-                        </div>
+                    <div class="weather-forecast" id="v-weather"></div>
                 </div>
 
-                <div class="timeline" id="v-timeline">
-                    </div>
+                <div class="timeline" id="v-timeline"></div>
             </div>
 
+            <!-- 記帳助手視圖 -->
             <div id="expense-view" class="view-section">
                 <div class="day-badge">Travel Wallet</div>
                 <h1 class="day-title">記帳與匯率轉換</h1>
@@ -257,7 +328,8 @@
                     <button class="save-btn" onclick="saveRecord()">記上一筆</button>
 
                     <div class="record-list" id="ex-list">
-                        </div>
+                        <!-- 記錄列表 -->
+                    </div>
                 </div>
             </div>
 
@@ -267,14 +339,13 @@
 
 <script>
     // ================= 完整 11 天數據庫 =================
-    // 依據參考圖設計，每日前三天天氣為模擬數據
     const tripData = [
         {
             day: 1, dateStr: "5/20", icon: "fa-plane-arrival", title: "名古屋・鰻魚飯盛宴",
             desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。",
             tags: ["👍 必吃：肝入鰻魚飯", "🚗 確認 CEP 通行證"],
             guide: "機場取車後，請務必確認 ETC 卡是否正確插入。前往市區請注意左駕適應，導航可輸入電話號碼最準確！",
-            bg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop", // 名古屋
+            bg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop", 
             weather: { loc: "名古屋 Nagoya", days: [{d:"5/20", i:"⛅", t:"24°"}, {d:"5/21", i:"☀️", t:"25°"}, {d:"5/22", i:"☁️", t:"22°"}] },
             events: [
                 { time: "15:50", title: "抵達中部國際機場 (UO690)", btns: ["nav"] },
@@ -288,7 +359,7 @@
             desc: "品嚐名古屋全量第一的紫陽花醬油拉麵。午後沿著飛驒川自駕，入住日本三大名泉之一的下呂溫泉。",
             tags: ["👍 必吃：特製醬油拉麵", "♨️ 必泡：下呂美人湯"],
             guide: "紫陽花拉麵無法預約，請務必在 10:15 前抵達現場排隊。抵達下呂後，可先去「ゆあみ屋」吃溫泉布丁泡足湯。",
-            bg: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop", // 溫泉/山景
+            bg: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop",
             weather: { loc: "下呂 Gero", days: [{d:"5/21", i:"☀️", t:"22°"}, {d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"16°"}] },
             events: [
                 { time: "09:00", title: "GLITCH COFFEE 晨間咖啡", btns: ["nav"] },
@@ -302,7 +373,7 @@
             desc: "巡禮《你的名字》電影場景，漫步於充滿江戶風情的高山老街。夜晚迎來 A5 飛驒牛燒肉的極致饗宴。",
             tags: ["📸 必拍：古川跨線橋", "🥩 必吃：A5飛驒牛"],
             guide: "味藏天國燒肉非常熱門，建議 17:00 先去現場領取號碼牌，等待期間可在附近稍作休息。",
-            bg: "https://images.unsplash.com/photo-1578338959146-24eeb645224e?q=80&w=1000&auto=format&fit=crop", // 高山老街氛圍
+            bg: "https://images.unsplash.com/photo-1578338959146-24eeb645224e?q=80&w=1000&auto=format&fit=crop", 
             weather: { loc: "高山 Takayama", days: [{d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"15°"}, {d:"5/24", i:"☀️", t:"20°"}] },
             events: [
                 { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", btns: ["nav"] },
@@ -316,7 +387,7 @@
             desc: "深入日本阿爾卑斯山脈的精華。從清晨的朝市，到上高地的翠綠湖水，最後登上 2156m 的雲端展望台。",
             tags: ["⚠️ 注意：13:00 準時撤離上高地", "🚠 必搭：雙層纜車"],
             guide: "上高地【禁止私家車進入】。請導航至「平湯停車場」停妥車輛後，換乘接駁巴士入山。",
-            bg: "https://images.unsplash.com/photo-1624254091924-a212df8bf551?q=80&w=1000&auto=format&fit=crop", // 山岳
+            bg: "https://images.unsplash.com/photo-1624254091924-a212df8bf551?q=80&w=1000&auto=format&fit=crop", 
             weather: { loc: "上高地 Kamikochi", days: [{d:"5/23", i:"🌦️", t:"12°"}, {d:"5/24", i:"☀️", t:"15°"}, {d:"5/25", i:"❄️", t:"5°"}] },
             events: [
                 { time: "07:30", title: "宮川朝市 (尋找筷子捲)", btns: ["nav"] },
@@ -331,7 +402,7 @@
             desc: "在廢棄鐵道上騎單車感受熱血震動。下午轉入富山市，沉浸在隈研吾的建築美學與二星懷石料理中。",
             tags: ["🚲 預約：G-0900梯次", "🌟 米其林：二星ふじ居"],
             guide: "富岩運河環水公園的星巴克被譽為「世界最美」，傍晚黃昏時分去拍照光線最為迷人。",
-            bg: "https://images.unsplash.com/photo-1620619890664-4e92b34a6df9?q=80&w=1000&auto=format&fit=crop", // 富山玻璃
+            bg: "https://images.unsplash.com/photo-1620619890664-4e92b34a6df9?q=80&w=1000&auto=format&fit=crop", 
             weather: { loc: "富山 Toyama", days: [{d:"5/24", i:"☀️", t:"21°"}, {d:"5/25", i:"⛅", t:"20°"}, {d:"5/26", i:"☁️", t:"19°"}] },
             events: [
                 { time: "09:00", title: "Gattan Go!! 鐵道單車", btns: ["nav", "voucher"] },
@@ -341,7 +412,6 @@
                 { time: "19:00", title: "晚餐：御料理 ふじ居", btns: ["nav"] }
             ]
         },
-        // 為節省空間與保持流暢，後續天數簡化，但在真實 App 中資料一樣豐富
         {
             day: 6, dateStr: "5/25", icon: "fa-snowflake", title: "立山黑部雪牆大冒險",
             desc: "全日橫斷日本屋脊，見證高達十幾公尺的壯觀雪之大谷與氣勢磅礴的黑部水壩。",
@@ -396,13 +466,14 @@
     window.onload = () => {
         calcCountdown();
         buildSidebar();
-        renderDay(0); // 預設載入 Day 1
+        // 預設顯示首頁總覽
+        showHome();
     };
 
-    // 計算倒數計時 (出發日 2026-05-20, 當前時間模擬 2026-05-04)
+    // 計算倒數計時
     function calcCountdown() {
         const target = new Date("2026-05-20T00:00:00").getTime();
-        const current = new Date("2026-05-04T12:00:00").getTime(); // 依據 Context 提供的時間
+        const current = new Date("2026-05-04T12:00:00").getTime();
         const diffDays = Math.ceil((target - current) / (1000 * 60 * 60 * 24));
         document.getElementById('countdown-days').innerText = `${diffDays}天`;
     }
@@ -412,7 +483,7 @@
         const navContainer = document.getElementById('sidebar-nav');
         tripData.forEach((data, index) => {
             const item = document.createElement('div');
-            item.className = `nav-item ${index === 0 ? 'active' : ''}`;
+            item.className = 'nav-item';
             item.id = `nav-item-${index}`;
             item.innerHTML = `
                 <i class="fa-solid ${data.icon}"></i>
@@ -420,16 +491,44 @@
                 <span class="date-lbl">${data.dateStr}</span>
             `;
             item.onclick = () => {
-                switchView('itinerary');
+                showItineraryView();
                 renderDay(index);
             };
             navContainer.appendChild(item);
         });
     }
 
+    // 顯示首頁總覽
+    function showHome() {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.expense-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById('home-view').classList.add('active');
+        document.getElementById('nav-item-home').classList.add('active');
+        document.getElementById('bg-layer').style.backgroundImage = `url('https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop')`;
+        document.querySelector('.main-content').scrollTop = 0;
+    }
+
+    // 切換到單日行程視圖容器
+    function showItineraryView() {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById('itinerary-view').classList.add('active');
+    }
+
+    // 顯示記帳視圖
+    function showExpenseView() {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById('expense-view').classList.add('active');
+        document.querySelector('.expense-btn').classList.add('active');
+        document.getElementById('bg-layer').style.backgroundImage = `url('https://images.unsplash.com/photo-1580556272379-0dbf88c80528?q=80&w=1000&auto=format&fit=crop')`;
+        document.querySelector('.main-content').scrollTop = 0;
+    }
+
     // ================= 渲染單日行程 =================
     function renderDay(index) {
-        // 更新左側選中狀態
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.expense-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(`nav-item-${index}`).classList.add('active');
@@ -484,23 +583,6 @@
 
         // 滾動回頂部
         document.querySelector('.main-content').scrollTop = 0;
-    }
-
-    // ================= 切換視圖 (行程 vs 記帳) =================
-    function switchView(view) {
-        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-        if(view === 'itinerary') {
-            document.getElementById('itinerary-view').classList.add('active');
-        } else if (view === 'expense') {
-            document.getElementById('expense-view').classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.querySelector('.expense-btn').classList.add('active');
-            document.getElementById('bg-layer').style.backgroundImage = `url('https://images.unsplash.com/photo-1580556272379-0dbf88c80528?q=80&w=1000&auto=format&fit=crop')`; // 固定記帳背景
-        }
-    }
-
-    function showExpenseView() {
-        switchView('expense');
     }
 
     // ================= 記帳助手功能 =================
