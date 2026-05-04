@@ -78,7 +78,18 @@
 
         /* ================= 右側主內容區 ================= */
         .main-content { flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; background: var(--bg-paper); }
-        .content-scroll { position: relative; z-index: 10; padding: 50px 30px 80px; min-height: 100%; }
+        
+        /* 滿版首圖設計 (Hero Image) */
+        .hero-image-container {
+            width: 100%; height: 250px; position: relative;
+            background-size: cover; background-position: center;
+        }
+        .hero-gradient {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
+            background: linear-gradient(to bottom, rgba(249, 248, 246, 0) 0%, rgba(249, 248, 246, 1) 100%);
+        }
+
+        .content-scroll { position: relative; z-index: 10; padding: 20px 30px 80px; min-height: 100%; } /* Padding Top 減少以配合圖片 */
 
         .view-section { display: none; animation: fadeIn 0.5s ease; }
         .view-section.active { display: block; }
@@ -174,7 +185,6 @@
         .save-btn { width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 15px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; cursor: pointer; transition: 0.3s; }
         .save-btn:active { background: var(--accent); }
         
-        /* 每日帳目分組樣式 */
         .record-list { margin-top: 30px; }
         .expense-group { margin-bottom: 25px; }
         .group-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; border-bottom: 2px solid var(--border-dark); margin-bottom: 10px; }
@@ -221,9 +231,14 @@
 
     <!-- 主內容區 -->
     <main class="main-content">
+        <!-- 滿版首圖區塊 -->
+        <div class="hero-image-container" id="hero-img">
+            <div class="hero-gradient"></div>
+        </div>
+
         <div class="content-scroll">
             
-            <!-- 總覽主頁 (包含航班資訊) -->
+            <!-- 總覽主頁 -->
             <div id="home-view" class="view-section active">
                 <div class="day-badge">Table of Contents</div>
                 <h1 class="day-title">北陸自駕大綱</h1>
@@ -313,7 +328,6 @@
                     <div class="hkd-note">Rate: 1 JPY = 0.051 HKD</div>
                     <button class="save-btn" onclick="saveRecord()">Save Record</button>
                     
-                    <!-- 動態生成的紀錄列表將會放這裡 -->
                     <div class="record-list" id="ex-list"></div>
                 </div>
             </div>
@@ -322,13 +336,14 @@
 </div>
 
 <script>
-    // ================= 11 天數據庫 =================
+    // ================= 11 天數據庫 (加入各日專屬的封面圖片 url) =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
             desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。",
             tags: ["必吃：肝入鰻魚飯", "確認 CEP 通行證"],
             guide: "機場取車後，請務必確認 ETC 卡是否正確插入。前往市區請注意左駕適應，導航可輸入電話號碼最準確！",
+            heroImg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop", // 名古屋
             weather: { loc: "NAGOYA", days: [{d:"5/20", i:"⛅", t:"24°"}, {d:"5/21", i:"☀️", t:"25°"}, {d:"5/22", i:"☁️", t:"22°"}] },
             events: [
                 { time: "15:50", title: "抵達中部國際機場 (UO690)", btns: ["nav"] },
@@ -342,6 +357,7 @@
             desc: "品嚐名古屋全量第一的紫陽花醬油拉麵。午後沿著飛驒川自駕，入住日本三大名泉之一的下呂溫泉。",
             tags: ["必吃：特製醬油拉麵", "必泡：下呂美人湯"],
             guide: "紫陽花拉麵已經成功預約 11:00，行程超順暢！吃飽後沿著國道 41 號欣賞飛驒川風景前往下呂，可以先去「ゆあみ屋」吃溫泉布丁泡足湯。",
+            heroImg: "https://i.ibb.co/9vM70r7/image-c0524e.jpg", // 下呂溫泉
             weather: { loc: "GERO", days: [{d:"5/21", i:"☀️", t:"22°"}, {d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"16°"}] },
             events: [
                 { time: "09:00", title: "GLITCH COFFEE 晨間咖啡", hours: "09:00–19:00", btns: ["nav"] },
@@ -355,6 +371,7 @@
             desc: "巡禮《你的名字》電影場景，漫步於充滿江戶風情的高山老街。夜晚迎來 A5 飛驒牛燒肉的極致饗宴。",
             tags: ["必拍：古川跨線橋", "必吃：A5飛驒牛"],
             guide: "味藏天國燒肉非常熱門，建議 17:00 先去現場領取號碼牌，等待期間可在附近稍作休息。",
+            heroImg: "https://i.ibb.co/L5hY8gq/image-eefee5.jpg", // 飛驒古川
             weather: { loc: "TAKAYAMA", days: [{d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"15°"}, {d:"5/24", i:"☀️", t:"20°"}] },
             events: [
                 { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", hours: "24小時開放，餵魚建議白天", btns: ["nav"] },
@@ -368,6 +385,7 @@
             desc: "深入日本阿爾卑斯山脈的精華。從清晨的朝市，到上高地的翠綠湖水，最後登上 2156m 的雲端展望台。",
             tags: ["注意：13:00 撤離上高地", "必搭：雙層纜車"],
             guide: "上高地禁止私家車進入。請導航至「平湯停車場」停妥車輛後，換乘接駁巴士入山。",
+            heroImg: "https://i.ibb.co/3s6KzY6/image-733dff.jpg", // 上高地
             weather: { loc: "KAMIKOCHI", days: [{d:"5/23", i:"🌦️", t:"12°"}, {d:"5/24", i:"☀️", t:"15°"}, {d:"5/25", i:"❄️", t:"5°"}] },
             events: [
                 { time: "07:30", title: "宮川朝市 (尋找筷子捲)", hours: "07:00–12:00 (中午收攤)", btns: ["nav"] },
@@ -382,6 +400,7 @@
             desc: "在廢棄鐵道上騎單車感受熱血震動。下午轉入富山市，沉浸在隈研吾的建築美學與二星懷石料理中。",
             tags: ["預約：G-0900梯次", "米其林：二星ふじ居"],
             guide: "富岩運河環水公園的星巴克被譽為「世界最美」，傍晚黃昏時分去拍照光線最為迷人。",
+            heroImg: "https://i.ibb.co/b3S9v3Y/image-b8c2fc.jpg", // 富山
             weather: { loc: "TOYAMA", days: [{d:"5/24", i:"☀️", t:"21°"}, {d:"5/25", i:"⛅", t:"20°"}, {d:"5/26", i:"☁️", t:"19°"}] },
             events: [
                 { time: "08:00", title: "出發 奧飛驒 ➔ 神岡", hours: "山路駕駛請留意路況", btns: ["nav"] },
@@ -398,6 +417,7 @@
             desc: "全日橫斷日本屋脊，見證高達十幾公尺的壯觀雪之大谷與氣勢磅礴的黑部水壩。",
             tags: ["必備：太陽眼鏡防雪盲", "必備：防風保暖衣物"], 
             guide: "立山站停車場容易客滿，請務必在早上 07:00 前抵達。山上紫外線極強，一定要戴墨鏡！",
+            heroImg: "https://i.ibb.co/1KbbD8C/image-23c21c.jpg", // 立山黑部
             weather: { loc: "MURODO", days: [{d:"5/25", i:"❄️", t:"3°"}, {d:"5/26", i:"⛅", t:"5°"}, {d:"5/27", i:"☀️", t:"8°"}] },
             events: [ 
                 { time: "07:00", title: "抵達立山站停車場", hours: "車站售票 07:00 開始", btns: ["nav"] }, 
@@ -410,6 +430,7 @@
             desc: "全日本唯一可合法行駛汽車的沙灘公路，享受海風與浪花。傍晚抵達充滿歷史底蘊的金澤。",
             tags: ["體驗：8km沙灘自駕", "任務：金澤洗車"], 
             guide: "在千里濱沙灘飆速後，當晚抵達金澤請務必尋找附有「下回り洗浄」的洗車場沖洗底盤，防止海水鹽分腐蝕。",
+            heroImg: "https://i.ibb.co/BcVcxPZ/image-bebaea.jpg", // 雨晴海岸
             weather: { loc: "KANAZAWA", days: [{d:"5/26", i:"⛅", t:"23°"}, {d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}] },
             events: [ 
                 { time: "10:30", title: "雨晴海岸 (拍海上雪山)", hours: "24小時開放", btns: ["nav"] }, 
@@ -423,6 +444,7 @@
             desc: "換上和服穿梭江戶時代的東茶屋街，並到近江町市場享用海鮮丼。下午跳躍至 21 世紀美術館感受現代幾何的衝突美。",
             tags: ["必吃：近江町市場", "必拍：美術館泳池"], 
             guide: "穿著和服在近江町市場吃海鮮丼時，請千萬小心醬油不要滴到和服上喔！",
+            heroImg: "https://i.ibb.co/DfqR6jL/image-00afbb.jpg", // 東茶屋街
             weather: { loc: "KANAZAWA", days: [{d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}, {d:"5/29", i:"☀️", t:"26°"}] },
             events: [ 
                 { time: "09:00", title: "東茶屋街和服租借", hours: "茶屋街店家多從 09:30 開始營業", btns: ["nav"] }, 
@@ -438,6 +460,7 @@
             desc: "走進白川鄉世界遺產的童話世界，下午趕赴現存最古老的天守閣「犬山城」並在神社洗錢祈福。",
             tags: ["警告：13:30 必須離開白川鄉", "祈福：神社洗錢"], 
             guide: "行程銜接最緊繃的一天！犬山城 16:30 停止入場，請 Paul 務必在 13:30 踩下油門離開白川鄉。",
+            heroImg: "https://i.ibb.co/6P0D6kR/image-5b4819.jpg", // 白川鄉
             weather: { loc: "SHIRAKAWA", days: [{d:"5/28", i:"🌥️", t:"18°"}, {d:"5/29", i:"☀️", t:"21°"}, {d:"5/30", i:"☀️", t:"24°"}] },
             events: [ 
                 { time: "10:45", title: "白川鄉合掌村散策", hours: "一般設施營業至 17:00", btns: ["nav"] }, 
@@ -452,6 +475,7 @@
             desc: "喚醒 Paul 的 F1 賽車魂，在國際級賽道體驗飆速。傍晚前往名花之里欣賞全日本最壯觀的燈海。",
             tags: ["熱血：F1賽道體驗", "浪漫：名花之里"], 
             guide: "鈴鹿賽道的 Circuit Challenger 是真的在 F1 東賽道上行駛，記得提早準備好預約憑證！",
+            heroImg: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?q=80&w=1000&auto=format&fit=crop", // 賽道示意
             weather: { loc: "SUZUKA", days: [{d:"5/29", i:"☀️", t:"26°"}, {d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}] },
             events: [ 
                 { time: "10:45", title: "鈴鹿賽道樂園", hours: "10:00–17:00", btns: ["nav", "voucher"] }, 
@@ -464,6 +488,7 @@
             desc: "在熱田神宮進行最後的參拜祈福，吃完名古屋發祥的鰻魚飯三吃後，帶著滿滿的回憶前往機場。",
             tags: ["參拜：清水社", "必吃：鰻魚飯三吃"], 
             guide: "熱田蓬萊軒不能電話預約，先去店門口登記名字排位，再回去逛神宮剛剛好。",
+            heroImg: "https://i.ibb.co/3vkzLDB/image-df1a5d.jpg", // 名古屋城示意結尾
             weather: { loc: "NAGOYA", days: [{d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}, {d:"6/1", i:"🌧️", t:"20°"}] },
             events: [ 
                 { time: "09:45", title: "熱田蓬萊軒 (登記名字排隊)", hours: "11:30 開始營業", btns: ["nav"] }, 
@@ -476,15 +501,13 @@
         }
     ];
 
-    // ================= 記帳助手：Local Storage 數據處理 =================
     const exchangeRate = 0.051;
-    // 每次載入時，從瀏覽器緩存讀取記帳紀錄 (冇就預設為空陣列)
     let expenses = JSON.parse(localStorage.getItem('driveLogExpenses')) || [];
 
     window.onload = () => {
         buildSidebar();
         showHome();
-        renderExpenses(); // 載入儲存咗嘅帳目
+        renderExpenses();
     };
 
     function buildSidebar() {
@@ -513,10 +536,17 @@
         document.querySelector('.main-content').scrollTop = 0;
     }
 
+    // 更新首圖函數
+    function updateHeroImage(url) {
+        document.getElementById('hero-img').style.backgroundImage = `url('${url}')`;
+    }
+
     function showHome() {
         deactivateAll();
         document.getElementById('home-view').classList.add('active');
         document.getElementById('nav-item-home').classList.add('active');
+        // 首頁使用雨晴海岸作為全覽代表圖
+        updateHeroImage("https://i.ibb.co/L5r15M4/image-b80c55.jpg");
     }
 
     function showItineraryView() {
@@ -528,12 +558,17 @@
         deactivateAll();
         document.getElementById('expense-view').classList.add('active');
         document.querySelector('.expense-btn').classList.add('active');
-        renderExpenses(); // 每次打開重新渲染確保最新
+        // 記帳頁面使用無干擾的暗色質感圖
+        updateHeroImage("https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop");
+        renderExpenses();
     }
 
     function renderDay(index) {
         const data = tripData[index];
         document.getElementById(`nav-item-${index}`).classList.add('active');
+        
+        // 替換該日專屬首圖
+        updateHeroImage(data.heroImg);
         
         document.getElementById('v-badge').innerText = `DAY ${data.day} ⎯ ${data.dateStr}`;
         document.getElementById('v-title').innerText = data.title;
@@ -580,7 +615,6 @@
         document.getElementById('v-timeline').innerHTML = tlHtml;
     }
 
-    // 計算預覽港幣
     function calcHKD() {
         const jpy = document.getElementById('ex-jpy').value;
         const resultBox = document.getElementById('ex-hkd');
@@ -591,7 +625,6 @@
         }
     }
 
-    // 儲存帳目
     function saveRecord() {
         const itemStr = document.getElementById('ex-item').value;
         const jpyVal = parseFloat(document.getElementById('ex-jpy').value);
@@ -600,14 +633,13 @@
 
         const hkdVal = parseFloat((jpyVal * exchangeRate).toFixed(2));
         
-        // 抓取當下手機時間與日期
         const now = new Date();
         const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const dateStr = `${monthNames[now.getMonth()]} ${now.getDate()}`; // 例: MAY 20
-        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0'); // 例: 14:30
+        const dateStr = `${monthNames[now.getMonth()]} ${now.getDate()}`;
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
         
         const record = {
-            id: Date.now(), // 用時間戳做獨一無二嘅 ID，方便刪除
+            id: Date.now(),
             item: itemStr,
             jpy: jpyVal,
             hkd: hkdVal,
@@ -615,18 +647,16 @@
             time: timeStr
         };
         
-        expenses.unshift(record); // 將最新紀錄加去最前
-        localStorage.setItem('driveLogExpenses', JSON.stringify(expenses)); // 存入緩存
+        expenses.unshift(record);
+        localStorage.setItem('driveLogExpenses', JSON.stringify(expenses));
 
-        // 清空輸入框
         document.getElementById('ex-item').value = '';
         document.getElementById('ex-jpy').value = '';
         document.getElementById('ex-hkd').innerText = 'HK$ 0.00';
         
-        renderExpenses(); // 重新渲染列表
+        renderExpenses();
     }
 
-    // 刪除帳目
     function deleteRecord(id) {
         if(confirm("確定要刪除這筆紀錄嗎？")) {
             expenses = expenses.filter(e => e.id !== id);
@@ -635,17 +665,15 @@
         }
     }
 
-    // 渲染帳目列表 (按日期分組)
     function renderExpenses() {
         const list = document.getElementById('ex-list');
-        list.innerHTML = ''; // 先清空
+        list.innerHTML = '';
 
         if (expenses.length === 0) {
             list.innerHTML = '<div class="empty-state">No records yet. 開始你的第一筆記帳吧！</div>';
             return;
         }
 
-        // 1. 將所有紀錄按日期 (dateStr) 進行分組
         const groupedData = {};
         expenses.forEach(e => {
             if (!groupedData[e.date]) {
@@ -656,11 +684,9 @@
             groupedData[e.date].totalHkd += e.hkd;
         });
 
-        // 2. 生成 HTML
         for (const date in groupedData) {
             const group = groupedData[date];
             
-            // 生成該日期群組的開頭與總計
             let groupHtml = `
                 <div class="expense-group">
                     <div class="group-header">
@@ -672,7 +698,6 @@
                     </div>
             `;
             
-            // 生成該日期內的每一筆項目
             group.items.forEach(item => {
                 groupHtml += `
                     <div class="record-item">
