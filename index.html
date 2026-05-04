@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="北陸自駕">
-    <!-- 引入 Google Fonts: Noto Serif TC (襯線字體/雜誌感) 與 Lato -->
+    <!-- 引入 Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
             background-color: #E0DCD3; 
             display: flex; justify-content: center; height: 100dvh; overflow: hidden; 
             color: var(--text-main); 
-            font-family: 'Lato', -apple-system, "Noto Serif TC", serif; /* 預設字體 */
+            font-family: 'Lato', -apple-system, "Noto Serif TC", serif;
         }
         
         h1, h2, h3, .serif { font-family: 'Noto Serif TC', serif; }
@@ -44,7 +44,7 @@
             position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.08);
         }
 
-        /* ================= 左側邊欄 (雜誌目錄側條) ================= */
+        /* ================= 左側邊欄 ================= */
         .sidebar {
             width: 80px; background: var(--bg-sidebar); display: flex; flex-direction: column;
             align-items: center; padding: 25px 0 10px; border-right: 1px solid var(--border-light);
@@ -76,29 +76,22 @@
         .nav-item.active { color: var(--text-main); }
         .nav-item.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px; background: var(--accent); }
 
-        /* ================= 右側主內容區 (雜誌內頁) ================= */
+        /* ================= 右側主內容區 ================= */
         .main-content { flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; background: var(--bg-paper); }
         .content-scroll { position: relative; z-index: 10; padding: 50px 30px 80px; min-height: 100%; }
 
-        /* 視圖切換動畫 */
         .view-section { display: none; animation: fadeIn 0.5s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 雜誌風標題設計 */
+        /* 標題設計 */
         .day-badge { 
             display: inline-block; font-family: 'Lato', sans-serif; text-transform: uppercase; 
             letter-spacing: 2px; font-size: 10px; font-weight: 700; color: var(--accent); 
             margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--accent);
         }
-        .day-title { 
-            font-size: 32px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; 
-            color: var(--text-main); letter-spacing: 0.5px;
-        }
-        .day-desc { 
-            font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 30px; 
-            font-family: 'Noto Serif TC', serif;
-        }
+        .day-title { font-size: 32px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; color: var(--text-main); letter-spacing: 0.5px; }
+        .day-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 30px; font-family: 'Noto Serif TC', serif; }
         
         .section-header {
             font-family: 'Lato', sans-serif; font-size: 11px; text-transform: uppercase; 
@@ -106,31 +99,25 @@
             border-bottom: 1px solid var(--border-light); padding-bottom: 8px;
         }
 
-        /* 總覽列表 (極簡線條風) */
+        /* 總覽列表 */
         .summary-list { display: flex; flex-direction: column; border-top: 2px solid var(--border-dark); }
         .sum-item { display: flex; align-items: flex-start; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border-light); }
         .sum-day { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: var(--accent); min-width: 40px; margin-top: 2px; }
         .sum-info { color: var(--text-sub); font-size: 13px; line-height: 1.6; }
         .sum-info b { color: var(--text-main); font-size: 15px; font-family: 'Noto Serif TC', serif; display: block; margin-bottom: 4px; }
 
-        /* 標籤 (實體印章感) */
+        /* 標籤 */
         .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
         .tag { border: 1px solid var(--border-light); padding: 4px 10px; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-main); background: #FFF; letter-spacing: 0.5px; }
         .tag i { color: var(--accent); margin-right: 4px; }
 
-        /* 導遊語錄 (雜誌引用設計) */
-        .guide-box { 
-            margin: 30px 0; padding: 20px 0 20px 20px; border-left: 3px solid var(--accent); 
-            background: transparent; position: relative;
-        }
-        .guide-box::before {
-            content: '\201C'; font-family: 'Noto Serif TC', serif; font-size: 60px; color: var(--border-light);
-            position: absolute; top: -10px; left: 10px; z-index: -1; line-height: 1;
-        }
+        /* 導遊語錄 */
+        .guide-box { margin: 30px 0; padding: 20px 0 20px 20px; border-left: 3px solid var(--accent); background: transparent; position: relative; }
+        .guide-box::before { content: '\201C'; font-family: 'Noto Serif TC', serif; font-size: 60px; color: var(--border-light); position: absolute; top: -10px; left: 10px; z-index: -1; line-height: 1; }
         .guide-box-title { color: var(--text-main); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .guide-box-text { font-size: 14px; color: var(--text-main); line-height: 1.8; font-style: italic; font-family: 'Noto Serif TC', serif; }
 
-        /* 天氣設計 (純粹排版) */
+        /* 天氣設計 */
         .weather-card { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
         .weather-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 11px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
         .weather-forecast { display: flex; justify-content: space-between; }
@@ -140,7 +127,7 @@
         .w-icon { font-size: 18px; margin-bottom: 5px; color: var(--text-main); }
         .w-temp { font-size: 14px; font-weight: bold; font-family: 'Lato', sans-serif; color: var(--text-main); }
 
-        /* --- 雜誌風時間軸 --- */
+        /* --- 時間軸 --- */
         .timeline { margin-bottom: 30px; border-top: 2px solid var(--border-dark); padding-top: 20px; }
         .tl-item { margin-bottom: 35px; display: flex; gap: 15px; }
         .tl-time { font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 300; color: var(--accent); min-width: 65px; text-align: right; line-height: 1.1; }
@@ -150,15 +137,11 @@
         .tl-hours i { color: var(--accent); margin-right: 4px; }
 
         .tl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .action-btn { 
-            background: transparent; border: 1px solid var(--border-light); padding: 5px 12px; 
-            font-size: 10px; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; 
-            gap: 5px; font-family: 'Lato', sans-serif; text-transform: uppercase; transition: 0.2s;
-        }
+        .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 5px 12px; font-size: 10px; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'Lato', sans-serif; text-transform: uppercase; transition: 0.2s; }
         .action-btn:hover { border-color: var(--text-main); color: var(--text-main); }
         .action-btn i { color: var(--text-main); }
 
-        /* ================= 航班機票設計 (極簡機票) ================= */
+        /* ================= 航班機票設計 ================= */
         .flight-card { border: 1px solid var(--border-dark); padding: 25px; margin-bottom: 20px; background: #FFF; position: relative; }
         .flight-card::before, .flight-card::after { content: ''; position: absolute; top: 50%; width: 12px; height: 24px; background: var(--bg-paper); border: 1px solid var(--border-dark); }
         .flight-card::before { left: -7px; border-radius: 0 12px 12px 0; border-left: none; }
@@ -179,45 +162,48 @@
 
         /* ================= 記帳工具視圖 ================= */
         .expense-container { margin-top: 20px; }
-        .input-group { margin-bottom: 15px; }
+        .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-size: 10px; text-transform: uppercase; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 5px; letter-spacing: 1px; }
-        .input-row { display: flex; gap: 15px; }
-        input, select { 
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-dark); 
-            color: var(--text-main); padding: 10px 0; font-size: 16px; font-family: 'Lato', sans-serif; outline: none; border-radius: 0;
-        }
+        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-dark); color: var(--text-main); padding: 10px 0; font-size: 16px; font-family: 'Lato', sans-serif; outline: none; border-radius: 0; }
         input::placeholder { color: #CCC; font-family: 'Noto Serif TC', serif; font-size: 14px; }
-        input:focus, select:focus { border-bottom: 2px solid var(--accent); }
+        input:focus { border-bottom: 2px solid var(--accent); }
         
         .hkd-result { text-align: right; font-size: 28px; font-family: 'Lato', sans-serif; font-weight: 300; color: var(--text-main); margin: 20px 0 5px; }
         .hkd-note { text-align: right; font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 25px; }
         
-        .save-btn { 
-            width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 15px; 
-            font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; 
-            cursor: pointer; transition: 0.3s;
-        }
+        .save-btn { width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 15px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; cursor: pointer; transition: 0.3s; }
         .save-btn:active { background: var(--accent); }
         
-        .record-list { border-top: 2px solid var(--border-dark); padding-top: 20px; margin-top: 30px; }
-        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-light); }
+        /* 每日帳目分組樣式 */
+        .record-list { margin-top: 30px; }
+        .expense-group { margin-bottom: 25px; }
+        .group-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; border-bottom: 2px solid var(--border-dark); margin-bottom: 10px; }
+        .group-date { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; color: var(--text-main); letter-spacing: 1px; text-transform: uppercase; }
+        .group-total { display: flex; flex-direction: column; align-items: flex-end; font-family: 'Lato', sans-serif; }
+        .group-total span:first-child { font-size: 10px; color: var(--text-sub); margin-bottom: 2px; letter-spacing: 0.5px; }
+        .group-total span:last-child { font-size: 14px; font-weight: bold; color: var(--text-main); }
+        
+        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border-light); }
         .r-info { display: flex; flex-direction: column; gap: 4px; }
         .r-title { font-size: 15px; font-family: 'Noto Serif TC', serif; color: var(--text-main); }
-        .r-jpy { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
+        .r-time { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); letter-spacing: 0.5px; }
+        .r-time i { font-size: 9px; color: var(--accent); margin-right: 3px; }
         .r-right { display: flex; align-items: center; gap: 15px; }
-        .r-hkd { font-size: 16px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--text-main); }
+        .r-hkd { font-size: 15px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--text-main); }
         .delete-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; cursor: pointer; transition: 0.2s; padding: 5px; }
         .delete-btn:hover, .delete-btn:active { color: var(--danger-red); }
+        
+        .empty-state { text-align: center; color: var(--text-sub); font-size: 12px; margin-top: 20px; font-style: italic; font-family: 'Noto Serif TC', serif; }
 
         @media (min-width: 481px) {
-            body { background-color: #D3CEC4; } /* 桌面版外圍顏色 */
+            body { background-color: #D3CEC4; }
         }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    <!-- 側邊欄 (雜誌索引區) -->
+    <!-- 側邊欄 -->
     <aside class="sidebar">
         <div class="trip-title">Paul & Joyce 2026</div>
         <div class="expense-btn" onclick="showExpenseView()">
@@ -229,7 +215,6 @@
                 <span class="day-lbl">Index</span>
                 <span class="date-lbl">總覽</span>
             </div>
-            <!-- 航班已移至首頁，側邊欄不再需要航班按鈕 -->
             <!-- 天數由 JS 生成 -->
         </div>
     </aside>
@@ -285,7 +270,7 @@
                 </div>
             </div>
 
-            <!-- 單日行程 (文章排版) -->
+            <!-- 單日行程 -->
             <div id="itinerary-view" class="view-section">
                 <div class="day-badge" id="v-badge"></div>
                 <h1 class="day-title" id="v-title"></h1>
@@ -311,30 +296,24 @@
             <!-- 記帳助手 -->
             <div id="expense-view" class="view-section">
                 <div class="day-badge">Travel Wallet</div>
-                <h1 class="day-title">記帳與匯率</h1>
-                <p class="day-desc">記錄旅途中的每一筆花費。</p>
+                <h1 class="day-title">記帳與結算</h1>
+                <p class="day-desc">系統會自動記錄當下時間，並按日為你整理總結。</p>
                 
                 <div class="expense-container">
                     <div class="input-group">
-                        <label>ITEM / 項目</label>
-                        <input type="text" id="ex-item" placeholder="例如：紫陽花拉麵...">
+                        <label>ITEM / 消費項目</label>
+                        <input type="text" id="ex-item" placeholder="例如：紫陽花拉麵、停車費...">
                     </div>
-                    <div class="input-row">
-                        <div class="input-group" style="flex: 1;">
-                            <label>DAY / 天數</label>
-                            <select id="ex-day">
-                                <option value="Day 1">Day 1</option><option value="Day 2">Day 2</option><option value="Day 3">Day 3</option><option value="Day 4">Day 4</option><option value="Day 5">Day 5</option><option value="Day 6">Day 6</option><option value="Day 7">Day 7</option><option value="Day 8">Day 8</option><option value="Day 9">Day 9</option><option value="Day 10">Day 10</option><option value="Day 11">Day 11</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="flex: 1;">
-                            <label>AMOUNT (JPY)</label>
-                            <input type="number" id="ex-jpy" placeholder="¥ 0" oninput="calcHKD()">
-                        </div>
+                    <div class="input-group">
+                        <label>AMOUNT (JPY) / 日圓金額</label>
+                        <input type="number" id="ex-jpy" placeholder="¥ 0" oninput="calcHKD()">
                     </div>
+                    
                     <div class="hkd-result" id="ex-hkd">HK$ 0.00</div>
                     <div class="hkd-note">Rate: 1 JPY = 0.051 HKD</div>
                     <button class="save-btn" onclick="saveRecord()">Save Record</button>
                     
+                    <!-- 動態生成的紀錄列表將會放這裡 -->
                     <div class="record-list" id="ex-list"></div>
                 </div>
             </div>
@@ -343,7 +322,7 @@
 </div>
 
 <script>
-    // ================= 11 天純文字數據庫 (移除所有圖片屬性) =================
+    // ================= 11 天數據庫 =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
@@ -497,9 +476,15 @@
         }
     ];
 
+    // ================= 記帳助手：Local Storage 數據處理 =================
+    const exchangeRate = 0.051;
+    // 每次載入時，從瀏覽器緩存讀取記帳紀錄 (冇就預設為空陣列)
+    let expenses = JSON.parse(localStorage.getItem('driveLogExpenses')) || [];
+
     window.onload = () => {
         buildSidebar();
         showHome();
+        renderExpenses(); // 載入儲存咗嘅帳目
     };
 
     function buildSidebar() {
@@ -508,7 +493,6 @@
             const item = document.createElement('div');
             item.className = 'nav-item';
             item.id = `nav-item-${index}`;
-            // 側邊欄改為極簡數字顯示
             const dayNum = String(data.day).padStart(2, '0');
             item.innerHTML = `
                 <span class="day-lbl">${dayNum}</span>
@@ -544,6 +528,7 @@
         deactivateAll();
         document.getElementById('expense-view').classList.add('active');
         document.querySelector('.expense-btn').classList.add('active');
+        renderExpenses(); // 每次打開重新渲染確保最新
     }
 
     function renderDay(index) {
@@ -581,7 +566,6 @@
             
             const hoursHtml = ev.hours ? `<div class="tl-hours"><i class="fa-regular fa-clock"></i> ${ev.hours}</div>` : '';
 
-            // 雜誌排版 Timeline Item
             return `
                 <div class="tl-item">
                     <div class="tl-time">${ev.time}</div>
@@ -596,7 +580,7 @@
         document.getElementById('v-timeline').innerHTML = tlHtml;
     }
 
-    const exchangeRate = 0.051;
+    // 計算預覽港幣
     function calcHKD() {
         const jpy = document.getElementById('ex-jpy').value;
         const resultBox = document.getElementById('ex-hkd');
@@ -607,40 +591,108 @@
         }
     }
 
+    // 儲存帳目
     function saveRecord() {
-        const day = document.getElementById('ex-day').value;
-        const item = document.getElementById('ex-item').value;
-        const jpy = document.getElementById('ex-jpy').value;
+        const itemStr = document.getElementById('ex-item').value;
+        const jpyVal = parseFloat(document.getElementById('ex-jpy').value);
         
-        if (!item || !jpy) { alert("Please enter all details."); return; }
+        if (!itemStr || !jpyVal) { alert("Please enter all details."); return; }
 
-        const hkd = (jpy * exchangeRate).toFixed(2);
+        const hkdVal = parseFloat((jpyVal * exchangeRate).toFixed(2));
         
-        // 獲取當前手機時間
+        // 抓取當下手機時間與日期
         const now = new Date();
-        const timeString = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const dateStr = `${monthNames[now.getMonth()]} ${now.getDate()}`; // 例: MAY 20
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0'); // 例: 14:30
         
-        const recordHtml = `
-            <div class="record-item">
-                <div class="r-info">
-                    <div class="r-title">${item}</div>
-                    <div class="r-jpy">${day} // ${timeString} // JPY ${jpy}</div>
-                </div>
-                <div class="r-right">
-                    <div class="r-hkd">HK$ ${hkd}</div>
-                    <button class="delete-btn" onclick="this.closest('.record-item').remove()">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-        `;
+        const record = {
+            id: Date.now(), // 用時間戳做獨一無二嘅 ID，方便刪除
+            item: itemStr,
+            jpy: jpyVal,
+            hkd: hkdVal,
+            date: dateStr,
+            time: timeStr
+        };
         
-        const list = document.getElementById('ex-list');
-        list.insertAdjacentHTML('afterbegin', recordHtml);
+        expenses.unshift(record); // 將最新紀錄加去最前
+        localStorage.setItem('driveLogExpenses', JSON.stringify(expenses)); // 存入緩存
 
+        // 清空輸入框
         document.getElementById('ex-item').value = '';
         document.getElementById('ex-jpy').value = '';
         document.getElementById('ex-hkd').innerText = 'HK$ 0.00';
+        
+        renderExpenses(); // 重新渲染列表
+    }
+
+    // 刪除帳目
+    function deleteRecord(id) {
+        if(confirm("確定要刪除這筆紀錄嗎？")) {
+            expenses = expenses.filter(e => e.id !== id);
+            localStorage.setItem('driveLogExpenses', JSON.stringify(expenses));
+            renderExpenses();
+        }
+    }
+
+    // 渲染帳目列表 (按日期分組)
+    function renderExpenses() {
+        const list = document.getElementById('ex-list');
+        list.innerHTML = ''; // 先清空
+
+        if (expenses.length === 0) {
+            list.innerHTML = '<div class="empty-state">No records yet. 開始你的第一筆記帳吧！</div>';
+            return;
+        }
+
+        // 1. 將所有紀錄按日期 (dateStr) 進行分組
+        const groupedData = {};
+        expenses.forEach(e => {
+            if (!groupedData[e.date]) {
+                groupedData[e.date] = { items: [], totalJpy: 0, totalHkd: 0 };
+            }
+            groupedData[e.date].items.push(e);
+            groupedData[e.date].totalJpy += e.jpy;
+            groupedData[e.date].totalHkd += e.hkd;
+        });
+
+        // 2. 生成 HTML
+        for (const date in groupedData) {
+            const group = groupedData[date];
+            
+            // 生成該日期群組的開頭與總計
+            let groupHtml = `
+                <div class="expense-group">
+                    <div class="group-header">
+                        <div class="group-date">${date}</div>
+                        <div class="group-total">
+                            <span>DAILY TOTAL / 總計</span>
+                            <span>¥ ${group.totalJpy.toLocaleString()} / HK$ ${group.totalHkd.toFixed(2)}</span>
+                        </div>
+                    </div>
+            `;
+            
+            // 生成該日期內的每一筆項目
+            group.items.forEach(item => {
+                groupHtml += `
+                    <div class="record-item">
+                        <div class="r-info">
+                            <div class="r-title">${item.item}</div>
+                            <div class="r-time"><i class="fa-regular fa-clock"></i> ${item.time} // JPY ${item.jpy.toLocaleString()}</div>
+                        </div>
+                        <div class="r-right">
+                            <div class="r-hkd">HK$ ${item.hkd.toFixed(2)}</div>
+                            <button class="delete-btn" onclick="deleteRecord(${item.id})">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            groupHtml += `</div>`;
+            list.insertAdjacentHTML('beforeend', groupHtml);
+        }
     }
 </script>
 </body>
