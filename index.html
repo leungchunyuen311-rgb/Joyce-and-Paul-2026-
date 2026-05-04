@@ -22,6 +22,7 @@
             --btn-nav: #4A90E2;
             --btn-web: #50E3C2;
             --btn-voucher: #BD10E0;
+            --danger-red: #E74C3C; /* 新增紅色變數 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; }
@@ -167,13 +168,21 @@
         
         .save-btn { width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px; }
         
+        /* 支出紀錄列表樣式更新 (加入刪除按鈕排版) */
         .record-list { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
         .record-item:last-child { border-bottom: none; }
         .r-info { display: flex; flex-direction: column; gap: 4px; }
         .r-title { font-size: 14px; color: #FFF; }
         .r-jpy { font-size: 11px; color: var(--text-sub); }
+        
+        /* 右側金額與刪除按鈕容器 */
+        .r-right { display: flex; align-items: center; gap: 15px; }
         .r-hkd { font-size: 16px; font-weight: bold; color: var(--accent-gold); }
+        
+        /* 刪除按鈕設計 */
+        .delete-btn { background: none; border: none; color: var(--danger-red); font-size: 15px; cursor: pointer; padding: 5px; opacity: 0.8; transition: 0.2s; }
+        .delete-btn:active { transform: scale(0.9); opacity: 1; }
 
         @media (min-width: 481px) {
             body { background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; backdrop-filter: blur(20px); }
@@ -200,13 +209,10 @@
                 <span class="day-lbl">總覽</span>
             </div>
             
-            <!-- 新增航班按鈕 -->
             <div class="nav-item" id="nav-item-flight" onclick="showFlightView()">
                 <i class="fa-solid fa-plane"></i>
                 <span class="day-lbl">航班</span>
             </div>
-            
-            <!-- 其他天數由 JS 動態生成 -->
         </div>
     </aside>
 
@@ -223,7 +229,6 @@
                 <h1 class="day-title">航班資訊</h1>
                 <p class="day-desc">香港 (HKG) ⇄ 名古屋中部國際機場 (NGO)</p>
 
-                <!-- 去程航班卡片 -->
                 <div class="flight-card">
                     <div class="flight-label"><i class="fa-solid fa-plane-departure"></i> 去程 Outbound</div>
                     <div class="flight-route">
@@ -245,7 +250,6 @@
                     </div>
                 </div>
 
-                <!-- 回程航班卡片 -->
                 <div class="flight-card">
                     <div class="flight-label"><i class="fa-solid fa-plane-arrival"></i> 回程 Inbound</div>
                     <div class="flight-route">
@@ -348,6 +352,8 @@
                     <div class="hkd-result" id="ex-hkd">HK$ 0.00</div>
                     <div class="hkd-note">參考匯率：1 JPY = 0.051 HKD</div>
                     <button class="save-btn" onclick="saveRecord()">記上一筆</button>
+                    
+                    <!-- 記錄列表 (包含刪除按鈕) -->
                     <div class="record-list" id="ex-list"></div>
                 </div>
             </div>
@@ -356,7 +362,7 @@
 </div>
 
 <script>
-    // ================= 完整 11 天數據庫 (時間與攻略已升級優化) =================
+    // ================= 完整 11 天數據庫 =================
     const tripData = [
         {
             day: 1, dateStr: "5/20", icon: "fa-plane-arrival", title: "名古屋・鰻魚飯盛宴",
@@ -568,7 +574,6 @@
         
         document.getElementById('flight-view').classList.add('active');
         document.getElementById('nav-item-flight').classList.add('active');
-        // 使用飛機或天空的背景
         document.getElementById('bg-layer').style.backgroundImage = `url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop')`; 
         document.querySelector('.main-content').scrollTop = 0;
     }
@@ -651,6 +656,7 @@
         }
     }
 
+    // 加入刪除按鈕功能 (onclick="this.closest('.record-item').remove()")
     function saveRecord() {
         const day = document.getElementById('ex-day').value;
         const item = document.getElementById('ex-item').value;
@@ -666,7 +672,12 @@
                     <div class="r-title">${item}</div>
                     <div class="r-jpy">${day} · ¥${jpy}</div>
                 </div>
-                <div class="r-hkd">HK$ ${hkd}</div>
+                <div class="r-right">
+                    <div class="r-hkd">HK$ ${hkd}</div>
+                    <button class="delete-btn" onclick="this.closest('.record-item').remove()">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
             </div>
         `;
         
