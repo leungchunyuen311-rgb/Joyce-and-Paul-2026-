@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DriveLog: Paul & Joyce 北陸自駕</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================= 核心變數 & 重置 ================= */
+        :root {
+            --bg-dark: #121212;
+            --sidebar-bg: #1A1A24;
+            --accent-gold: #E5B869;
+            --text-main: #FFFFFF;
+            --text-sub: #A0A0A0;
+            --glass-bg: rgba(30, 30, 40, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --btn-nav: #4A90E2;
+            --btn-web: #50E3C2;
+            --btn-voucher: #BD10E0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif; }
+        body { background-color: #000; display: flex; justify-content: center; height: 100vh; overflow: hidden; color: var(--text-main); }
+
+        /* ================= 佈局容器 ================= */
+        #app-container {
+            width: 100%; max-width: 480px; /* 模擬手機寬度 */
+            height: 100vh; display: flex; background: var(--bg-dark);
+            position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* ================= 左側邊欄 ================= */
+        .sidebar {
+            width: 85px; background: var(--sidebar-bg); display: flex; flex-direction: column;
+            align-items: center; padding: 20px 0 10px; border-right: 1px solid rgba(255,255,255,0.05);
+            z-index: 20; flex-shrink: 0;
+        }
+        
+        .trip-title { font-size: 14px; font-weight: bold; text-align: center; color: var(--accent-gold); line-height: 1.4; margin-bottom: 20px; }
+        
+        /* 倒數計時圈圈 */
+        .countdown {
+            width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        .countdown span:first-child { font-size: 10px; color: var(--text-sub); }
+        .countdown span:last-child { font-size: 16px; font-weight: bold; color: var(--text-main); }
+
+        /* 天數列表 (可滑動) */
+        .nav-days { flex: 1; overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px; }
+        .nav-days::-webkit-scrollbar { display: none; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); transition: 0.3s; width: 100%; position: relative; }
+        .nav-item i { font-size: 20px; margin-bottom: 5px; }
+        .nav-item .day-lbl { font-size: 12px; font-weight: bold; }
+        .nav-item .date-lbl { font-size: 10px; }
+        
+        .nav-item.active { color: var(--accent-gold); }
+        .nav-item.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px; background: var(--accent-gold); border-radius: 0 4px 4px 0; }
+
+        /* 底部記帳按鈕 */
+        .expense-btn { margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); }
+        .expense-btn.active { color: var(--accent-gold); }
+        .expense-btn i { font-size: 20px; margin-bottom: 5px; }
+        .expense-btn span { font-size: 11px; }
+
+        /* ================= 右側主內容區 ================= */
+        .main-content {
+            flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;
+        }
+        
+        /* 動態背景圖 & 漸層遮罩 */
+        .bg-layer { position: fixed; top: 0; left: 85px; right: 0; bottom: 0; z-index: 1; background-size: cover; background-position: center; filter: brightness(0.7); transition: background-image 0.5s ease; }
+        .bg-overlay { position: fixed; top: 0; left: 85px; right: 0; bottom: 0; z-index: 2; background: linear-gradient(to bottom, rgba(18,18,18,0.2) 0%, rgba(18,18,18,0.95) 40%, rgba(18,18,18,1) 100%); }
+
+        /* 內容容器 */
+        .content-scroll { position: relative; z-index: 10; padding: 40px 25px 80px; min-height: 100%; }
+
+        /* --- 視圖切換 --- */
+        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 頂部標題區 --- */
+        .day-badge { display: inline-block; background: var(--accent-gold); color: #000; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
+        .day-title { font-size: 32px; font-weight: bold; margin-bottom: 15px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .day-desc { font-size: 14px; color: #CCC; line-height: 1.6; margin-bottom: 25px; text-shadow: 0 1px 5px rgba(0,0,0,0.8); }
+
+        /* 標籤 (👍 必吃) */
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 25px; }
+        .tag { border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 20px; font-size: 12px; color: #E0E0E0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
+        .tag i { color: var(--accent-gold); margin-right: 5px; }
+
+        /* 導遊小撇步 */
+        .guide-box { background: rgba(40, 30, 15, 0.8); border-left: 4px solid var(--accent-gold); border-radius: 0 8px 8px 0; padding: 15px; margin-bottom: 30px; backdrop-filter: blur(10px); }
+        .guide-box-title { color: var(--accent-gold); font-size: 14px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .guide-box-text { font-size: 13px; color: #DDD; line-height: 1.5; }
+
+        /* 玻璃透視天氣卡片 */
+        .weather-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin-bottom: 40px; backdrop-filter: blur(15px); }
+        .weather-header { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px; }
+        .weather-loc { color: #FFF; font-weight: bold; }
+        .weather-loc i { color: var(--accent-gold); margin-right: 5px; }
+        .weather-subtitle { color: var(--text-sub); }
+        .weather-forecast { display: flex; justify-content: space-between; }
+        .w-day { text-align: center; flex: 1; position: relative; }
+        .w-day::after { content: ''; position: absolute; right: 0; top: 10%; height: 80%; width: 1px; background: rgba(255,255,255,0.1); }
+        .w-day:last-child::after { display: none; }
+        .w-date { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
+        .w-icon { font-size: 24px; margin-bottom: 10px; }
+        .w-temp { font-size: 16px; font-weight: bold; color: #FFF; }
+
+        /* --- 時間軸 (Timeline) --- */
+        .timeline { position: relative; padding-left: 20px; margin-bottom: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 5px; top: 10px; bottom: 0; width: 1px; border-left: 1px dashed rgba(255,255,255,0.2); }
+        
+        .tl-item { position: relative; margin-bottom: 40px; }
+        .tl-dot { position: absolute; left: -20px; top: 5px; width: 11px; height: 11px; background: var(--accent-gold); border-radius: 50%; box-shadow: 0 0 10px rgba(229,184,105,0.5); }
+        .tl-time { font-size: 18px; font-weight: bold; color: var(--accent-gold); margin-bottom: 8px; letter-spacing: 1px; }
+        .tl-title { font-size: 18px; color: #FFF; margin-bottom: 15px; font-weight: 500; }
+        
+        /* 動作按鈕群 */
+        .tl-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .action-btn { background: rgba(255,255,255,0.05); border: 1px solid; padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #FFF; cursor: pointer; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(5px); }
+        .action-btn.nav { border-color: var(--btn-nav); }
+        .action-btn.nav i { color: var(--btn-nav); }
+        .action-btn.web { border-color: var(--btn-web); }
+        .action-btn.web i { color: var(--btn-web); }
+        .action-btn.voucher { border-color: var(--btn-voucher); }
+        .action-btn.voucher i { color: var(--btn-voucher); }
+
+        /* ================= 記帳工具視圖 ================= */
+        .expense-container { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 25px; backdrop-filter: blur(15px); }
+        .expense-container h2 { font-size: 20px; margin-bottom: 20px; color: var(--accent-gold); }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 5px; }
+        .input-row { display: flex; gap: 10px; }
+        input, select { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #FFF; padding: 12px; border-radius: 8px; font-size: 14px; outline: none; }
+        input:focus { border-color: var(--accent-gold); }
+        
+        .hkd-result { text-align: right; font-size: 24px; font-weight: bold; color: var(--btn-web); margin: 15px 0; }
+        .hkd-note { text-align: right; font-size: 10px; color: var(--text-sub); margin-top: -10px; margin-bottom: 15px; }
+        
+        .save-btn { width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px; }
+        
+        .record-list { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .record-item:last-child { border-bottom: none; }
+        .r-info { display: flex; flex-direction: column; gap: 4px; }
+        .r-title { font-size: 14px; color: #FFF; }
+        .r-jpy { font-size: 11px; color: var(--text-sub); }
+        .r-hkd { font-size: 16px; font-weight: bold; color: var(--accent-gold); }
+
+        /* 媒體查詢 (桌面瀏覽器模擬置中) */
+        @media (min-width: 481px) {
+            body { background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; backdrop-filter: blur(20px); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    
+    <aside class="sidebar">
+        <div class="trip-title">Paul & Joyce<br>2026<br>北陸之旅</div>
+        
+        <div class="countdown">
+            <span>距離出發</span>
+            <span id="countdown-days">16天</span>
+        </div>
+
+        <div class="nav-days" id="sidebar-nav">
+            </div>
+
+        <div class="expense-btn" onclick="showExpenseView()">
+            <i class="fa-solid fa-wallet"></i>
+            <span>記帳助手</span>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="bg-layer" id="bg-layer" style="background-image: url('https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop');"></div>
+        <div class="bg-overlay"></div>
+
+        <div class="content-scroll">
+            
+            <div id="itinerary-view" class="view-section active">
+                <div class="day-badge" id="v-badge">Day 1 · 5/20 (三)</div>
+                <h1 class="day-title" id="v-title">名古屋・鰻魚飯盛宴</h1>
+                <p class="day-desc" id="v-desc">抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。</p>
+
+                <div class="tags-container" id="v-tags">
+                    <div class="tag"><i class="fa-solid fa-thumbs-up"></i>必吃：肝入鰻魚飯</div>
+                    <div class="tag"><i class="fa-solid fa-car"></i>取車確認 CEP</div>
+                </div>
+
+                <div class="guide-box" id="v-guide-box">
+                    <div class="guide-box-title"><i class="fa-solid fa-lightbulb"></i>導遊小撇步：</div>
+                    <div class="guide-box-text" id="v-guide">機場取車後，請確認 ETC 卡是否正確插入。前往市區注意左駕適應，導航可輸入電話號碼定位最準確。</div>
+                </div>
+
+                <div class="weather-card">
+                    <div class="weather-header">
+                        <span class="weather-loc" id="v-w-loc"><i class="fa-solid fa-location-dot"></i>名古屋 Nagoya</span>
+                        <span class="weather-subtitle">未來 3 天</span>
+                    </div>
+                    <div class="weather-forecast" id="v-weather">
+                        </div>
+                </div>
+
+                <div class="timeline" id="v-timeline">
+                    </div>
+            </div>
+
+            <div id="expense-view" class="view-section">
+                <div class="day-badge">Travel Wallet</div>
+                <h1 class="day-title">記帳與匯率轉換</h1>
+                
+                <div class="expense-container">
+                    <h2>新增支出</h2>
+                    <div class="input-group">
+                        <label>消費項目</label>
+                        <input type="text" id="ex-item" placeholder="例如：紫陽花拉麵、停車費...">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group" style="flex: 1;">
+                            <label>選擇天數</label>
+                            <select id="ex-day">
+                                <option value="Day 1">Day 1</option>
+                                <option value="Day 2">Day 2</option>
+                                <option value="Day 3">Day 3</option>
+                                <option value="Day 4">Day 4</option>
+                                <option value="Day 5">Day 5</option>
+                                <option value="Day 6">Day 6</option>
+                                <option value="Day 7">Day 7</option>
+                                <option value="Day 8">Day 8</option>
+                                <option value="Day 9">Day 9</option>
+                                <option value="Day 10">Day 10</option>
+                                <option value="Day 11">Day 11</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>金額 (日圓 JPY)</label>
+                            <input type="number" id="ex-jpy" placeholder="¥ 0" oninput="calcHKD()">
+                        </div>
+                    </div>
+                    
+                    <div class="hkd-result" id="ex-hkd">HK$ 0.00</div>
+                    <div class="hkd-note">參考匯率：1 JPY = 0.051 HKD</div>
+                    
+                    <button class="save-btn" onclick="saveRecord()">記上一筆</button>
+
+                    <div class="record-list" id="ex-list">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // ================= 完整 11 天數據庫 =================
+    // 依據參考圖設計，每日前三天天氣為模擬數據
+    const tripData = [
+        {
+            day: 1, dateStr: "5/20", icon: "fa-plane-arrival", title: "名古屋・鰻魚飯盛宴",
+            desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。",
+            tags: ["👍 必吃：肝入鰻魚飯", "🚗 確認 CEP 通行證"],
+            guide: "機場取車後，請務必確認 ETC 卡是否正確插入。前往市區請注意左駕適應，導航可輸入電話號碼最準確！",
+            bg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop", // 名古屋
+            weather: { loc: "名古屋 Nagoya", days: [{d:"5/20", i:"⛅", t:"24°"}, {d:"5/21", i:"☀️", t:"25°"}, {d:"5/22", i:"☁️", t:"22°"}] },
+            events: [
+                { time: "15:50", title: "抵達中部國際機場 (UO690)", btns: ["nav"] },
+                { time: "17:30", title: "辦理租車手續並出發", btns: ["nav", "voucher"] },
+                { time: "18:30", title: "入住 Lamp Light Books Hotel", btns: ["nav"] },
+                { time: "19:00", title: "晚餐：炭焼 うな富士 本店", btns: ["nav", "web"] }
+            ]
+        },
+        {
+            day: 2, dateStr: "5/21", icon: "fa-hot-tub-person", title: "冠軍拉麵・下呂美人湯",
+            desc: "品嚐名古屋全量第一的紫陽花醬油拉麵。午後沿著飛驒川自駕，入住日本三大名泉之一的下呂溫泉。",
+            tags: ["👍 必吃：特製醬油拉麵", "♨️ 必泡：下呂美人湯"],
+            guide: "紫陽花拉麵無法預約，請務必在 10:15 前抵達現場排隊。抵達下呂後，可先去「ゆあみ屋」吃溫泉布丁泡足湯。",
+            bg: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop", // 溫泉/山景
+            weather: { loc: "下呂 Gero", days: [{d:"5/21", i:"☀️", t:"22°"}, {d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"16°"}] },
+            events: [
+                { time: "09:00", title: "GLITCH COFFEE 晨間咖啡", btns: ["nav"] },
+                { time: "11:00", title: "午餐：らぁ麺 紫陽花", btns: ["nav"] },
+                { time: "14:45", title: "下呂溫泉街散策", btns: ["nav", "web"] },
+                { time: "15:30", title: "入住 下呂温泉 しょうげつ", btns: ["nav", "voucher"] }
+            ]
+        },
+        {
+            day: 3, dateStr: "5/22", icon: "fa-torii-gate", title: "飛驒聖地・頂級和牛",
+            desc: "巡禮《你的名字》電影場景，漫步於充滿江戶風情的高山老街。夜晚迎來 A5 飛驒牛燒肉的極致饗宴。",
+            tags: ["📸 必拍：古川跨線橋", "🥩 必吃：A5飛驒牛"],
+            guide: "味藏天國燒肉非常熱門，建議 17:00 先去現場領取號碼牌，等待期間可在附近稍作休息。",
+            bg: "https://images.unsplash.com/photo-1578338959146-24eeb645224e?q=80&w=1000&auto=format&fit=crop", // 高山老街氛圍
+            weather: { loc: "高山 Takayama", days: [{d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"15°"}, {d:"5/24", i:"☀️", t:"20°"}] },
+            events: [
+                { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", btns: ["nav"] },
+                { time: "11:30", title: "午餐：蕎麥麵 正覺", btns: ["nav"] },
+                { time: "14:30", title: "高山老街散策 (飛驒牛壽司)", btns: ["nav"] },
+                { time: "17:30", title: "晚餐：味藏天國燒肉", btns: ["nav", "voucher"] }
+            ]
+        },
+        {
+            day: 4, dateStr: "5/23", icon: "fa-mountain-sun", title: "神之秘境・雲端纜車",
+            desc: "深入日本阿爾卑斯山脈的精華。從清晨的朝市，到上高地的翠綠湖水，最後登上 2156m 的雲端展望台。",
+            tags: ["⚠️ 注意：13:00 準時撤離上高地", "🚠 必搭：雙層纜車"],
+            guide: "上高地【禁止私家車進入】。請導航至「平湯停車場」停妥車輛後，換乘接駁巴士入山。",
+            bg: "https://images.unsplash.com/photo-1624254091924-a212df8bf551?q=80&w=1000&auto=format&fit=crop", // 山岳
+            weather: { loc: "上高地 Kamikochi", days: [{d:"5/23", i:"🌦️", t:"12°"}, {d:"5/24", i:"☀️", t:"15°"}, {d:"5/25", i:"❄️", t:"5°"}] },
+            events: [
+                { time: "07:30", title: "宮川朝市 (尋找筷子捲)", btns: ["nav"] },
+                { time: "10:00", title: "平湯停車場換乘巴士", btns: ["nav"] },
+                { time: "10:30", title: "上高地：大正池 ➔ 河童橋", btns: ["nav", "web"] },
+                { time: "14:15", title: "新穗高纜車登頂", btns: ["nav", "voucher"] },
+                { time: "17:00", title: "入住 元湯 孫九郎", btns: ["nav"] }
+            ]
+        },
+        {
+            day: 5, dateStr: "5/24", icon: "fa-bicycle", title: "鐵道單車・富山藝文",
+            desc: "在廢棄鐵道上騎單車感受熱血震動。下午轉入富山市，沉浸在隈研吾的建築美學與二星懷石料理中。",
+            tags: ["🚲 預約：G-0900梯次", "🌟 米其林：二星ふじ居"],
+            guide: "富岩運河環水公園的星巴克被譽為「世界最美」，傍晚黃昏時分去拍照光線最為迷人。",
+            bg: "https://images.unsplash.com/photo-1620619890664-4e92b34a6df9?q=80&w=1000&auto=format&fit=crop", // 富山玻璃
+            weather: { loc: "富山 Toyama", days: [{d:"5/24", i:"☀️", t:"21°"}, {d:"5/25", i:"⛅", t:"20°"}, {d:"5/26", i:"☁️", t:"19°"}] },
+            events: [
+                { time: "09:00", title: "Gattan Go!! 鐵道單車", btns: ["nav", "voucher"] },
+                { time: "12:00", title: "午餐：壽司榮 總曲輪店", btns: ["nav"] },
+                { time: "13:45", title: "富山市玻璃美術館", btns: ["nav", "web"] },
+                { time: "17:15", title: "吳羽山展望台拍立山連峰", btns: ["nav"] },
+                { time: "19:00", title: "晚餐：御料理 ふじ居", btns: ["nav"] }
+            ]
+        },
+        // 為節省空間與保持流暢，後續天數簡化，但在真實 App 中資料一樣豐富
+        {
+            day: 6, dateStr: "5/25", icon: "fa-snowflake", title: "立山黑部雪牆大冒險",
+            desc: "全日橫斷日本屋脊，見證高達十幾公尺的壯觀雪之大谷與氣勢磅礴的黑部水壩。",
+            tags: ["❄️ 必備：太陽眼鏡(防雪盲)", "🧥 必備：防風保暖衣物"], guide: "立山站停車場容易客滿，請務必在早上 07:00 前抵達。山上紫外線極強，一定要戴墨鏡！",
+            bg: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "室堂 Murodo", days: [{d:"5/25", i:"❄️", t:"3°"}, {d:"5/26", i:"⛅", t:"5°"}, {d:"5/27", i:"☀️", t:"8°"}] },
+            events: [ { time: "07:00", title: "抵達立山站停車場", btns: ["nav"] }, { time: "全日", title: "立山黑部阿爾卑斯路線", btns: ["web", "voucher"] }, { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", btns: ["nav"] } ]
+        },
+        {
+            day: 7, dateStr: "5/26", icon: "fa-car-side", title: "沙灘飆速・金澤之夜",
+            desc: "全日本唯一可合法行駛汽車的沙灘公路，享受海風與浪花。傍晚抵達充滿歷史底蘊的金澤。",
+            tags: ["🏎️ 體驗：8km沙灘自駕", "🧼 任務：金澤洗車"], guide: "在千里濱沙灘飆速後，當晚抵達金澤請務必尋找附有「下回り洗浄」的洗車場沖洗底盤，防止海水鹽分腐蝕。",
+            bg: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "金澤 Kanazawa", days: [{d:"5/26", i:"⛅", t:"23°"}, {d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}] },
+            events: [ { time: "10:30", title: "雨晴海岸 (拍海上雪山)", btns: ["nav"] }, { time: "11:30", title: "午餐：冰見魚市場食堂", btns: ["nav"] }, { time: "13:30", title: "千里濱渚駕車道", btns: ["nav"] }, { time: "18:00", title: "晚餐：respiración (二星)", btns: ["nav"] } ]
+        },
+        {
+            day: 8, dateStr: "5/27", icon: "fa-person-dress", title: "和服漫步・現代美學",
+            desc: "換上和服穿梭江戶時代的東茶屋街，下午跳躍至 21 世紀美術館感受現代幾何的衝突美。",
+            tags: ["🍦 必吃：金箔冰淇淋", "📸 必拍：美術館泳池"], guide: "21世紀美術館的「泳池地下部」非常熱門，如果有事先預約請提早 10 分鐘至報到處。",
+            bg: "https://images.unsplash.com/photo-1580556272379-0dbf88c80528?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "金澤 Kanazawa", days: [{d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}, {d:"5/29", i:"☀️", t:"26°"}] },
+            events: [ { time: "09:00", title: "東茶屋街和服租借", btns: ["nav"] }, { time: "13:00", title: "兼六園 / 21世紀美術館", btns: ["nav", "voucher"] }, { time: "15:45", title: "鈴木大拙館", btns: ["nav"] }, { time: "19:00", title: "晚餐：あぶり肉 がらん", btns: ["nav"] } ]
+        },
+        {
+            day: 9, dateStr: "5/28", icon: "fa-house", title: "童話聚落・國寶古城",
+            desc: "走進白川鄉世界遺產的童話世界，下午趕赴現存最古老的天守閣「犬山城」並在神社洗錢祈福。",
+            tags: ["⚠️ 警告：14:15 必須離開白川鄉", "💰 祈福：神社洗錢"], guide: "行程銜接最緊繃的一天！犬山城 16:30 停止入場，請 Paul 務必在 14:15 踩下油門離開白川鄉。",
+            bg: "https://images.unsplash.com/photo-1613328006093-518d9633dd31?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "白川鄉 Shirakawa", days: [{d:"5/28", i:"🌥️", t:"18°"}, {d:"5/29", i:"☀️", t:"21°"}, {d:"5/30", i:"☀️", t:"24°"}] },
+            events: [ { time: "10:45", title: "白川鄉合掌村散策", btns: ["nav"] }, { time: "16:00", title: "國寶 犬山城登頂", btns: ["nav"] }, { time: "17:00", title: "三光稻荷神社洗錢", btns: ["nav"] }, { time: "20:00", title: "晚餐：とんかつ 土本 (名古屋)", btns: ["nav"] } ]
+        },
+        {
+            day: 10, dateStr: "5/29", icon: "fa-flag-checkered", title: "賽道熱血・夢幻點燈",
+            desc: "喚醒 Paul 的 F1 賽車魂，在國際級賽道體驗飆速。傍晚前往名花之里欣賞全日本最壯觀的燈海。",
+            tags: ["🏎️ 熱血：F1賽道體驗", "✨ 浪漫：名花之里"], guide: "鈴鹿賽道的 Circuit Challenger 是真的在 F1 東賽道上行駛，記得提早準備好預約憑證！",
+            bg: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "鈴鹿 Suzuka", days: [{d:"5/29", i:"☀️", t:"26°"}, {d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}] },
+            events: [ { time: "10:45", title: "鈴鹿賽道樂園", btns: ["nav", "voucher"] }, { time: "17:00", title: "名花之里點燈", btns: ["nav", "web"] }, { time: "20:30", title: "晚餐：千龜燒鳥", btns: ["nav"] } ]
+        },
+        {
+            day: 11, dateStr: "5/30", icon: "fa-plane-departure", title: "神宮祈福・滿載賦歸",
+            desc: "在熱田神宮進行最後的參拜祈福，吃完名古屋發祥的鰻魚飯三吃後，帶著滿滿的回憶前往機場。",
+            tags: ["⛩️ 參拜：清水社", "🍱 必吃：鰻魚飯三吃"], guide: "熱田蓬萊軒不能電話預約，建議早上參拜前先去店門口登記名字排位，再回去逛神宮。",
+            bg: "https://images.unsplash.com/photo-1590559899731-3972cbb09d31?q=80&w=1000&auto=format&fit=crop",
+            weather: { loc: "名古屋 Nagoya", days: [{d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}, {d:"6/1", i:"🌧️", t:"20°"}] },
+            events: [ { time: "09:30", title: "熱田神宮參拜", btns: ["nav"] }, { time: "11:30", title: "午餐：熱田蓬萊軒", btns: ["nav"] }, { time: "13:30", title: "榮商圈最後採買", btns: ["nav"] }, { time: "16:30", title: "中部機場還車與登機", btns: ["nav"] } ]
+        }
+    ];
+
+    // ================= 初始化 =================
+    window.onload = () => {
+        calcCountdown();
+        buildSidebar();
+        renderDay(0); // 預設載入 Day 1
+    };
+
+    // 計算倒數計時 (出發日 2026-05-20, 當前時間模擬 2026-05-04)
+    function calcCountdown() {
+        const target = new Date("2026-05-20T00:00:00").getTime();
+        const current = new Date("2026-05-04T12:00:00").getTime(); // 依據 Context 提供的時間
+        const diffDays = Math.ceil((target - current) / (1000 * 60 * 60 * 24));
+        document.getElementById('countdown-days').innerText = `${diffDays}天`;
+    }
+
+    // 建立左側導航列表
+    function buildSidebar() {
+        const navContainer = document.getElementById('sidebar-nav');
+        tripData.forEach((data, index) => {
+            const item = document.createElement('div');
+            item.className = `nav-item ${index === 0 ? 'active' : ''}`;
+            item.id = `nav-item-${index}`;
+            item.innerHTML = `
+                <i class="fa-solid ${data.icon}"></i>
+                <span class="day-lbl">Day ${data.day}</span>
+                <span class="date-lbl">${data.dateStr}</span>
+            `;
+            item.onclick = () => {
+                switchView('itinerary');
+                renderDay(index);
+            };
+            navContainer.appendChild(item);
+        });
+    }
+
+    // ================= 渲染單日行程 =================
+    function renderDay(index) {
+        // 更新左側選中狀態
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.expense-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(`nav-item-${index}`).classList.add('active');
+
+        const data = tripData[index];
+        
+        // 更新背景
+        document.getElementById('bg-layer').style.backgroundImage = `url('${data.bg}')`;
+        
+        // 更新頂部資訊
+        document.getElementById('v-badge').innerText = `Day ${data.day} · ${data.dateStr}`;
+        document.getElementById('v-title').innerText = data.title;
+        document.getElementById('v-desc').innerText = data.desc;
+
+        // 更新 Tags
+        const tagsHtml = data.tags.map(tag => `<div class="tag"><i class="fa-solid fa-star"></i>${tag}</div>`).join('');
+        document.getElementById('v-tags').innerHTML = tagsHtml;
+
+        // 更新 Guide
+        document.getElementById('v-guide').innerText = data.guide;
+
+        // 更新 Weather
+        document.getElementById('v-w-loc').innerHTML = `<i class="fa-solid fa-location-dot"></i>${data.weather.loc}`;
+        const wHtml = data.weather.days.map(w => `
+            <div class="w-day">
+                <div class="w-date">${w.d}</div>
+                <div class="w-icon">${w.i}</div>
+                <div class="w-temp">${w.t}</div>
+            </div>
+        `).join('');
+        document.getElementById('v-weather').innerHTML = wHtml;
+
+        // 更新 Timeline
+        const tlHtml = data.events.map(ev => {
+            const btns = ev.btns.map(type => {
+                if(type === 'nav') return `<button class="action-btn nav"><i class="fa-solid fa-location-arrow"></i> 導航</button>`;
+                if(type === 'web') return `<button class="action-btn web"><i class="fa-solid fa-arrow-up-right-from-square"></i> 官網</button>`;
+                if(type === 'voucher') return `<button class="action-btn voucher"><i class="fa-solid fa-ticket"></i> 憑證</button>`;
+                return '';
+            }).join('');
+            
+            return `
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-time">${ev.time}</div>
+                    <div class="tl-title">${ev.title}</div>
+                    <div class="tl-actions">${btns}</div>
+                </div>
+            `;
+        }).join('');
+        document.getElementById('v-timeline').innerHTML = tlHtml;
+
+        // 滾動回頂部
+        document.querySelector('.main-content').scrollTop = 0;
+    }
+
+    // ================= 切換視圖 (行程 vs 記帳) =================
+    function switchView(view) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        if(view === 'itinerary') {
+            document.getElementById('itinerary-view').classList.add('active');
+        } else if (view === 'expense') {
+            document.getElementById('expense-view').classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector('.expense-btn').classList.add('active');
+            document.getElementById('bg-layer').style.backgroundImage = `url('https://images.unsplash.com/photo-1580556272379-0dbf88c80528?q=80&w=1000&auto=format&fit=crop')`; // 固定記帳背景
+        }
+    }
+
+    function showExpenseView() {
+        switchView('expense');
+    }
+
+    // ================= 記帳助手功能 =================
+    const exchangeRate = 0.051;
+    function calcHKD() {
+        const jpy = document.getElementById('ex-jpy').value;
+        const resultBox = document.getElementById('ex-hkd');
+        if (jpy) {
+            resultBox.innerText = `HK$ ${(jpy * exchangeRate).toFixed(2)}`;
+        } else {
+            resultBox.innerText = `HK$ 0.00`;
+        }
+    }
+
+    function saveRecord() {
+        const day = document.getElementById('ex-day').value;
+        const item = document.getElementById('ex-item').value;
+        const jpy = document.getElementById('ex-jpy').value;
+        
+        if (!item || !jpy) { alert("請填寫完整資訊！"); return; }
+
+        const hkd = (jpy * exchangeRate).toFixed(2);
+        
+        const recordHtml = `
+            <div class="record-item">
+                <div class="r-info">
+                    <div class="r-title">${item}</div>
+                    <div class="r-jpy">${day} · ¥${jpy}</div>
+                </div>
+                <div class="r-hkd">HK$ ${hkd}</div>
+            </div>
+        `;
+        
+        const list = document.getElementById('ex-list');
+        list.insertAdjacentHTML('afterbegin', recordHtml);
+
+        // Clear input
+        document.getElementById('ex-item').value = '';
+        document.getElementById('ex-jpy').value = '';
+        document.getElementById('ex-hkd').innerText = 'HK$ 0.00';
+    }
+
+</script>
+</body>
+</html>
