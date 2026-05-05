@@ -24,7 +24,6 @@
             --accent: #A67C52;        /* 古銅金/皮革色 */
             --border-light: #E8E5DF;  /* 極幼分隔線 */
             --border-dark: #2C2C2C;   /* 強調線 */
-            --danger-red: #D9534F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -56,16 +55,6 @@
             text-align: center; color: var(--text-main); line-height: 1.5; margin-bottom: 25px;
             letter-spacing: 1px; writing-mode: vertical-lr; transform: rotate(180deg);
         }
-        
-        .expense-btn { 
-            width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; 
-            color: var(--text-sub); margin-bottom: 20px; padding-bottom: 20px; 
-            border-bottom: 1px solid var(--border-light); position: relative; transition: 0.3s;
-        }
-        .expense-btn i { font-size: 18px; margin-bottom: 6px; }
-        .expense-btn .day-lbl { font-size: 10px; font-weight: bold; letter-spacing: 1px; }
-        .expense-btn.active { color: var(--text-main); }
-        .expense-btn.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 60%; width: 3px; background: var(--accent); }
 
         .nav-days { flex: 1; overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px; }
         .nav-days::-webkit-scrollbar { display: none; }
@@ -171,40 +160,6 @@
         .plane-line i { position: absolute; top: -7px; background: #FFF; padding: 0 5px; color: var(--text-sub); font-size: 12px; }
         .flight-date { font-size: 10px; color: var(--text-sub); margin-top: 10px; font-family: 'Lato', sans-serif; }
 
-        /* ================= 記帳工具視圖 ================= */
-        .expense-container { margin-top: 20px; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 10px; text-transform: uppercase; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 5px; letter-spacing: 1px; }
-        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border-dark); color: var(--text-main); padding: 10px 0; font-size: 16px; font-family: 'Lato', sans-serif; outline: none; border-radius: 0; }
-        input::placeholder { color: #CCC; font-family: 'Noto Serif TC', serif; font-size: 14px; }
-        input:focus { border-bottom: 2px solid var(--accent); }
-        
-        .hkd-result { text-align: right; font-size: 28px; font-family: 'Lato', sans-serif; font-weight: 300; color: var(--text-main); margin: 20px 0 5px; }
-        .hkd-note { text-align: right; font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 25px; }
-        
-        .save-btn { width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 15px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; cursor: pointer; transition: 0.3s; }
-        .save-btn:active { background: var(--accent); }
-        
-        .record-list { margin-top: 30px; }
-        .expense-group { margin-bottom: 25px; }
-        .group-header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; border-bottom: 2px solid var(--border-dark); margin-bottom: 10px; }
-        .group-date { font-family: 'Lato', sans-serif; font-size: 14px; font-weight: bold; color: var(--text-main); letter-spacing: 1px; text-transform: uppercase; }
-        .group-total { display: flex; flex-direction: column; align-items: flex-end; font-family: 'Lato', sans-serif; }
-        .group-total span:first-child { font-size: 10px; color: var(--text-sub); margin-bottom: 2px; letter-spacing: 0.5px; }
-        .group-total span:last-child { font-size: 14px; font-weight: bold; color: var(--text-main); }
-        
-        .record-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border-light); }
-        .r-info { display: flex; flex-direction: column; gap: 4px; }
-        .r-title { font-size: 15px; font-family: 'Noto Serif TC', serif; color: var(--text-main); }
-        .r-time { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--text-sub); letter-spacing: 0.5px; }
-        .r-time i { font-size: 9px; color: var(--accent); margin-right: 3px; }
-        .r-right { display: flex; align-items: center; gap: 15px; }
-        .r-hkd { font-size: 15px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--text-main); }
-        .delete-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; cursor: pointer; transition: 0.2s; padding: 5px; }
-        .delete-btn:hover, .delete-btn:active { color: var(--danger-red); }
-        
-        .empty-state { text-align: center; color: var(--text-sub); font-size: 12px; margin-top: 20px; font-style: italic; font-family: 'Noto Serif TC', serif; }
-
         @media (min-width: 481px) {
             body { background-color: #D3CEC4; }
         }
@@ -216,10 +171,6 @@
     <!-- 側邊欄 -->
     <aside class="sidebar">
         <div class="trip-title">Paul & Joyce 2026</div>
-        <div class="expense-btn" onclick="showExpenseView()">
-            <i class="fa-solid fa-wallet"></i>
-            <span class="day-lbl">EXPENSE</span>
-        </div>
         <div class="nav-days" id="sidebar-nav">
             <div class="nav-item active" id="nav-item-home" onclick="showHome()">
                 <span class="day-lbl">Index</span>
@@ -271,15 +222,15 @@
                 <!-- 每日行程列表 -->
                 <div class="section-header">Itinerary / 每日行程</div>
                 <div class="summary-list">
-                    <div class="sum-item"><div class="sum-day">01</div><div class="sum-info"><b>名古屋</b>抵達取車，品嚐極致肝入鰻魚飯</div></div>
+                    <div class="sum-item"><div class="sum-day">01</div><div class="sum-info"><b>名古屋</b>抵達取車，品嚐極致肝入鰻魚飯與精緻調酒</div></div>
                     <div class="sum-item"><div class="sum-day">02</div><div class="sum-info"><b>下呂溫泉</b>預約冠軍拉麵，入住三大美人湯</div></div>
-                    <div class="sum-item"><div class="sum-day">03</div><div class="sum-info"><b>高山</b>飛驒古川巡禮，老街漫步與A5和牛</div></div>
+                    <div class="sum-item"><div class="sum-day">03</div><div class="sum-info"><b>高山</b>飛驒古川巡禮，A5和牛與在地居酒屋</div></div>
                     <div class="sum-item"><div class="sum-day">04</div><div class="sum-info"><b>上高地 / 奧飛驒</b>神之故鄉健行，搭乘雙層纜車登頂</div></div>
                     <div class="sum-item"><div class="sum-day">05</div><div class="sum-info"><b>富山</b>鐵道單車熱血體驗，美術館與二星料理</div></div>
                     <div class="sum-item"><div class="sum-day">06</div><div class="sum-info"><b>立山黑部</b>全日橫斷雪之大谷與黑部水壩</div></div>
                     <div class="sum-item"><div class="sum-day">07</div><div class="sum-info"><b>金澤</b>雨晴海岸，千里濱沙灘自駕飆速</div></div>
                     <div class="sum-item"><div class="sum-day">08</div><div class="sum-info"><b>金澤</b>和服茶屋街漫步，近江町市場海鮮丼</div></div>
-                    <div class="sum-item"><div class="sum-day">09</div><div class="sum-info"><b>白川鄉 / 犬山</b>合掌村童話世界，攻頂國寶犬山城</div></div>
+                    <div class="sum-item"><div class="sum-day">09</div><div class="sum-info"><b>白川鄉 / 犬山</b>高質素早餐，合掌村與國寶犬山城</div></div>
                     <div class="sum-item"><div class="sum-day">10</div><div class="sum-info"><b>鈴鹿 / 名花之里</b>F1賽道卡丁車體驗，夢幻燈海點燈</div></div>
                     <div class="sum-item"><div class="sum-day">11</div><div class="sum-info"><b>名古屋</b>熱田神宮祈福，最後採買與登機</div></div>
                 </div>
@@ -308,29 +259,6 @@
                 </div>
             </div>
 
-            <!-- 記帳助手 -->
-            <div id="expense-view" class="view-section">
-                <div class="day-badge">Travel Wallet</div>
-                <h1 class="day-title">記帳與結算</h1>
-                <p class="day-desc">系統會自動記錄當下時間，並按日為你整理總結。</p>
-                
-                <div class="expense-container">
-                    <div class="input-group">
-                        <label>ITEM / 消費項目</label>
-                        <input type="text" id="ex-item" placeholder="例如：紫陽花拉麵、停車費...">
-                    </div>
-                    <div class="input-group">
-                        <label>AMOUNT (JPY) / 日圓金額</label>
-                        <input type="number" id="ex-jpy" placeholder="¥ 0" oninput="calcHKD()">
-                    </div>
-                    
-                    <div class="hkd-result" id="ex-hkd">HK$ 0.00</div>
-                    <div class="hkd-note">Rate: 1 JPY = 0.051 HKD</div>
-                    <button class="save-btn" onclick="saveRecord()">Save Record</button>
-                    
-                    <div class="record-list" id="ex-list"></div>
-                </div>
-            </div>
         </div>
     </main>
 </div>
@@ -340,16 +268,17 @@
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
-            desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。",
-            tags: ["必吃：肝入鰻魚飯", "確認 CEP 通行證"],
-            guide: "機場取車後，請務必確認 ETC 卡是否正確插入。前往市區請注意左駕適應，導航可輸入電話號碼最準確！",
+            desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，並到知名酒吧享受微醺或無酒精特調氣氛，為這趟旅程揭開完美的序幕。",
+            tags: ["必吃：肝入鰻魚飯", "🍸 夜酌：BAR BARNS"],
+            guide: "BAR BARNS 同 BAR Curacao 氣氛都超級好，就算唔飲酒，調酒師都可以為你哋特製高質素嘅 Mocktail (無酒精特調)，一樣可以好好享受嗰種大人口味嘅浪漫！",
             heroImg: "day1new.jpg", 
             weather: { loc: "NAGOYA", days: [{d:"5/20", i:"⛅", t:"24°"}, {d:"5/21", i:"☀️", t:"25°"}, {d:"5/22", i:"☁️", t:"22°"}] },
             events: [
                 { time: "15:50", title: "抵達中部國際機場 (UO690)", btns: ["nav"] },
                 { time: "17:30", title: "辦理租車手續並出發", hours: "機場租車櫃檯營業至 20:00", btns: ["nav", "voucher"] },
                 { time: "18:30", title: "入住 Lamp Light Books Hotel", hours: "Check-in: 15:00起 (24小時前台)", btns: ["nav"] },
-                { time: "19:00", title: "晚餐：炭焼 うな富士 本店", hours: "11:00–14:00, 17:00–20:00", btns: ["nav", "web"] }
+                { time: "19:00", title: "晚餐：炭焼 うな富士 本店", hours: "11:00–14:00, 17:00–20:00", btns: ["nav", "web"] },
+                { time: "21:30", title: "夜酌：BAR BARNS (備案: BAR Curacao)", hours: "知名酒吧，提供無酒精特調 Mocktail", btns: ["nav"] }
             ]
         },
         {
@@ -458,12 +387,13 @@
         },
         {
             day: 9, dateStr: "MAY 28", title: "童話聚落・國寶古城",
-            desc: "走進白川鄉世界遺產的童話世界，下午趕赴現存最古老的天守閣「犬山城」並在神社洗錢祈福。",
-            tags: ["警告：13:30 必須離開白川鄉", "祈福：神社洗錢"], 
+            desc: "享用完金澤人氣早餐後，走進白川鄉世界遺產的童話世界，下午趕赴現存最古老的天守閣「犬山城」並在神社洗錢祈福。",
+            tags: ["🍽️ 早餐：isotope", "警告：13:30 必須離開白川鄉", "祈福：神社洗錢"], 
             guide: "行程銜接最緊繃的一天！犬山城 16:30 停止入場，請 Paul 務必在 13:30 踩下油門離開白川鄉。",
             heroImg: "day9new.jpg", 
             weather: { loc: "SHIRAKAWA", days: [{d:"5/28", i:"🌥️", t:"18°"}, {d:"5/29", i:"☀️", t:"21°"}, {d:"5/30", i:"☀️", t:"24°"}] },
             events: [ 
+                { time: "08:00", title: "早餐：isotope (備案: HIRAMIPAN)", hours: "金澤人氣烘焙早午餐", btns: ["nav"] },
                 { time: "10:45", title: "白川鄉合掌村散策", hours: "一般設施營業至 17:00", btns: ["nav"] }, 
                 { time: "13:30", title: "關鍵撤離！前往犬山城", hours: "車程約 1.5 - 2 小時", btns: ["nav"] }, 
                 { time: "16:00", title: "國寶 犬山城登頂", hours: "09:00–16:30 (最後入場，17:00關門)", btns: ["nav"] }, 
@@ -502,13 +432,9 @@
         }
     ];
 
-    const exchangeRate = 0.051;
-    let expenses = JSON.parse(localStorage.getItem('driveLogExpenses')) || [];
-
     window.onload = () => {
         buildSidebar();
         showHome();
-        renderExpenses();
     };
 
     function buildSidebar() {
@@ -533,11 +459,9 @@
     function deactivateAll() {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.expense-btn').forEach(el => el.classList.remove('active'));
         document.querySelector('.main-content').scrollTop = 0;
     }
 
-    // 更新首圖函數
     function updateHeroImage(url) {
         document.getElementById('hero-img').style.backgroundImage = `url('${url}')`;
     }
@@ -546,7 +470,6 @@
         deactivateAll();
         document.getElementById('home-view').classList.add('active');
         document.getElementById('nav-item-home').classList.add('active');
-        // 首頁使用雨晴海岸作為全覽代表圖
         updateHeroImage("indexnew.jpeg");
     }
 
@@ -555,20 +478,10 @@
         document.getElementById('itinerary-view').classList.add('active');
     }
 
-    function showExpenseView() {
-        deactivateAll();
-        document.getElementById('expense-view').classList.add('active');
-        document.querySelector('.expense-btn').classList.add('active');
-        // 記帳頁面使用無干擾的暗色質感圖
-        updateHeroImage("https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop");
-        renderExpenses();
-    }
-
     function renderDay(index) {
         const data = tripData[index];
         document.getElementById(`nav-item-${index}`).classList.add('active');
         
-        // 替換該日專屬首圖
         updateHeroImage(data.heroImg);
         
         document.getElementById('v-badge').innerText = `DAY ${data.day} ⎯ ${data.dateStr}`;
@@ -614,111 +527,6 @@
             `;
         }).join('');
         document.getElementById('v-timeline').innerHTML = tlHtml;
-    }
-
-    function calcHKD() {
-        const jpy = document.getElementById('ex-jpy').value;
-        const resultBox = document.getElementById('ex-hkd');
-        if (jpy) {
-            resultBox.innerText = `HK$ ${(jpy * exchangeRate).toFixed(2)}`;
-        } else {
-            resultBox.innerText = `HK$ 0.00`;
-        }
-    }
-
-    function saveRecord() {
-        const itemStr = document.getElementById('ex-item').value;
-        const jpyVal = parseFloat(document.getElementById('ex-jpy').value);
-        
-        if (!itemStr || !jpyVal) { alert("Please enter all details."); return; }
-
-        const hkdVal = parseFloat((jpyVal * exchangeRate).toFixed(2));
-        
-        const now = new Date();
-        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const dateStr = `${monthNames[now.getMonth()]} ${now.getDate()}`;
-        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-        
-        const record = {
-            id: Date.now(),
-            item: itemStr,
-            jpy: jpyVal,
-            hkd: hkdVal,
-            date: dateStr,
-            time: timeStr
-        };
-        
-        expenses.unshift(record);
-        localStorage.setItem('driveLogExpenses', JSON.stringify(expenses));
-
-        document.getElementById('ex-item').value = '';
-        document.getElementById('ex-jpy').value = '';
-        document.getElementById('ex-hkd').innerText = 'HK$ 0.00';
-        
-        renderExpenses();
-    }
-
-    function deleteRecord(id) {
-        if(confirm("確定要刪除這筆紀錄嗎？")) {
-            expenses = expenses.filter(e => e.id !== id);
-            localStorage.setItem('driveLogExpenses', JSON.stringify(expenses));
-            renderExpenses();
-        }
-    }
-
-    function renderExpenses() {
-        const list = document.getElementById('ex-list');
-        list.innerHTML = '';
-
-        if (expenses.length === 0) {
-            list.innerHTML = '<div class="empty-state">No records yet. 開始你的第一筆記帳吧！</div>';
-            return;
-        }
-
-        const groupedData = {};
-        expenses.forEach(e => {
-            if (!groupedData[e.date]) {
-                groupedData[e.date] = { items: [], totalJpy: 0, totalHkd: 0 };
-            }
-            groupedData[e.date].items.push(e);
-            groupedData[e.date].totalJpy += e.jpy;
-            groupedData[e.date].totalHkd += e.hkd;
-        });
-
-        for (const date in groupedData) {
-            const group = groupedData[date];
-            
-            let groupHtml = `
-                <div class="expense-group">
-                    <div class="group-header">
-                        <div class="group-date">${date}</div>
-                        <div class="group-total">
-                            <span>DAILY TOTAL / 總計</span>
-                            <span>¥ ${group.totalJpy.toLocaleString()} / HK$ ${group.totalHkd.toFixed(2)}</span>
-                        </div>
-                    </div>
-            `;
-            
-            group.items.forEach(item => {
-                groupHtml += `
-                    <div class="record-item">
-                        <div class="r-info">
-                            <div class="r-title">${item.item}</div>
-                            <div class="r-time"><i class="fa-regular fa-clock"></i> ${item.time} // JPY ${item.jpy.toLocaleString()}</div>
-                        </div>
-                        <div class="r-right">
-                            <div class="r-hkd">HK$ ${item.hkd.toFixed(2)}</div>
-                            <button class="delete-btn" onclick="deleteRecord(${item.id})">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            groupHtml += `</div>`;
-            list.insertAdjacentHTML('beforeend', groupHtml);
-        }
     }
 </script>
 </body>
