@@ -89,7 +89,7 @@
             background: linear-gradient(to bottom, rgba(249, 248, 246, 0) 0%, rgba(249, 248, 246, 1) 100%);
         }
 
-        .content-scroll { position: relative; z-index: 10; padding: 20px 30px 80px; min-height: 100%; } /* Padding Top 減少以配合圖片 */
+        .content-scroll { position: relative; z-index: 10; padding: 20px 30px 80px; min-height: 100%; }
 
         .view-section { display: none; animation: fadeIn 0.5s ease; }
         .view-section.active { display: block; }
@@ -336,8 +336,8 @@
 </div>
 
 <script>
-    // ================= 11 天數據庫 (加入各日專屬的封面圖片 url) =================
-   const tripData = [
+    // ================= 11 天數據庫 =================
+    const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
             desc: "抵達名古屋，感受中部玄關的繁華。夜晚享用米其林推薦的肝入鰻魚飯，為這趟旅程揭開完美的序幕。",
@@ -368,16 +368,17 @@
         },
         {
             day: 3, dateStr: "MAY 22", title: "飛驒聖地・頂級和牛",
-            desc: "巡禮《你的名字》電影場景，漫步於充滿江戶風情的高山老街。夜晚迎來 A5 飛驒牛燒肉的極致饗宴。",
-            tags: ["必拍：古川跨線橋", "必吃：A5飛驒牛"],
-            guide: "味藏天國燒肉非常熱門，建議 17:00 先去現場領取號碼牌，等待期間可在附近稍作休息。",
+            desc: "巡禮《你的名字》電影場景，漫步於充滿江戶風情的高山老街。夜晚享用極致 A5 飛驒牛燒肉，再以在地特色居酒屋作結。",
+            tags: ["必拍：古川跨線橋", "必吃：A5飛驒牛", "🍻 宵夜：うり坊屋"],
+            guide: "味藏天國燒肉非常熱門，建議 17:00 先去現場領取號碼牌。宵夜時段的「うり坊屋」氣氛極佳，提供高山道地的串燒與野味料理！",
             heroImg: "day3.webp", 
             weather: { loc: "TAKAYAMA", days: [{d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"15°"}, {d:"5/24", i:"☀️", t:"20°"}] },
             events: [
                 { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", hours: "24小時開放，餵魚建議白天", btns: ["nav"] },
                 { time: "11:30", title: "午餐：蕎麥麵 正覺", hours: "11:00–15:00 (麵條售完即打烊)", btns: ["nav"] },
                 { time: "14:30", title: "高山老街散策 (飛驒牛壽司)", hours: "老街店家大多於 16:30-17:00 打烊", btns: ["nav"] },
-                { time: "17:30", title: "晚餐：味藏天國燒肉", hours: "11:00–14:00, 17:00–21:00 (週二休)", btns: ["nav", "voucher"] }
+                { time: "17:30", title: "晚餐：味藏天國燒肉", hours: "11:00–14:00, 17:00–21:00 (週二休)", btns: ["nav", "voucher"] },
+                { time: "21:00", title: "宵夜：うり坊屋 (Uribouya)", hours: "17:00–23:00 (高山人氣深夜居酒屋)", btns: ["nav"] }
             ]
         },
         {
