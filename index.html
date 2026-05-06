@@ -11,8 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="北陸自駕">
     <meta name="theme-color" content="#F9F8F6">
-    
-    <!-- 🌟 呢度已經幫你改咗做 indexnew.jpeg 作為手機桌面 Icon 🌟 -->
     <link rel="icon" href="indexnew.jpeg">
     <link rel="apple-touch-icon" href="indexnew.jpeg">
 
@@ -53,14 +51,18 @@
         /* ================= 左側邊欄 ================= */
         .sidebar {
             width: 80px; background: var(--bg-sidebar); display: flex; flex-direction: column;
-            align-items: center; padding: env(safe-area-inset-top, 25px) 0 10px; 
+            align-items: center; 
+            padding: env(safe-area-inset-top, 40px) 0 10px; /* 增加頂部 Safe Area 距離 */
             border-right: 1px solid var(--border-light); z-index: 20; flex-shrink: 0;
         }
         
+        /* 更新後嘅打橫標題 */
         .trip-title { 
             font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase;
-            text-align: center; color: var(--text-main); line-height: 1.5; margin-bottom: 25px;
-            letter-spacing: 1px; writing-mode: vertical-lr; transform: rotate(180deg);
+            text-align: center; color: var(--text-main); line-height: 1.4; 
+            margin-top: 15px; /* 進一步增加距離上面嘅空間 */
+            margin-bottom: 30px;
+            letter-spacing: 1px; width: 100%; padding: 0 4px; word-wrap: break-word;
         }
         
         .side-btn { 
@@ -159,7 +161,12 @@
 <div id="app-container">
     <!-- 側邊欄 -->
     <aside class="sidebar">
-        <div class="trip-title">Paul & Joyce<br>2026</div>
+        <!-- 💡 更新：打橫嘅標題設計 -->
+        <div class="trip-title">
+            <span style="color: var(--accent); font-size: 9px; letter-spacing: 2px;">2026</span><br>
+            PAUL &<br>JOYCE<br>
+            <span style="font-family: 'Noto Serif TC', serif; font-size: 9px; display: block; margin-top: 8px; letter-spacing: 1px; line-height: 1.3;">日本北陸<br>之旅</span>
+        </div>
         
         <!-- 資訊按鈕 -->
         <div class="side-btn" onclick="showInfoView()" id="nav-btn-info" style="margin-bottom: 10px; padding-bottom: 15px;">
