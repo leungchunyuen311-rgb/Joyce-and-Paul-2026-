@@ -11,7 +11,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="北陸自駕">
     <meta name="theme-color" content="#F9F8F6">
-    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=200&auto=format&fit=crop">
+    
+    <!-- 🌟 呢度已經幫你改咗做 indexnew.jpeg 作為手機桌面 Icon 🌟 -->
+    <link rel="icon" href="indexnew.jpeg">
+    <link rel="apple-touch-icon" href="indexnew.jpeg">
 
     <!-- 引入 Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -264,7 +267,7 @@
 </div>
 
 <script>
-    // ================= 11 天行程數據庫 (包含 RouteLocs 用於生成全日導航) =================
+    // ================= 11 天行程數據庫 =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
@@ -483,7 +486,7 @@
         deactivateAll();
         document.getElementById('info-view').classList.add('active');
         document.getElementById('nav-btn-info').classList.add('active');
-        updateHeroImage("https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop");
+        updateHeroImage("indexnew.jpeg");
     }
 
     function showItineraryView() {
