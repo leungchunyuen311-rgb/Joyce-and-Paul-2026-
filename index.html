@@ -24,6 +24,7 @@
             --accent: #A67C52;        /* 古銅金/皮革色 */
             --border-light: #E8E5DF;  /* 極幼分隔線 */
             --border-dark: #2C2C2C;   /* 強調線 */
+            --danger-red: #D9534F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,6 +56,17 @@
             text-align: center; color: var(--text-main); line-height: 1.5; margin-bottom: 25px;
             letter-spacing: 1px; writing-mode: vertical-lr; transform: rotate(180deg);
         }
+        
+        /* 側邊欄按鈕共用樣式 (用於相機) */
+        .side-btn { 
+            width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; 
+            color: var(--text-sub); margin-bottom: 20px; padding-bottom: 20px; 
+            border-bottom: 1px solid var(--border-light); position: relative; transition: 0.3s;
+        }
+        .side-btn i { font-size: 18px; margin-bottom: 6px; }
+        .side-btn .day-lbl { font-size: 9px; font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 1px; }
+        .side-btn.active { color: var(--text-main); }
+        .side-btn.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 60%; width: 3px; background: var(--accent); }
 
         .nav-days { flex: 1; overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px; }
         .nav-days::-webkit-scrollbar { display: none; }
@@ -160,6 +172,29 @@
         .plane-line i { position: absolute; top: -7px; background: #FFF; padding: 0 5px; color: var(--text-sub); font-size: 12px; }
         .flight-date { font-size: 10px; color: var(--text-sub); margin-top: 10px; font-family: 'Lato', sans-serif; }
 
+        /* ================= 相冊 / 照片日記設計 ================= */
+        .upload-btn-wrapper { margin: 20px 0 30px; }
+        .upload-btn { 
+            width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 16px; 
+            font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; 
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .upload-btn:active { background: var(--accent); }
+        
+        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .photo-card { 
+            background: #FFF; border: 1px solid var(--border-light); padding: 8px 8px 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); position: relative; display: flex; flex-direction: column;
+            animation: fadeIn 0.4s ease;
+        }
+        .photo-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #EEE; }
+        .photo-meta { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .photo-date { font-size: 9px; font-family: 'Lato', sans-serif; color: var(--text-sub); letter-spacing: 0.5px; }
+        .photo-delete { color: var(--border-light); background: none; border: none; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .photo-card:hover .photo-delete { color: var(--danger-red); }
+
+        .empty-gallery { text-align: center; font-style: italic; color: var(--text-sub); font-size: 13px; margin-top: 40px; }
+
         @media (min-width: 481px) {
             body { background-color: #D3CEC4; }
         }
@@ -171,6 +206,13 @@
     <!-- 側邊欄 -->
     <aside class="sidebar">
         <div class="trip-title">Paul & Joyce 2026</div>
+        
+        <!-- 相冊按鈕 -->
+        <div class="side-btn" onclick="showGalleryView()" id="nav-btn-gallery">
+            <i class="fa-solid fa-camera-retro"></i>
+            <span class="day-lbl">MOMENTS</span>
+        </div>
+
         <div class="nav-days" id="sidebar-nav">
             <div class="nav-item active" id="nav-item-home" onclick="showHome()">
                 <span class="day-lbl">Index</span>
@@ -259,12 +301,36 @@
                 </div>
             </div>
 
+            <!-- 旅程剪影 (照片日記) -->
+            <div id="gallery-view" class="view-section">
+                <div class="day-badge">Photo Diary</div>
+                <h1 class="day-title">旅程剪影</h1>
+                <p class="day-desc">記錄旅途中的每一個美好瞬間。系統會自動為你加上時間印記。</p>
+                
+                <div class="upload-btn-wrapper">
+                    <!-- 隱藏的檔案輸入框，accept="image/*" 允許選照片或開相機 -->
+                    <input type="file" id="camera-input" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                    <!-- 觸發按鈕 -->
+                    <button class="upload-btn" onclick="document.getElementById('camera-input').click()">
+                        <i class="fa-solid fa-camera"></i> CAPTURE MOMENT
+                    </button>
+                </div>
+
+                <!-- 隱藏的 canvas 用於圖片壓縮 -->
+                <canvas id="compress-canvas" style="display:none;"></canvas>
+
+                <!-- 存放照片的網格 -->
+                <div class="gallery-grid" id="photo-grid">
+                    <!-- 照片卡片會在這裡生成 -->
+                </div>
+            </div>
+
         </div>
     </main>
 </div>
 
 <script>
-    // ================= 11 天數據庫 =================
+    // ================= 11 天行程數據庫 =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
@@ -432,9 +498,11 @@
         }
     ];
 
+    // ================= 初始化 =================
     window.onload = () => {
         buildSidebar();
         showHome();
+        renderGallery(); // 載入照片
     };
 
     function buildSidebar() {
@@ -459,6 +527,7 @@
     function deactivateAll() {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.side-btn').forEach(el => el.classList.remove('active'));
         document.querySelector('.main-content').scrollTop = 0;
     }
 
@@ -476,6 +545,14 @@
     function showItineraryView() {
         deactivateAll();
         document.getElementById('itinerary-view').classList.add('active');
+    }
+
+    function showGalleryView() {
+        deactivateAll();
+        document.getElementById('gallery-view').classList.add('active');
+        document.getElementById('nav-btn-gallery').classList.add('active');
+        // 相冊專屬封面圖 (底片相機風格)
+        updateHeroImage("https://images.unsplash.com/photo-1495106245177-55f53ab287ea?q=80&w=1000&auto=format&fit=crop");
     }
 
     function renderDay(index) {
@@ -527,6 +604,97 @@
             `;
         }).join('');
         document.getElementById('v-timeline').innerHTML = tlHtml;
+    }
+
+    // ================= 相片日記邏輯 (含圖片壓縮壓縮防爆) =================
+    let photoData = JSON.parse(localStorage.getItem('driveLogPhotos')) || [];
+
+    function handlePhotoUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = function() {
+                // 使用 Canvas 進行壓縮，避免 LocalStorage 容量爆滿
+                const canvas = document.getElementById('compress-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // 設定最大寬度為 600px，高度按比例縮放
+                const MAX_WIDTH = 600;
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // 將畫布轉為 base64 (JPEG 格式，品質 0.6)
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                savePhotoRecord(compressedDataUrl);
+            }
+        }
+    }
+
+    function savePhotoRecord(base64String) {
+        const now = new Date();
+        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const timeStr = `${monthNames[now.getMonth()]} ${now.getDate()} - ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        const newPhoto = {
+            id: Date.now(),
+            data: base64String,
+            timestamp: timeStr
+        };
+        
+        photoData.unshift(newPhoto); // 最新相片排最前
+        
+        try {
+            localStorage.setItem('driveLogPhotos', JSON.stringify(photoData));
+            renderGallery();
+        } catch (e) {
+            alert("儲存空間已滿！請先刪除部分舊相片。");
+            photoData.shift(); // 移除剛剛加入的
+        }
+    }
+
+    function deletePhoto(id) {
+        if(confirm("確定要刪除這張相片嗎？")) {
+            photoData = photoData.filter(p => p.id !== id);
+            localStorage.setItem('driveLogPhotos', JSON.stringify(photoData));
+            renderGallery();
+        }
+    }
+
+    function renderGallery() {
+        const grid = document.getElementById('photo-grid');
+        grid.innerHTML = '';
+
+        if (photoData.length === 0) {
+            grid.innerHTML = '<div class="empty-gallery" style="grid-column: 1 / -1;">尚未有相片記錄。點擊上方按鈕開始捕捉瞬間！</div>';
+            return;
+        }
+
+        photoData.forEach(photo => {
+            const card = `
+                <div class="photo-card">
+                    <img src="${photo.data}" class="photo-img" alt="Travel Moment">
+                    <div class="photo-meta">
+                        <span class="photo-date">${photo.timestamp}</span>
+                        <button class="photo-delete" onclick="deletePhoto(${photo.id})"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `;
+            grid.insertAdjacentHTML('beforeend', card);
+        });
     }
 </script>
 </body>
