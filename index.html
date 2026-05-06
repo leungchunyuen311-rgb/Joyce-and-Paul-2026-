@@ -29,7 +29,6 @@
             --accent: #A67C52;
             --border-light: #E8E5DF;
             --border-dark: #2C2C2C;
-            --danger-red: #D9534F;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -149,25 +148,6 @@
         .info-val { color: var(--text-main); font-family: 'Lato', sans-serif; font-weight: bold; text-align: right; }
         .info-val a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent); }
 
-        /* 相冊 / Lightbox */
-        .upload-btn-wrapper { margin: 20px 0 30px; }
-        .upload-btn { width: 100%; background: var(--text-main); color: #FFF; border: none; padding: 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-family: 'Lato', sans-serif; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .photo-card { background: #FFF; border: 1px solid var(--border-light); padding: 8px 8px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; animation: fadeIn 0.4s ease; cursor: zoom-in; }
-        .photo-img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #EEE; }
-        .photo-meta { margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .photo-date { font-size: 9px; font-family: 'Lato', sans-serif; color: var(--text-sub); letter-spacing: 0.5px; }
-        .photo-delete { color: var(--border-light); background: none; border: none; font-size: 12px; cursor: pointer; transition: 0.2s; }
-        .photo-card:hover .photo-delete { color: var(--danger-red); }
-        .empty-gallery { text-align: center; font-style: italic; color: var(--text-sub); font-size: 13px; margin-top: 40px; }
-
-        /* Lightbox (全螢幕預覽) */
-        .lightbox { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); }
-        .lightbox.active { display: flex; opacity: 1; }
-        .lightbox img { max-width: 95%; max-height: 85%; border-radius: 4px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); object-fit: contain; }
-        .lightbox-close { position: absolute; top: env(safe-area-inset-top, 20px); right: 25px; color: #FFF; font-size: 35px; cursor: pointer; font-family: 'Lato', sans-serif; font-weight: 300; }
-        .lightbox-date { position: absolute; bottom: env(safe-area-inset-bottom, 30px); left: 0; width: 100%; text-align: center; color: rgba(255,255,255,0.7); font-family: 'Lato', sans-serif; font-size: 12px; letter-spacing: 2px; }
-
         @media (min-width: 481px) { body { background-color: #D3CEC4; } }
     </style>
 </head>
@@ -178,13 +158,7 @@
     <aside class="sidebar">
         <div class="trip-title">Paul & Joyce<br>2026</div>
         
-        <!-- 相冊按鈕 -->
-        <div class="side-btn" onclick="showGalleryView()" id="nav-btn-gallery">
-            <i class="fa-solid fa-camera-retro"></i>
-            <span class="day-lbl">MOMENTS</span>
-        </div>
-        
-        <!-- 資訊按鈕 (新增) -->
+        <!-- 資訊按鈕 -->
         <div class="side-btn" onclick="showInfoView()" id="nav-btn-info" style="margin-bottom: 10px; padding-bottom: 15px;">
             <i class="fa-solid fa-circle-info"></i>
             <span class="day-lbl">INFO</span>
@@ -236,7 +210,7 @@
                 <p class="day-desc" id="v-desc"></p>
                 <div class="tags-container" id="v-tags"></div>
                 
-                <!-- 新增：全日路線導航按鈕 -->
+                <!-- 全日路線導航按鈕 -->
                 <button class="route-btn" id="v-route-btn" style="display: none;">
                     <i class="fa-solid fa-map-location-dot"></i> 開啟全日路線導航
                 </button>
@@ -255,22 +229,6 @@
                     <div class="guide-box-title">Editor's Note</div>
                     <div class="guide-box-text" id="v-guide"></div>
                 </div>
-            </div>
-
-            <!-- 旅程剪影 (照片日記) -->
-            <div id="gallery-view" class="view-section">
-                <div class="day-badge">Photo Diary</div>
-                <h1 class="day-title">旅程剪影</h1>
-                <p class="day-desc">記錄旅途中的每一個美好瞬間。點擊相片可全螢幕放大重溫。</p>
-                
-                <div class="upload-btn-wrapper">
-                    <input type="file" id="camera-input" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
-                    <button class="upload-btn" onclick="document.getElementById('camera-input').click()">
-                        <i class="fa-solid fa-camera"></i> CAPTURE MOMENT
-                    </button>
-                </div>
-                <canvas id="compress-canvas" style="display:none;"></canvas>
-                <div class="gallery-grid" id="photo-grid"></div>
             </div>
 
             <!-- 實用資訊備忘 (INFO) -->
@@ -305,15 +263,8 @@
     </main>
 </div>
 
-<!-- Lightbox Modal -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightbox-img" src="" alt="Enlarged Photo">
-    <div class="lightbox-date" id="lightbox-date"></div>
-</div>
-
 <script>
-    // ================= 11 天行程數據庫 (加入 routeLocs 用於生成全日導航) =================
+    // ================= 11 天行程數據庫 (包含 RouteLocs 用於生成全日導航) =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
@@ -495,7 +446,6 @@
     window.onload = () => {
         buildSidebar();
         showHome();
-        renderGallery();
     };
 
     function buildSidebar() {
@@ -534,13 +484,6 @@
         document.getElementById('info-view').classList.add('active');
         document.getElementById('nav-btn-info').classList.add('active');
         updateHeroImage("https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000&auto=format&fit=crop");
-    }
-
-    function showGalleryView() {
-        deactivateAll();
-        document.getElementById('gallery-view').classList.add('active');
-        document.getElementById('nav-btn-gallery').classList.add('active');
-        updateHeroImage("https://images.unsplash.com/photo-1495106245177-55f53ab287ea?q=80&w=1000&auto=format&fit=crop");
     }
 
     function showItineraryView() {
@@ -586,79 +529,6 @@
             const hoursHtml = ev.hours ? `<div class="tl-hours"><i class="fa-regular fa-clock"></i> ${ev.hours}</div>` : '';
             return `<div class="tl-item"><div class="tl-time">${ev.time}</div><div class="tl-content"><div class="tl-title">${ev.title}</div>${hoursHtml}<div class="tl-actions">${btns}</div></div></div>`;
         }).join('');
-    }
-
-    // ================= 相片日記與 Lightbox 邏輯 =================
-    let photoData = JSON.parse(localStorage.getItem('driveLogPhotos')) || [];
-
-    function handlePhotoUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function(e) {
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = function() {
-                const canvas = document.getElementById('compress-canvas');
-                const ctx = canvas.getContext('2d');
-                const MAX_WIDTH = 800;
-                let width = img.width, height = img.height;
-                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                canvas.width = width; canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-                savePhotoRecord(canvas.toDataURL('image/jpeg', 0.7));
-            }
-        }
-    }
-
-    function savePhotoRecord(base64String) {
-        const now = new Date();
-        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const timeStr = `${monthNames[now.getMonth()]} ${now.getDate()} - ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-        photoData.unshift({ id: Date.now(), data: base64String, timestamp: timeStr });
-        try {
-            localStorage.setItem('driveLogPhotos', JSON.stringify(photoData));
-            renderGallery();
-        } catch (e) {
-            alert("儲存空間已滿！請先刪除部分舊相片。");
-            photoData.shift();
-        }
-    }
-
-    function deletePhoto(id, event) {
-        event.stopPropagation(); // 防止觸發 Lightbox
-        if(confirm("確定要刪除這張相片嗎？")) {
-            photoData = photoData.filter(p => p.id !== id);
-            localStorage.setItem('driveLogPhotos', JSON.stringify(photoData));
-            renderGallery();
-        }
-    }
-
-    function renderGallery() {
-        const grid = document.getElementById('photo-grid');
-        grid.innerHTML = photoData.length === 0 ? '<div class="empty-gallery" style="grid-column: 1 / -1;">尚未有相片記錄。點擊上方按鈕開始捕捉瞬間！</div>' : '';
-        photoData.forEach(photo => {
-            const card = `
-                <div class="photo-card" onclick="openLightbox('${photo.data}', '${photo.timestamp}')">
-                    <img src="${photo.data}" class="photo-img" alt="Moment">
-                    <div class="photo-meta">
-                        <span class="photo-date">${photo.timestamp}</span>
-                        <button class="photo-delete" onclick="deletePhoto(${photo.id}, event)"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>`;
-            grid.insertAdjacentHTML('beforeend', card);
-        });
-    }
-
-    // Lightbox 控制
-    function openLightbox(src, date) {
-        document.getElementById('lightbox-img').src = src;
-        document.getElementById('lightbox-date').innerText = date;
-        document.getElementById('lightbox').classList.add('active');
-    }
-    function closeLightbox() {
-        document.getElementById('lightbox').classList.remove('active');
     }
 </script>
 </body>
