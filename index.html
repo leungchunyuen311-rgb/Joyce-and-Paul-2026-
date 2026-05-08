@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>PAULJOY游哉</title>
     
+    <!-- PWA Manifest & App Icons -->
+    <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,28 +21,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ================= 雜誌風格核心變數 (支援 Light/Dark Mode) ================= */
+        /* ================= 雜誌風格核心變數 ================= */
         :root {
-            --bg-paper: #F9F8F6;      /* 和紙白 */
-            --bg-sidebar: #F2EFE9;    /* 淺米灰 */
-            --bg-card: #FFFFFF;       /* 卡片白 */
-            --text-main: #2C2C2C;     /* 深炭灰 */
-            --text-sub: #7A7A7A;      /* 灰褐色 */
-            --accent: #A67C52;        /* 古銅金 */
-            --border-light: #E8E5DF;  /* 極幼分隔線 */
-            --border-dark: #2C2C2C;   /* 強調線 */
+            --bg-paper: #F9F8F6;
+            --bg-sidebar: #F2EFE9;
+            --bg-card: #FFFFFF;
+            --text-main: #2C2C2C;
+            --text-sub: #7A7A7A;
+            --accent: #A67C52;
+            --border-light: #E8E5DF;
+            --border-dark: #2C2C2C;
+            --progress-bg: #E8E5DF;
         }
 
-        /* 黑夜模式變數 */
         body.dark-mode {
-            --bg-paper: #1A1A1A;      /* 黑曜石 */
-            --bg-sidebar: #121212;    /* 深黑 */
-            --bg-card: #242424;       /* 深灰卡片 */
-            --text-main: #EAEAEA;     /* 柔白 */
-            --text-sub: #9E9E9E;      /* 淺灰 */
-            --accent: #D4A373;        /* 亮古銅金 */
-            --border-light: #333333;  /* 暗灰線 */
-            --border-dark: #888888;   /* 亮灰強調線 */
+            --bg-paper: #1A1A1A;
+            --bg-sidebar: #121212;
+            --bg-card: #242424;
+            --text-main: #EAEAEA;
+            --text-sub: #9E9E9E;
+            --accent: #D4A373;
+            --border-light: #333333;
+            --border-dark: #888888;
+            --progress-bg: #444444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -53,7 +56,6 @@
             transition: background-color 0.4s ease;
         }
         body.dark-mode { background-color: #0A0A0A; }
-        
         h1, h2, h3, .serif { font-family: 'Noto Serif TC', serif; }
 
         #app-container {
@@ -63,20 +65,18 @@
             transition: background 0.4s ease;
         }
 
-        /* ================= 左側邊欄 ================= */
+        /* 左側邊欄 */
         .sidebar {
             width: 80px; background: var(--bg-sidebar); display: flex; flex-direction: column;
             align-items: center; padding: env(safe-area-inset-top, 40px) 0 10px; 
             border-right: 1px solid var(--border-light); z-index: 20; flex-shrink: 0;
             transition: background 0.4s ease, border-color 0.4s ease;
         }
-        
         .trip-title { 
             font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase;
             text-align: center; color: var(--text-main); line-height: 1.4; margin-top: 15px; margin-bottom: 30px;
             letter-spacing: 1px; width: 100%; padding: 0 4px; word-wrap: break-word; transition: color 0.4s ease;
         }
-        
         .side-btn { 
             width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; 
             color: var(--text-sub); margin-bottom: 20px; padding-bottom: 20px; 
@@ -96,32 +96,28 @@
         .nav-item.active { color: var(--text-main); }
         .nav-item.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px; background: var(--accent); }
 
-        /* Dark Mode Toggle 按鈕排底 */
         .theme-toggle-wrapper { margin-top: auto; width: 100%; }
         .theme-btn { border-bottom: none; margin-bottom: 0; padding-bottom: 10px; }
 
-        /* ================= 右側主內容區 ================= */
+        /* 右側主內容區 */
         .main-content { flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; background: var(--bg-paper); transition: background 0.4s ease; }
-        
         .hero-image-container { width: 100%; height: 260px; position: relative; background-size: cover; background-position: center; transition: background-image 0.4s ease; }
         .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(to bottom, rgba(var(--bg-paper-rgb, 249, 248, 246), 0) 0%, var(--bg-paper) 100%); transition: background 0.4s ease; }
         body.dark-mode .hero-gradient { background: linear-gradient(to bottom, rgba(26,26,26,0) 0%, rgba(26,26,26,1) 100%); }
 
-        /* INFO 版面專用間距調整 (因為無咗首圖) */
         .content-scroll { position: relative; z-index: 10; padding: 0px 30px 80px; min-height: 100%; }
-        #info-view { padding-top: 40px; } /* INFO版專用頂部間距 */
+        #info-view { padding-top: 40px; }
 
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 標題與排版 */
         .day-badge { display: inline-block; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: 700; color: var(--accent); margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--accent); }
         .day-title { font-size: 32px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; color: var(--text-main); letter-spacing: 0.5px; transition: color 0.4s ease; }
         .day-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 30px; font-family: 'Noto Serif TC', serif; transition: color 0.4s ease; }
         .section-header { font-family: 'Lato', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-sub); margin: 35px 0 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; transition: border-color 0.4s ease, color 0.4s ease; }
 
-        /* ====== 倒數計時器 ====== */
+        /* 倒數計時器 */
         .countdown-container { display: flex; flex-direction: column; border: 1px solid var(--border-light); background: var(--bg-card); padding: 15px 20px 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; }
         .cd-row { display: flex; width: 100%; justify-content: space-between; }
         .cd-box { text-align: center; flex: 1; border-right: 1px solid var(--border-light); }
@@ -130,7 +126,6 @@
         .cd-lbl { font-size: 9px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
         .cd-message { width: 100%; text-align: center; font-size: 16px; font-family: 'Noto Serif TC', serif; color: var(--accent); font-weight: bold; letter-spacing: 2px; }
 
-        /* 總覽列表 */
         .summary-list { display: flex; flex-direction: column; border-top: 2px solid var(--border-dark); transition: border-color 0.4s ease; }
         .sum-item { display: flex; align-items: flex-start; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border-light); transition: border-color 0.4s ease; }
         .sum-day { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: var(--accent); min-width: 40px; margin-top: 2px; }
@@ -139,14 +134,12 @@
 
         .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
         .tag { border: 1px solid var(--border-light); padding: 4px 10px; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-main); background: var(--bg-card); letter-spacing: 0.5px; transition: 0.4s ease; }
-        .tag i { color: var(--accent); margin-right: 4px; }
 
         .guide-box { margin: 25px 0; padding: 20px 0 20px 20px; border-left: 3px solid var(--accent); background: transparent; position: relative; }
         .guide-box::before { content: '\201C'; font-family: 'Noto Serif TC', serif; font-size: 60px; color: var(--border-light); position: absolute; top: -10px; left: 10px; z-index: -1; line-height: 1; transition: color 0.4s ease; }
         .guide-box-title { color: var(--text-main); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; transition: color 0.4s ease;}
         .guide-box-text { font-size: 14px; color: var(--text-main); line-height: 1.8; font-style: italic; font-family: 'Noto Serif TC', serif; transition: color 0.4s ease;}
 
-        /* 導航按鈕 */
         .route-btn { display: flex; justify-content: center; align-items: center; gap: 10px; background: var(--text-main); color: var(--bg-paper); padding: 14px 20px; font-size: 12px; font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: none; margin-bottom: 30px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .route-btn:active { transform: scale(0.98); background: var(--accent); }
 
@@ -159,7 +152,7 @@
         .w-icon { font-size: 18px; margin-bottom: 5px; color: var(--text-main); }
         .w-temp { font-size: 14px; font-weight: bold; font-family: 'Lato', sans-serif; color: var(--text-main); }
 
-        /* 時間軸 */
+        /* 時間軸與動作按鈕 */
         .timeline { margin-bottom: 30px; border-top: 2px solid var(--border-dark); padding-top: 20px; transition: border-color 0.4s ease;}
         .tl-item { margin-bottom: 35px; display: flex; gap: 15px; }
         .tl-time { font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 300; color: var(--accent); min-width: 65px; text-align: right; line-height: 1.1; }
@@ -168,20 +161,38 @@
         .tl-hours { font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 12px; letter-spacing: 0.5px; }
         .tl-hours i { color: var(--accent); margin-right: 4px; }
         .tl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 5px 12px; font-size: 10px; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'Lato', sans-serif; text-transform: uppercase; transition: 0.2s; }
-        .action-btn:hover { border-color: var(--text-main); color: var(--text-main); }
+        .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 5px 12px; font-size: 10px; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'Lato', sans-serif; text-transform: uppercase; transition: 0.2s; border-radius: 4px; }
+        .action-btn:hover, .action-btn:active { border-color: var(--text-main); color: var(--text-main); }
         .action-btn i { color: var(--text-main); transition: color 0.4s ease;}
+        .action-btn.copy { background-color: rgba(166, 124, 82, 0.05); color: var(--accent); border-color: rgba(166, 124, 82, 0.3); }
+        .action-btn.copy i { color: var(--accent); }
 
         /* ====== INFO 頁面專屬 ====== */
-        .info-card { background: var(--bg-card); border: 1px solid var(--border-light); padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; }
+        .info-card { background: var(--bg-card); border: 1px solid var(--border-light); padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; border-radius: 4px; }
         .info-card h3 { font-size: 12px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--border-light); padding-bottom: 12px; margin-bottom: 15px; color: var(--accent); transition: border-color 0.4s ease;}
+        
+        /* 匯率計算機 */
+        .currency-box { display: flex; align-items: center; gap: 15px; background: var(--bg-paper); padding: 15px; border-radius: 4px; border: 1px solid var(--border-light); transition: 0.4s ease; }
+        .currency-input { flex: 1; }
+        .currency-input input { width: 100%; padding: 8px 0; font-size: 20px; font-family: 'Lato', sans-serif; font-weight: bold; border: none; border-bottom: 2px solid var(--border-light); background: transparent; color: var(--text-main); text-align: center; outline: none; transition: border-color 0.3s ease; }
+        .currency-input input:focus { border-color: var(--accent); }
+        .currency-input label { display: block; text-align: center; font-size: 10px; color: var(--text-sub); margin-top: 5px; font-family: 'Lato', sans-serif; }
+        .currency-icon { color: var(--border-light); font-size: 18px; }
+        .currency-result { flex: 1; text-align: center; font-size: 20px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--accent); }
+        .rate-hint { font-size: 10px; color: var(--text-sub); text-align: right; margin-top: 10px; font-family: 'Lato', sans-serif; }
+
         .info-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 15px; }
         .info-row:last-child { margin-bottom: 0; }
         .info-lbl { color: var(--text-sub); font-family: 'Noto Serif TC', serif; }
         .info-val { color: var(--text-main); font-family: 'Lato', sans-serif; font-weight: bold; text-align: right; transition: color 0.4s ease;}
         .info-val a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent); transition: color 0.4s ease;}
         
-        /* 行李清單 Checklist */
+        /* 行李清單 Checklist ＋ 進度條 */
+        .progress-container { margin-bottom: 20px; }
+        .progress-header { display: flex; justify-content: space-between; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
+        .progress-bar { width: 100%; height: 6px; background: var(--progress-bg); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.5s ease; }
+        
         .check-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; cursor: pointer; }
         .check-item:last-child { margin-bottom: 0; }
         .check-box { color: var(--border-light); font-size: 18px; transition: 0.2s; margin-top: 2px; }
@@ -189,12 +200,14 @@
         .check-text { font-size: 14px; font-family: 'Noto Serif TC', serif; color: var(--text-main); transition: 0.3s; line-height: 1.5; }
         .check-item.checked .check-text { color: var(--text-sub); text-decoration: line-through; }
 
-        /* 日文發音卡 */
         .phrase-item { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dotted var(--border-light); transition: border-color 0.4s ease;}
         .phrase-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
         .p-ch { font-size: 12px; color: var(--text-sub); font-family: 'Noto Serif TC', serif; margin-bottom: 4px; }
         .p-jp { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 2px; transition: color 0.4s ease;}
         .p-rm { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--accent); letter-spacing: 0.5px; }
+
+        /* PWA 更新提示 */
+        #offline-badge { display: none; text-align: center; font-size: 10px; color: var(--accent); margin-top: 5px; font-family: 'Lato', sans-serif; }
 
         @media (min-width: 481px) { body { background-color: #D3CEC4; } body.dark-mode { background-color: #050505; } }
     </style>
@@ -219,28 +232,29 @@
                 <span class="day-lbl">Index</span>
                 <span class="date-lbl">總覽</span>
             </div>
-            </div>
+        </div>
 
         <div class="theme-toggle-wrapper">
+            <div id="offline-badge"><i class="fa-solid fa-wifi" style="text-decoration: line-through;"></i> Offline</div>
             <div class="side-btn theme-btn" onclick="toggleTheme()" id="theme-btn">
                 <i class="fa-solid fa-moon" id="theme-icon"></i>
             </div>
         </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="main-scroll-area">
         <div class="hero-image-container" id="hero-img">
             <div class="hero-gradient"></div>
         </div>
 
         <div class="content-scroll">
             
+            <!-- Index 總覽頁 -->
             <div id="home-view" class="view-section active">
                 <div class="day-badge">Trip Overview</div>
                 <h1 class="day-title" style="font-size: 26px; line-height: 1.4;">2026 PAUL & JOYCE<br>日本北陸之旅</h1>
                 
-                <div class="countdown-container" id="countdown-timer">
-                    </div>
+                <div class="countdown-container" id="countdown-timer"></div>
                 
                 <div class="section-header">Itinerary / 每日行程</div>
                 <div class="summary-list">
@@ -258,6 +272,7 @@
                 </div>
             </div>
 
+            <!-- 行程內頁 -->
             <div id="itinerary-view" class="view-section">
                 <div class="day-badge" id="v-badge"></div>
                 <h1 class="day-title" id="v-title"></h1>
@@ -284,17 +299,42 @@
                 </div>
             </div>
 
+            <!-- INFO 資訊頁 -->
             <div id="info-view" class="view-section">
                 <div class="day-badge">Travel Info & Prep</div>
                 <h1 class="day-title">資訊與準備</h1>
                 <p class="day-desc">緊急聯絡、實用語句及出發清單，保證旅程萬無一失。</p>
 
+                <!-- 匯率計算機 -->
                 <div class="info-card">
-                    <h3>✅ Packing Checklist / 出發前確認</h3>
-                    <div id="checklist-container">
+                    <h3>💴 JPY / HKD 即時轉換</h3>
+                    <div class="currency-box">
+                        <div class="currency-input">
+                            <input type="number" id="jpy-input" placeholder="0" inputmode="numeric">
+                            <label>輸入日圓 (¥)</label>
                         </div>
+                        <i class="fa-solid fa-arrow-right-arrow-left currency-icon"></i>
+                        <div class="currency-result" id="hkd-output">0.00 HKD</div>
+                    </div>
+                    <div class="rate-hint">預設參考匯率：1 JPY ≈ 0.052 HKD (可離線使用)</div>
                 </div>
 
+                <!-- 行李清單 -->
+                <div class="info-card">
+                    <h3>✅ Packing Checklist / 出發前確認</h3>
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>準備進度</span>
+                            <span id="chk-progress-text">0 / 7</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="chk-fill"></div>
+                        </div>
+                    </div>
+                    <div id="checklist-container"></div>
+                </div>
+
+                <!-- 自駕實用語 -->
                 <div class="info-card">
                     <h3>🗣️ Phrases / 自駕實用日語</h3>
                     <div class="phrase-item">
@@ -314,6 +354,7 @@
                     </div>
                 </div>
 
+                <!-- 聯絡與航班 -->
                 <div class="info-card">
                     <h3>🚨 Emergency / 緊急聯絡</h3>
                     <div class="info-row"><div class="info-lbl">報警 (Police)</div><div class="info-val"><a href="tel:110">110</a></div></div>
@@ -326,12 +367,6 @@
                     <div class="info-row"><div class="info-lbl">5/20 去程 (HKG ➔ NGO)</div><div class="info-val">UO 690 (11:00)</div></div>
                     <div class="info-row"><div class="info-lbl">5/30 回程 (NGO ➔ HKG)</div><div class="info-val">UO 671 (20:45)</div></div>
                 </div>
-
-                <div class="info-card">
-                    <h3>🚗 Car Rental / 租車與保險</h3>
-                    <div class="info-row"><div class="info-lbl">ETC 卡</div><div class="info-val">已預約確認</div></div>
-                    <div class="info-row"><div class="info-lbl">CEP 高速Pass</div><div class="info-val">取車時需加購</div></div>
-                </div>
             </div>
 
         </div>
@@ -339,7 +374,10 @@
 </div>
 
 <script>
-    // ================= 11 天行程數據庫 =================
+    // ================= 狀態管理 =================
+    let currentDayIndex = -1; // -1 代表 Index/Home 頁面, 0-10 代表 Day1-11
+
+    // ================= 11 天行程數據庫 (新增 Mapcode/Phone) =================
     const tripData = [
         {
             day: 1, dateStr: "MAY 20", title: "名古屋・鰻魚飯盛宴",
@@ -351,10 +389,10 @@
             routeLocs: ["中部國際機場", "Lamp Light Books Hotel Nagoya", "炭焼 うな富士 本店", "BAR BARNS 名古屋"],
             events: [
                 { time: "15:50", title: "抵達中部國際機場 (UO690)", btns: ["nav"] },
-                { time: "17:30", title: "辦理租車手續並出發", hours: "機場租車櫃檯營業至 20:00", btns: ["nav", "voucher"] },
-                { time: "18:30", title: "入住 Lamp Light Books Hotel", hours: "Check-in: 15:00起 (24小時前台)", btns: ["nav"] },
-                { time: "19:00", title: "晚餐：炭焼 うな富士 本店", hours: "11:00–14:00, 17:00–20:00", btns: ["nav", "web"] },
-                { time: "21:30", title: "夜酌：BAR BARNS", hours: "知名酒吧，提供無酒精特調 Mocktail", btns: ["nav"] }
+                { time: "17:30", title: "辦理租車手續並出發", hours: "機場租車櫃檯營業至 20:00", btns: ["nav", "voucher"], mapcode: "15 009 514*15" },
+                { time: "18:30", title: "入住 Lamp Light Books Hotel", hours: "Check-in: 15:00起 (24小時前台)", btns: ["nav"], mapcode: "4 286 288*63", phone: "052-231-7011" },
+                { time: "19:00", title: "晚餐：炭焼 うな富士 本店", hours: "11:00–14:00, 17:00–20:00", btns: ["nav", "web"], phone: "052-881-0067" },
+                { time: "21:30", title: "夜酌：BAR BARNS", hours: "知名酒吧，提供無酒精特調 Mocktail", btns: ["nav"], phone: "052-203-1114" }
             ]
         },
         {
@@ -367,9 +405,9 @@
             routeLocs: ["GLITCH COFFEE NAGOYA", "らぁ麺 紫陽花", "下呂温泉街", "下呂温泉 しょうげつ"],
             events: [
                 { time: "09:00", title: "GLITCH COFFEE 晨間咖啡", hours: "09:00–19:00", btns: ["nav"] },
-                { time: "11:00", title: "午餐：らぁ麺 紫陽花 (已預約)", hours: "11:00–15:00 (週一休)", btns: ["nav"] },
-                { time: "14:45", title: "下呂溫泉街散策", hours: "足湯24小時開放，店家多營業至17:00", btns: ["nav", "web"] },
-                { time: "15:30", title: "入住 下呂温泉 しょうげつ", hours: "Check-in: 15:00, 晚餐時間需與櫃台確認", btns: ["nav", "voucher"] }
+                { time: "11:00", title: "午餐：らぁ麺 紫陽花 (已預約)", hours: "11:00–15:00 (週一休)", btns: ["nav"], mapcode: "4 135 683*22" },
+                { time: "14:45", title: "下呂溫泉街散策", hours: "足湯24小時開放，店家多營業至17:00", btns: ["nav", "web"], mapcode: "190 286 732*55" },
+                { time: "15:30", title: "入住 下呂温泉 しょうげつ", hours: "Check-in: 15:00", btns: ["nav", "voucher"], phone: "0576-25-7611" }
             ]
         },
         {
@@ -381,11 +419,11 @@
             weather: { loc: "TAKAYAMA", days: [{d:"5/22", i:"🌥️", t:"19°"}, {d:"5/23", i:"🌦️", t:"15°"}, {d:"5/24", i:"☀️", t:"20°"}] },
             routeLocs: ["飛驒古川 瀨戶川", "蕎麥麵 正覺", "高山老街", "味藏天國", "うり坊屋 高山"],
             events: [
-                { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", hours: "24小時開放，餵魚建議白天", btns: ["nav"] },
+                { time: "10:45", title: "飛驒古川：瀨戶川餵錦鯉", hours: "24小時開放", btns: ["nav"], mapcode: "191 662 133*82" },
                 { time: "11:30", title: "午餐：蕎麥麵 正覺", hours: "11:00–15:00 (麵條售完即打烊)", btns: ["nav"] },
-                { time: "14:30", title: "高山老街散策 (飛驒牛壽司)", hours: "老街店家大多於 16:30-17:00 打烊", btns: ["nav"] },
-                { time: "17:30", title: "晚餐：味藏天國燒肉", hours: "11:00–14:00, 17:00–21:00 (週二休)", btns: ["nav", "voucher"] },
-                { time: "21:00", title: "宵夜：うり坊屋 (Uribouya)", hours: "17:00–23:00 (高山人氣深夜居酒屋)", btns: ["nav"] }
+                { time: "14:30", title: "高山老街散策 (飛驒牛壽司)", hours: "老街店家大多於 16:30-17:00 打烊", btns: ["nav"], mapcode: "191 195 401*44" },
+                { time: "17:30", title: "晚餐：味藏天國燒肉", hours: "11:00–14:00, 17:00–21:00 (週二休)", btns: ["nav", "voucher"], phone: "0577-37-1129" },
+                { time: "21:00", title: "宵夜：うり坊屋 (Uribouya)", hours: "17:00–23:00", btns: ["nav"] }
             ]
         },
         {
@@ -398,10 +436,10 @@
             routeLocs: ["宮川朝市", "平湯バスターミナル", "新穂高ロープウェイ", "元湯 孫九郎"],
             events: [
                 { time: "07:30", title: "宮川朝市 (尋找筷子捲)", hours: "07:00–12:00 (中午收攤)", btns: ["nav"] },
-                { time: "10:00", title: "平湯停車場換乘巴士", hours: "首班車約06:00，班次依季節變動", btns: ["nav"] },
+                { time: "10:00", title: "平湯停車場 (換乘巴士)", hours: "首班車約06:00", btns: ["nav"], mapcode: "620 622 173*77" },
                 { time: "10:30", title: "上高地：大正池 ➔ 河童橋", hours: "24小時開放", btns: ["nav", "web"] },
-                { time: "14:15", title: "新穗高纜車登頂", hours: "08:30–16:00 (會依強風狀況停駛)", btns: ["nav", "voucher"] },
-                { time: "17:00", title: "入住 元湯 孫九郎", hours: "Check-in: 15:00起", btns: ["nav"] }
+                { time: "14:15", title: "新穗高纜車登頂", hours: "08:30–16:00 (會依強風狀況停駛)", btns: ["nav", "voucher"], mapcode: "898 043 515*00" },
+                { time: "17:00", title: "入住 元湯 孫九郎", hours: "Check-in: 15:00起", btns: ["nav"], phone: "0578-89-2231" }
             ]
         },
         {
@@ -414,12 +452,12 @@
             routeLocs: ["Gattan Go!! 渓谷コース", "寿し栄 総曲輪店", "富山市玻璃美術館", "富岩運河環水公園", "呉羽山展望台", "御料理 ふじ居"],
             events: [
                 { time: "08:00", title: "出發 奧飛驒 ➔ 神岡", hours: "山路駕駛請留意路況", btns: ["nav"] },
-                { time: "09:00", title: "Gattan Go!! 鐵道單車", hours: "09:00–15:30 (需對應預約班次)", btns: ["nav", "voucher"] },
-                { time: "12:00", title: "午餐：壽司榮 總曲輪店", hours: "11:30–14:00, 17:00–21:30", btns: ["nav"] },
+                { time: "09:00", title: "Gattan Go!! 鐵道單車", hours: "09:00–15:30 (需對應預約班次)", btns: ["nav", "voucher"], phone: "090-7020-5852" },
+                { time: "12:00", title: "午餐：壽司榮 總曲輪店", hours: "11:30–14:00, 17:00–21:30", btns: ["nav"], phone: "076-421-7035" },
                 { time: "13:45", title: "富山市玻璃美術館", hours: "09:30–18:00 (第一、三週的三休館)", btns: ["nav", "web"] },
-                { time: "15:30", title: "富岩運河環水公園", hours: "星巴克 08:00-22:30", btns: ["nav"] },
+                { time: "15:30", title: "富岩運河環水公園", hours: "星巴克 08:00-22:30", btns: ["nav"], mapcode: "33 615 798*11" },
                 { time: "17:30", title: "吳羽山展望台拍立山連峰", hours: "24小時開放，黃昏景色最佳", btns: ["nav"] },
-                { time: "19:00", title: "晚餐：御料理 ふじ居", hours: "12:00–14:30, 18:00–21:30 (預約制)", btns: ["nav"] }
+                { time: "19:00", title: "晚餐：御料理 ふじ居", hours: "12:00–14:30, 18:00–21:30 (預約制)", btns: ["nav"], phone: "076-456-1527" }
             ]
         },
         {
@@ -431,9 +469,9 @@
             weather: { loc: "MURODO", days: [{d:"5/25", i:"❄️", t:"3°"}, {d:"5/26", i:"⛅", t:"5°"}, {d:"5/27", i:"☀️", t:"8°"}] },
             routeLocs: ["立山駅", "吟魚のはなれ 吟チロリ"],
             events: [ 
-                { time: "07:00", title: "抵達立山站停車場", hours: "車站售票 07:00 開始", btns: ["nav"] }, 
+                { time: "07:00", title: "抵達立山站停車場", hours: "車站售票 07:00 開始", btns: ["nav"], mapcode: "678 794 135*55" }, 
                 { time: "全日", title: "立山黑部阿爾卑斯路線", hours: "各交通工具最晚末班車約為 17:00", btns: ["web", "voucher"] }, 
-                { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", hours: "17:30–23:00", btns: ["nav"] } 
+                { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", hours: "17:30–23:00", btns: ["nav"], phone: "076-431-7780" } 
             ]
         },
         {
@@ -445,10 +483,10 @@
             weather: { loc: "KANAZAWA", days: [{d:"5/26", i:"⛅", t:"23°"}, {d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}] },
             routeLocs: ["雨晴海岸", "氷見 魚市場食堂", "千里浜なぎさドライブウェイ", "respiración 金沢"],
             events: [ 
-                { time: "10:30", title: "雨晴海岸 (拍海上雪山)", hours: "24小時開放", btns: ["nav"] }, 
-                { time: "11:30", title: "午餐：冰見魚市場食堂", hours: "06:30–15:00", btns: ["nav"] }, 
-                { time: "13:30", title: "千里濱渚駕車道", hours: "視潮汐與天氣可能封閉", btns: ["nav"] }, 
-                { time: "18:00", title: "晚餐：respiración (二星)", hours: "18:00–22:00 (需預約)", btns: ["nav"] } 
+                { time: "10:30", title: "雨晴海岸 (拍海上雪山)", hours: "24小時開放", btns: ["nav"], mapcode: "130 081 689*00" }, 
+                { time: "11:30", title: "午餐：冰見魚市場食堂", hours: "06:30–15:00", btns: ["nav"], phone: "0766-72-2018" }, 
+                { time: "13:30", title: "千里濱渚駕車道", hours: "視潮汐與天氣可能封閉", btns: ["nav"], mapcode: "135 174 766*66" }, 
+                { time: "18:00", title: "晚餐：respiración (二星)", hours: "18:00–22:00 (需預約)", btns: ["nav"], phone: "076-225-8681" } 
             ]
         },
         {
@@ -460,12 +498,12 @@
             weather: { loc: "KANAZAWA", days: [{d:"5/27", i:"☀️", t:"25°"}, {d:"5/28", i:"🌥️", t:"22°"}, {d:"5/29", i:"☀️", t:"26°"}] },
             routeLocs: ["ひがし茶屋街", "近江町市場", "金沢21世紀美術館", "鈴木大拙館", "あぶり肉 がらん"],
             events: [ 
-                { time: "09:00", title: "東茶屋街和服租借", hours: "茶屋街店家多從 09:30 開始營業", btns: ["nav"] }, 
+                { time: "09:00", title: "東茶屋街和服租借", hours: "茶屋街店家多從 09:30 開始營業", btns: ["nav"], mapcode: "41 559 133*11" }, 
                 { time: "10:15", title: "東茶屋街散策 (金箔冰淇淋)", hours: "吃冰拍照預留 1.5 小時", btns: ["nav"] }, 
-                { time: "12:00", title: "午餐：近江町市場", hours: "市場攤販多營業至 16:00", btns: ["nav"] }, 
+                { time: "12:00", title: "午餐：近江町市場", hours: "市場攤販多營業至 16:00", btns: ["nav"], mapcode: "41 528 290*88" }, 
                 { time: "14:00", title: "兼六園 / 21世紀美術館", hours: "美術館展區10:00-18:00", btns: ["nav", "voucher"] }, 
                 { time: "16:15", title: "鈴木大拙館", hours: "09:30–17:00 (感受禪意剛好)", btns: ["nav"] }, 
-                { time: "19:00", title: "晚餐：あぶり肉 がらん", hours: "17:30–23:00", btns: ["nav"] } 
+                { time: "19:00", title: "晚餐：あぶり肉 がらん", hours: "17:30–23:00", btns: ["nav"], phone: "076-224-0029" } 
             ]
         },
         {
@@ -477,12 +515,12 @@
             weather: { loc: "SHIRAKAWA", days: [{d:"5/28", i:"🌥️", t:"18°"}, {d:"5/29", i:"☀️", t:"21°"}, {d:"5/30", i:"☀️", t:"24°"}] },
             routeLocs: ["isotope 金沢", "白川郷", "犬山城", "三光稲荷神社", "とんかつ 土本"],
             events: [ 
-                { time: "08:00", title: "早餐：isotope (備案: HIRAMIPAN)", hours: "金澤人氣烘焙早午餐", btns: ["nav"] },
-                { time: "10:45", title: "白川鄉合掌村散策", hours: "一般設施營業至 17:00", btns: ["nav"] }, 
+                { time: "08:00", title: "早餐：isotope", hours: "金澤人氣烘焙早午餐", btns: ["nav"] },
+                { time: "10:45", title: "白川鄉合掌村散策", hours: "一般設施營業至 17:00", btns: ["nav"], mapcode: "549 018 380*60" }, 
                 { time: "13:30", title: "關鍵撤離！前往犬山城", hours: "車程約 1.5 - 2 小時", btns: ["nav"] }, 
-                { time: "16:00", title: "國寶 犬山城登頂", hours: "09:00–16:30 (最後入場，17:00關門)", btns: ["nav"] }, 
+                { time: "16:00", title: "國寶 犬山城登頂", hours: "09:00–16:30 (最後入場，17:00關門)", btns: ["nav"], mapcode: "70 096 112*55" }, 
                 { time: "17:00", title: "三光稻荷神社洗錢", hours: "08:30–16:30 (洗錢體驗請注意時間)", btns: ["nav"] }, 
-                { time: "20:00", title: "晚餐：とんかつ 土本", hours: "17:30–21:00 (完全預約制)", btns: ["nav"] } 
+                { time: "20:00", title: "晚餐：とんかつ 土本", hours: "17:30–21:00 (完全預約制)", btns: ["nav"], phone: "052-935-0010" } 
             ]
         },
         {
@@ -494,9 +532,9 @@
             weather: { loc: "SUZUKA", days: [{d:"5/29", i:"☀️", t:"26°"}, {d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}] },
             routeLocs: ["鈴鹿サーキット", "なばなの里", "焼鳥 千亀"],
             events: [ 
-                { time: "10:45", title: "鈴鹿賽道樂園", hours: "10:00–17:00", btns: ["nav", "voucher"] }, 
-                { time: "17:00", title: "名花之里點燈", hours: "10:00–21:00 (點燈時間依日落而定)", btns: ["nav", "web"] }, 
-                { time: "20:30", title: "晚餐：千龜燒鳥", hours: "17:00–22:30 (週日休)", btns: ["nav"] } 
+                { time: "10:45", title: "鈴鹿賽道樂園", hours: "10:00–17:00", btns: ["nav", "voucher"], mapcode: "38 003 400*22" }, 
+                { time: "17:00", title: "名花之里點燈", hours: "10:00–21:00 (點燈時間依日落而定)", btns: ["nav", "web"], mapcode: "38 894 482*00" }, 
+                { time: "20:30", title: "晚餐：千龜燒鳥", hours: "17:00–22:30 (週日休)", btns: ["nav"], phone: "052-262-4848" } 
             ]
         },
         {
@@ -508,26 +546,41 @@
             weather: { loc: "NAGOYA", days: [{d:"5/30", i:"☀️", t:"25°"}, {d:"5/31", i:"☁️", t:"23°"}, {d:"6/1", i:"🌧️", t:"20°"}] },
             routeLocs: ["熱田神宮", "あつた蓬莱軒 本店", "中部國際機場"],
             events: [ 
-                { time: "09:45", title: "熱田蓬萊軒 (登記名字排隊)", hours: "11:30 開始營業", btns: ["nav"] }, 
-                { time: "10:00", title: "熱田神宮參拜", hours: "24小時開放 (寶物館 09:00-16:30)", btns: ["nav"] }, 
+                { time: "09:45", title: "熱田蓬萊軒 (登記排隊)", hours: "11:30 開始營業", btns: ["nav"], mapcode: "4 117 763*88" }, 
+                { time: "10:00", title: "熱田神宮參拜", hours: "24小時開放", btns: ["nav"], mapcode: "4 148 440*11" }, 
                 { time: "11:30", title: "午餐：熱田蓬萊軒", hours: "11:30–14:00, 16:30–20:30 (週二三休)", btns: ["nav"] }, 
                 { time: "13:00", title: "榮商圈最後採買", hours: "百貨公司多營業至 20:00", btns: ["nav"] }, 
                 { time: "16:00", title: "出發前往機場", hours: "時間充裕，順利避開塞車", btns: ["nav"] },
-                { time: "17:15", title: "中部機場還車與登機", hours: "UO671 航班 20:45 起飛", btns: ["nav"] } 
+                { time: "17:15", title: "中部機場還車與登機", hours: "UO671 航班 20:45 起飛", btns: ["nav"], mapcode: "15 009 514*15" } 
             ]
         }
     ];
 
-    // ================= 初始化 =================
+    // ================= 核心初始化 =================
     window.onload = () => {
         initTheme();
         buildSidebar();
         startCountdown();
         initChecklist();
+        initCurrencyConverter();
+        initSwipeGestures();
         showHome();
+        registerServiceWorker();
     };
 
-    // ====== Dark Mode 邏輯 ======
+    // ====== PWA / 離線狀態 ======
+    function registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Error', err));
+        }
+        window.addEventListener('offline', () => document.getElementById('offline-badge').style.display = 'block');
+        window.addEventListener('online', () => document.getElementById('offline-badge').style.display = 'none');
+        if (!navigator.onLine) document.getElementById('offline-badge').style.display = 'block';
+    }
+
+    // ====== Dark Mode ======
     function initTheme() {
         const isDark = localStorage.getItem('pauljoy_dark_mode') === 'true';
         if (isDark) {
@@ -542,12 +595,11 @@
         body.classList.toggle('dark-mode');
         const isDark = body.classList.contains('dark-mode');
         localStorage.setItem('pauljoy_dark_mode', isDark);
-        
         document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         document.getElementById('theme-color-meta').setAttribute('content', isDark ? '#1A1A1A' : '#F9F8F6');
     }
 
-    // ====== UI 導航與視圖 ======
+    // ====== UI 導航 ======
     function buildSidebar() {
         const navContainer = document.getElementById('sidebar-nav');
         tripData.forEach((data, index) => {
@@ -556,7 +608,7 @@
             item.id = `nav-item-${index}`;
             const dayNum = String(data.day).padStart(2, '0');
             item.innerHTML = `<span class="day-lbl">${dayNum}</span><span class="date-lbl">${data.dateStr}</span>`;
-            item.onclick = () => { showItineraryView(); renderDay(index); };
+            item.onclick = () => { currentDayIndex = index; showItineraryView(); renderDay(index); };
             navContainer.appendChild(item);
         });
     }
@@ -565,7 +617,7 @@
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.side-btn').forEach(el => el.classList.remove('active'));
-        document.querySelector('.main-content').scrollTop = 0;
+        document.getElementById('main-scroll-area').scrollTop = 0;
     }
 
     function updateHeroImage(url) {
@@ -573,6 +625,7 @@
     }
 
     function showHome() {
+        currentDayIndex = -1;
         deactivateAll();
         document.getElementById('hero-img').style.display = 'block';
         document.getElementById('home-view').classList.add('active');
@@ -581,8 +634,8 @@
     }
 
     function showInfoView() {
+        currentDayIndex = -2; // 隨意給個非天數的值
         deactivateAll();
-        // 💡 隱藏 INFO 版面嘅首圖
         document.getElementById('hero-img').style.display = 'none'; 
         document.getElementById('info-view').classList.add('active');
         document.getElementById('nav-btn-info').classList.add('active');
@@ -592,6 +645,10 @@
         deactivateAll();
         document.getElementById('hero-img').style.display = 'block';
         document.getElementById('itinerary-view').classList.add('active');
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => alert(`已複製: ${text}`)).catch(err => console.error('複製失敗', err));
     }
 
     function renderDay(index) {
@@ -613,27 +670,69 @@
         const routeBtn = document.getElementById('v-route-btn');
         if (data.routeLocs && data.routeLocs.length > 1) {
             const waypoints = data.routeLocs.map(loc => encodeURIComponent(loc)).join('/');
-            const mapsUrl = `https://www.google.com/maps/dir/${waypoints}`;
             routeBtn.style.display = 'flex';
-            routeBtn.onclick = () => window.open(mapsUrl, '_blank');
+            routeBtn.onclick = () => window.open(`https://www.google.com/maps/dir/${waypoints}`, '_blank');
         } else {
             routeBtn.style.display = 'none';
         }
 
         document.getElementById('v-timeline').innerHTML = data.events.map(ev => {
             const navLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.title.split(' (')[0] + ' ' + data.weather.loc.split(' ')[0])}`;
-            const btns = ev.btns.map(type => {
+            let btnsHtml = ev.btns.map(type => {
                 if(type === 'nav') return `<button class="action-btn nav" onclick="window.open('${navLink}', '_blank')"><i class="fa-solid fa-location-arrow"></i> NAVIGATE</button>`;
                 if(type === 'web') return `<button class="action-btn web"><i class="fa-solid fa-link"></i> SITE</button>`;
                 if(type === 'voucher') return `<button class="action-btn voucher"><i class="fa-solid fa-ticket"></i> TICKET</button>`;
                 return '';
             }).join('');
+
+            // 新增 Mapcode 或 Phone 快速複製按鈕
+            if (ev.mapcode) btnsHtml += `<button class="action-btn copy" onclick="copyToClipboard('${ev.mapcode}')"><i class="fa-solid fa-car"></i> MC: ${ev.mapcode}</button>`;
+            if (ev.phone && !ev.mapcode) btnsHtml += `<button class="action-btn copy" onclick="copyToClipboard('${ev.phone}')"><i class="fa-solid fa-phone"></i> TEL: ${ev.phone}</button>`;
+
             const hoursHtml = ev.hours ? `<div class="tl-hours"><i class="fa-regular fa-clock"></i> ${ev.hours}</div>` : '';
-            return `<div class="tl-item"><div class="tl-time">${ev.time}</div><div class="tl-content"><div class="tl-title">${ev.title}</div>${hoursHtml}<div class="tl-actions">${btns}</div></div></div>`;
+            return `<div class="tl-item"><div class="tl-time">${ev.time}</div><div class="tl-content"><div class="tl-title">${ev.title}</div>${hoursHtml}<div class="tl-actions">${btnsHtml}</div></div></div>`;
         }).join('');
     }
 
-    // ====== ⏳ 倒數計時器邏輯 ======
+    // ====== 手勢滑動切換 ======
+    function initSwipeGestures() {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const mainScrollArea = document.getElementById('main-scroll-area');
+
+        mainScrollArea.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        mainScrollArea.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const threshold = 120; // 滑動距離閾值
+            if (touchStartX - touchEndX > threshold) {
+                // 向左滑 (下一天)
+                if (currentDayIndex >= -1 && currentDayIndex < tripData.length - 1) {
+                    currentDayIndex++;
+                    showItineraryView();
+                    renderDay(currentDayIndex);
+                }
+            }
+            if (touchEndX - touchStartX > threshold) {
+                // 向右滑 (上一天)
+                if (currentDayIndex > 0) {
+                    currentDayIndex--;
+                    showItineraryView();
+                    renderDay(currentDayIndex);
+                } else if (currentDayIndex === 0) {
+                    showHome();
+                }
+            }
+        }
+    }
+
+    // ====== 倒數計時器 ======
     function startCountdown() {
         const targetDate = new Date("May 20, 2026 11:00:00").getTime();
         const cdContainer = document.getElementById('countdown-timer');
@@ -651,7 +750,6 @@
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-            // 💡 倒數標題加返喺呢度
             cdContainer.innerHTML = `
                 <div style="width: 100%; text-align: center; font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: bold; color: var(--accent); letter-spacing: 2px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-light); padding-bottom: 8px;">旅程出發倒數</div>
                 <div class="cd-row">
@@ -661,12 +759,24 @@
                 </div>
             `;
         };
-        
         updateTimer();
         setInterval(updateTimer, 60000);
     }
 
-    // ====== ✅ Checklist 邏輯 ======
+    // ====== 匯率計算機 ======
+    function initCurrencyConverter() {
+        const input = document.getElementById('jpy-input');
+        const output = document.getElementById('hkd-output');
+        const rate = 0.052; // 預設參考匯率
+
+        input.addEventListener('input', (e) => {
+            const jpy = parseFloat(e.target.value) || 0;
+            const hkd = (jpy * rate).toFixed(2);
+            output.innerText = `${hkd} HKD`;
+        });
+    }
+
+    // ====== 行李清單與進度條 ======
     const defaultList = [
         { id: 'c1', label: '護照及機票憑證 (Flight UO690)' },
         { id: 'c2', label: '國際車牌及香港駕駛執照' },
@@ -694,6 +804,7 @@
             `;
             container.appendChild(div);
         });
+        updateProgress();
     }
 
     function toggleCheck(id, element) {
@@ -706,6 +817,18 @@
         const savedState = JSON.parse(localStorage.getItem('pauljoy_checklist')) || {};
         savedState[id] = isChecked;
         localStorage.setItem('pauljoy_checklist', JSON.stringify(savedState));
+        
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const savedState = JSON.parse(localStorage.getItem('pauljoy_checklist')) || {};
+        const total = defaultList.length;
+        const completed = defaultList.filter(item => savedState[item.id]).length;
+        
+        const percent = (completed / total) * 100;
+        document.getElementById('chk-fill').style.width = `${percent}%`;
+        document.getElementById('chk-progress-text').innerText = `${completed} / ${total}`;
     }
 </script>
 </body>
