@@ -107,7 +107,10 @@
         .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(to bottom, rgba(var(--bg-paper-rgb, 249, 248, 246), 0) 0%, var(--bg-paper) 100%); transition: background 0.4s ease; }
         body.dark-mode .hero-gradient { background: linear-gradient(to bottom, rgba(26,26,26,0) 0%, rgba(26,26,26,1) 100%); }
 
+        /* INFO 版面專用間距調整 (因為無咗首圖) */
         .content-scroll { position: relative; z-index: 10; padding: 0px 30px 80px; min-height: 100%; }
+        #info-view { padding-top: 40px; } /* INFO版專用頂部間距 */
+
         .view-section { display: none; animation: fadeIn 0.4s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -119,7 +122,8 @@
         .section-header { font-family: 'Lato', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-sub); margin: 35px 0 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; transition: border-color 0.4s ease, color 0.4s ease; }
 
         /* ====== 倒數計時器 ====== */
-        .countdown-container { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-light); background: var(--bg-card); padding: 15px 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; }
+        .countdown-container { display: flex; flex-direction: column; border: 1px solid var(--border-light); background: var(--bg-card); padding: 15px 20px 20px; margin-bottom: 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; }
+        .cd-row { display: flex; width: 100%; justify-content: space-between; }
         .cd-box { text-align: center; flex: 1; border-right: 1px solid var(--border-light); }
         .cd-box:last-child { border-right: none; }
         .cd-num { font-size: 26px; font-family: 'Lato', sans-serif; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 4px; }
@@ -233,7 +237,7 @@
             
             <div id="home-view" class="view-section active">
                 <div class="day-badge">Trip Overview</div>
-                <h1 class="day-title">北陸自駕大綱</h1>
+                <h1 class="day-title" style="font-size: 26px; line-height: 1.4;">2026 PAUL & JOYCE<br>日本北陸之旅</h1>
                 
                 <div class="countdown-container" id="countdown-timer">
                     </div>
@@ -570,6 +574,7 @@
 
     function showHome() {
         deactivateAll();
+        document.getElementById('hero-img').style.display = 'block';
         document.getElementById('home-view').classList.add('active');
         document.getElementById('nav-item-home').classList.add('active');
         updateHeroImage("indexnew.jpeg");
@@ -577,13 +582,15 @@
 
     function showInfoView() {
         deactivateAll();
+        // 💡 隱藏 INFO 版面嘅首圖
+        document.getElementById('hero-img').style.display = 'none'; 
         document.getElementById('info-view').classList.add('active');
         document.getElementById('nav-btn-info').classList.add('active');
-        updateHeroImage("indexnew.jpeg");
     }
 
     function showItineraryView() {
         deactivateAll();
+        document.getElementById('hero-img').style.display = 'block';
         document.getElementById('itinerary-view').classList.add('active');
     }
 
@@ -644,15 +651,19 @@
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
+            // 💡 倒數標題加返喺呢度
             cdContainer.innerHTML = `
-                <div class="cd-box"><div class="cd-num">${days}</div><div class="cd-lbl">DAYS</div></div>
-                <div class="cd-box"><div class="cd-num">${hours}</div><div class="cd-lbl">HOURS</div></div>
-                <div class="cd-box"><div class="cd-num">${minutes}</div><div class="cd-lbl">MINS</div></div>
+                <div style="width: 100%; text-align: center; font-family: 'Noto Serif TC', serif; font-size: 13px; font-weight: bold; color: var(--accent); letter-spacing: 2px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-light); padding-bottom: 8px;">旅程出發倒數</div>
+                <div class="cd-row">
+                    <div class="cd-box"><div class="cd-num">${days}</div><div class="cd-lbl">DAYS</div></div>
+                    <div class="cd-box"><div class="cd-num">${hours}</div><div class="cd-lbl">HOURS</div></div>
+                    <div class="cd-box"><div class="cd-num">${minutes}</div><div class="cd-lbl">MINS</div></div>
+                </div>
             `;
         };
         
         updateTimer();
-        setInterval(updateTimer, 60000); // 每分鐘更新一次
+        setInterval(updateTimer, 60000);
     }
 
     // ====== ✅ Checklist 邏輯 ======
