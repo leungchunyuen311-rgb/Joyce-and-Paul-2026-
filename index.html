@@ -130,7 +130,6 @@
         .info-val { color: var(--text-main); font-family: 'Lato', sans-serif; font-weight: bold; text-align: right; }
         .info-val a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent); }
         
-        /* 實用日語 & 發音按鈕 */
         .phrase-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px dotted var(--border-light); }
         .phrase-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .phrase-text { flex: 1; }
@@ -181,7 +180,6 @@
         .record-del:hover { color: #d9534f; }
         .empty-wallet { text-align: center; color: var(--text-sub); font-size: 13px; font-family: 'Noto Serif TC', serif; padding: 30px 0; font-style: italic; }
 
-        /* FAB 懸浮按鈕 */
         .fab-btn { position: absolute; bottom: 30px; right: 20px; width: 56px; height: 56px; background-color: var(--accent); color: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 15px rgba(166, 124, 82, 0.4); cursor: pointer; z-index: 50; transition: transform 0.2s ease, background-color 0.3s ease; }
         .fab-btn:active { transform: scale(0.9); }
         
@@ -220,17 +218,17 @@
                 <div class="countdown-container" id="countdown-timer"></div>
                 <div class="section-header">Itinerary / 每日行程</div>
                 <div class="summary-list">
-                    <div class="sum-item"><div class="sum-day">01</div><div class="sum-info"><b>名古屋</b>抵達取車，榮商圈散策與極品肝入鰻魚飯三吃</div></div>
-                    <div class="sum-item"><div class="sum-day">02</div><div class="sum-info"><b>下呂溫泉</b>頂級手沖咖啡，冠軍醬油拉麵與下呂美人湯</div></div>
-                    <div class="sum-item"><div class="sum-day">03</div><div class="sum-info"><b>高山</b>飛驒古川巡禮，高山老街與最強飛驒牛燒肉</div></div>
-                    <div class="sum-item"><div class="sum-day">04</div><div class="sum-info"><b>上高地 / 奧飛驒</b>上高地健行，高空雙層纜車與露天風呂</div></div>
-                    <div class="sum-item"><div class="sum-day">05</div><div class="sum-info"><b>富山</b>玻璃美術館與最美星巴克，二星懷石專屬無酒精搭配</div></div>
-                    <div class="sum-item"><div class="sum-day">06</div><div class="sum-info"><b>立山黑部</b>橫斷雪之大谷，水壩咖哩與熱血居酒屋</div></div>
-                    <div class="sum-item"><div class="sum-day">07</div><div class="sum-info"><b>千里濱 / 金澤</b>千里濱沙灘馳騁，金澤二星西班牙創意料理</div></div>
-                    <div class="sum-item"><div class="sum-day">08</div><div class="sum-info"><b>金澤</b>近江町市場現開海鮮，美術館與能登牛燒肉</div></div>
-                    <div class="sum-item"><div class="sum-day">09</div><div class="sum-info"><b>五箇山 / 白川鄉</b>五箇山相倉聚落，白川鄉合掌村與黃金豬排</div></div>
-                    <div class="sum-item"><div class="sum-day">10</div><div class="sum-info"><b>鈴鹿 / 名花之里</b>鈴鹿賽道熱血體驗，名花之里與炭火燒鳥</div></div>
-                    <div class="sum-item"><div class="sum-day">11</div><div class="sum-info"><b>名古屋</b>熱田神宮參拜，鰻魚飯始祖與榮商圈最後採買</div></div>
+                    <div class="sum-item"><div class="sum-day">01</div><div class="sum-info"><b>名古屋</b>抵達中部國際，啟動 CEP，享用職人炭燒鰻魚飯與榮商圈夜遊</div></div>
+                    <div class="sum-item"><div class="sum-day">02</div><div class="sum-info"><b>下呂溫泉</b>頂級手沖咖啡，冠軍醬油拉麵與半山美人湯會席料理</div></div>
+                    <div class="sum-item"><div class="sum-day">03</div><div class="sum-info"><b>高山</b>飛驒古川巡禮，三町筋老街與最強飛驒牛燒肉巔峰</div></div>
+                    <div class="sum-item"><div class="sum-day">04</div><div class="sum-info"><b>上高地 / 奧飛驒</b>大正池健行，高空雙層纜車與源泉掛流露天風呂</div></div>
+                    <div class="sum-item"><div class="sum-day">05</div><div class="sum-info"><b>富山</b>玻璃美學與最美星巴克，岩瀨老街與二星懷石專屬 Pairing</div></div>
+                    <div class="sum-item"><div class="sum-day">06</div><div class="sum-info"><b>立山黑部</b>雲端雪牆漫步冒險，室堂水壩咖哩與熱血居酒屋</div></div>
+                    <div class="sum-item"><div class="sum-day">07</div><div class="sum-info"><b>千里濱 / 金澤</b>雨晴海岸絕景，沙灘狂飆 8 公里與二星西班牙創意料理</div></div>
+                    <div class="sum-item"><div class="sum-day">08</div><div class="sum-info"><b>金澤</b>近江町海鮮丼，21世紀美術館《泳池》、精品咖啡與能登牛</div></div>
+                    <div class="sum-item"><div class="sum-day">09</div><div class="sum-info"><b>白川鄉 / 犬山</b>時髦法式早餐，俯瞰合掌童話，國寶犬山城與黃金豬排</div></div>
+                    <div class="sum-item"><div class="sum-day">10</div><div class="sum-info"><b>鈴鹿 / 名花之里</b>鈴鹿賽道速度激情體驗，名花之里絕美點燈與炭火燒鳥</div></div>
+                    <div class="sum-item"><div class="sum-day">11</div><div class="sum-info"><b>名古屋</b>熱田神宮參拜，蓬萊軒鰻魚飯，大須榮商圈瘋狂尋寶與返港</div></div>
                 </div>
             </div>
 
@@ -271,7 +269,6 @@
                     <div class="info-row"><div class="info-lbl">香港入境處求助熱線</div><div class="info-val"><a href="tel:+8521868">+852 1868</a></div></div>
                 </div>
 
-                <!-- 語音發音助手升級 -->
                 <div class="info-card">
                     <h3>🗣️ Phrases / 實用語句 (點擊發音)</h3>
                     <div class="phrase-item">
@@ -310,7 +307,6 @@
                     <div class="wallet-total-hkd" id="wallet-total-hkd">≈ $ 0.00 HKD</div>
                 </div>
                 
-                <!-- 視覺化統計區 -->
                 <div class="expense-stats" id="expense-stats" style="display: none;">
                     <div class="stat-bar-container" id="stat-bar-container"></div>
                     <div class="stat-legend" id="stat-legend"></div>
@@ -331,7 +327,6 @@
             </div>
         </div>
 
-        <!-- FAB 懸浮快捷按鈕 -->
         <div class="fab-btn" id="fab-add-expense" onclick="openWalletQuickAdd()">
             <i class="fa-solid fa-plus"></i>
         </div>
@@ -341,77 +336,75 @@
 <script>
     let currentDayIndex = -1; 
     const EXCH_RATE = 0.052; 
-
-    // 類別顏色對應表 (供視覺化圖表使用)
     const CAT_COLORS = { "🍣 飲食": "#FF6B6B", "🚗 交通": "#4ECDC4", "🛍️ 購物": "#FFE66D", "🎫 玩樂": "#9D4EDD", "🏨 住宿": "#118AB2", "💰 其他": "#95A5A6" };
 
-    // ================= 最新 11 天行程數據庫 =================
+    // ================= 最新 11 天四大階段精細行程數據庫 =================
     const tripData = [
         { 
-            day: 1, dateStr: "MAY 20", title: "名古屋啟程與溫泉洗禮", desc: "抵達名古屋，辦理租車後於榮商圈散策。夜晚享用極品肝入鰻魚飯三吃。", tags: ["必吃：肝入鰻魚飯三吃", "住宿：Lamp Light Books"], guide: "出發前記得在機場確認 CEP Pass 已經成功加購，這幾天的過路費就靠它了！", heroImg: "day1new.jpg", 
+            day: 1, dateStr: "MAY 20", title: "第一階段：都會職人與溫泉洗禮", desc: "抵達中部國際機場辦理租車。晚上享用職人炭火烤製、外焦內嫩的極品肝入鰻魚飯，並於榮商圈夜遊拍攝宇宙船。", tags: ["必吃：肝入り上ひつまぶし", "住宿：Lamp Light Books"], guide: "出發前記得在機場確認 CEP Pass 已經成功啟動，這幾天的高速公路過路費就靠它了！", heroImg: "day1new.jpg", 
             weather: { loc: "NAGOYA", q: "Nagoya,JP", periods: [{p:"上午", i:"⛅", t:"20°"}, {p:"下午", i:"☀️", t:"24°"}, {p:"晚上", i:"🌙", t:"18°"}] }, 
-            routeLocs: ["中部國際機場", "Lamp Light Books Hotel Nagoya", "炭焼 うな富士 本店"], 
-            events: [ { time: "15:50", title: "抵達中部機場 (UO690)", btns: ["nav"] }, { time: "17:30", title: "辦理租車 (確認 CEP Pass)", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "18:30", title: "入住 Lamp Light Books Hotel", btns: ["nav"], mapcode: "4 286 288*63", phone: "052-231-7011" }, { time: "19:30", title: "晚餐：炭焼 うな富士 本店", btns: ["nav"], phone: "052-881-0067" } ] 
+            routeLocs: ["中部國際機場", "Lamp Light Books Hotel Nagoya", "炭焼 うな富士 本店", "Oasis 21"], 
+            events: [ { time: "15:50", title: "抵達中部機場 (UO690)", btns: ["nav"] }, { time: "16:30", title: "辦理租車並啟動 CEP Pass", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "18:30", title: "入住 Lamp Light Books Hotel", btns: ["nav"], mapcode: "4 286 288*63", phone: "052-231-7011" }, { time: "19:00", title: "晚餐：炭焼 うな富士 本店", btns: ["nav"], phone: "052-881-0067" }, { time: "21:00", title: "榮商圈散策 (Oasis 21 夜景)", btns: ["nav"] } ] 
         },
         { 
-            day: 2, dateStr: "MAY 21", title: "拉麵靈魂與美人湯", desc: "用頂級手沖咖啡喚醒早晨，品嚐名古屋第一醬油拉麵。午後自駕前往下呂溫泉，享受美人湯與會席料理。", tags: ["必吃：紫陽花拉麵", "必泡：下呂美人湯"], guide: "紫陽花拉麵非常熱門，提早抵達才不會排太久。吃飽後沿著國道往飛驒川方向開，風景超美！", heroImg: "day2.webp", 
+            day: 2, dateStr: "MAY 21", title: "名古屋 ➔ 下呂：頂級手沖與美人湯", desc: "用 GLITCH COFFEE 頂級手沖喚醒旅行靈魂，品嚐名古屋醬油拉麵巔峰。午後自駕前往下呂溫泉，享受美人湯與飛驒牛會席料理。", tags: ["必吃：紫陽花拉麵", "必泡：下呂美人湯"], guide: "從名古屋前往下呂的車程約 2 小時 15 分，路途風景優美，拉麵店極受歡迎記得預留時間。", heroImg: "day2.webp", 
             weather: { loc: "GERO", q: "Gero,JP", periods: [{p:"上午", i:"☀️", t:"18°"}, {p:"下午", i:"☀️", t:"22°"}, {p:"晚上", i:"☁️", t:"15°"}] }, 
             routeLocs: ["GLITCH COFFEE NAGOYA", "らぁ麺 紫陽花", "下呂温泉 しょうげつ"], 
-            events: [ { time: "09:00", title: "GLITCH COFFEE 頂級手沖", btns: ["nav"] }, { time: "11:00", title: "午餐：らぁ麺 紫陽花", btns: ["nav"], mapcode: "4 135 683*22" }, { time: "13:00", title: "自駕前往下呂溫泉", btns: ["nav"] }, { time: "15:30", title: "入住 下呂温泉 しょうげつ", btns: ["nav"], phone: "0576-25-7611" }, { time: "18:30", title: "晚餐：精緻旅館會席料理", btns: [] } ] 
+            events: [ { time: "09:30", title: "GLITCH COFFEE 頂級手沖", btns: ["nav"] }, { time: "11:30", title: "午餐：らぁ麺 紫陽花", btns: ["nav"], mapcode: "4 135 683*22" }, { time: "14:00", title: "自駕前往下呂溫泉", btns: ["nav"] }, { time: "17:00", title: "入住 下呂温泉 しょうげつ", btns: ["nav"], phone: "0576-25-7611" }, { time: "19:00", title: "晚餐：精緻旅館會席料理 (飛驒牛)", btns: [] } ] 
         },
         { 
-            day: 3, dateStr: "MAY 22", title: "飛驒秘境・聖地巡禮", desc: "漫步於飛驒古川白壁土藏街與高山老街，感受江戶風情。夜晚享用高山最強飛驒牛燒肉。", tags: ["漫步：高山老街", "必吃：味藏天國"], guide: "味藏天國燒肉極度熱門且無法預約，請務必在 17:00 前去現場抽號碼牌！", heroImg: "day3.webp", 
+            day: 3, dateStr: "MAY 22", title: "第二階段：飛驒秘境與雲端雪牆", desc: "漫步飛驒古川白壁土藏街與高山老街，拍攝《你的名字》場景。夜晚在味藏天國品嚐入口即化的高山最強飛驒牛燒肉。", tags: ["漫步：高山老街", "必吃：味藏天國拼盤"], guide: "味藏天國燒肉極度熱門且無法預約，請務必在 17:00 準時去現場抽號碼牌！", heroImg: "day3.webp", 
             weather: { loc: "TAKAYAMA", q: "Takayama,JP", periods: [{p:"上午", i:"☁️", t:"16°"}, {p:"下午", i:"🌥️", t:"19°"}, {p:"晚上", i:"🌧️", t:"14°"}] }, 
             routeLocs: ["飛驒古川", "蕎麥麵 正覺", "高山老街", "味藏天國", "KOKO HOTEL Hida Takayama"], 
-            events: [ { time: "10:00", title: "飛驒古川白壁土藏街散策", btns: ["nav"], mapcode: "191 662 133*82" }, { time: "12:00", title: "午餐：蕎麥麵 正覺", btns: ["nav"] }, { time: "14:00", title: "高山老街 (三町筋) 巡禮", btns: ["nav"] }, { time: "16:30", title: "入住 KOKO HOTEL Hida Takayama", btns: ["nav"] }, { time: "17:30", title: "晚餐：味藏天國 (現場領號)", btns: ["nav"], phone: "0577-37-1129" } ] 
+            events: [ { time: "10:30", title: "飛驒古川白壁土藏街散策", btns: ["nav"], mapcode: "191 662 133*82" }, { time: "12:00", title: "午餐：蕎麥麵 正覺", btns: ["nav"] }, { time: "14:00", title: "高山老街巡禮 (飛驒特牛壽司)", btns: ["nav"] }, { time: "17:00", title: "晚餐：味藏天國 (現場領號)", btns: ["nav"], phone: "0577-37-1129" }, { time: "20:00", title: "入住 KOKO HOTEL Hida Takayama", btns: ["nav"] } ] 
         },
         { 
-            day: 4, dateStr: "MAY 23", title: "神之秘境・奧飛驒風呂", desc: "清晨前進上高地健行，呼吸神之故鄉的空氣。下午搭乘新穗高雙層纜車，入住源泉掛流露天風呂。", tags: ["健行：上高地", "必搭：雙層高空纜車"], guide: "上高地山區氣溫較低，記得多帶一件外套。從大正池走到河童橋的景色最為經典。", heroImg: "day4new.jpg", 
+            day: 4, dateStr: "MAY 23", title: "上高地 ➔ 奧飛驒：神之秘境", desc: "清晨前往上高地，在翠綠山林與殘雪中健行。下午搭乘新穗高雙層纜車直達 2156m 展望台，入住源泉掛流露天溫泉。", tags: ["健行：上高地", "必搭：新穗高雙層纜車"], guide: "上高地大正池到河童橋是精華路線，食堂的山賊燒定食酥脆多汁，非常推薦！", heroImg: "day4new.jpg", 
             weather: { loc: "KAMIKOCHI", q: "Matsumoto,JP", periods: [{p:"上午", i:"🌦️", t:"10°"}, {p:"下午", i:"☀️", t:"14°"}, {p:"晚上", i:"❄️", t:"5°"}] }, 
-            routeLocs: ["大正池", "上高地食堂", "新穂高ロープウェイ", "元湯 孫九郎"], 
-            events: [ { time: "07:30", title: "上高地健行 (大正池至河童橋)", btns: ["nav"] }, { time: "12:00", title: "午餐：上高地食堂 (山賊燒定食)", btns: ["nav"] }, { time: "14:15", title: "新穗高雙層高空纜車", btns: ["nav"], mapcode: "898 043 515*00" }, { time: "17:00", title: "入住 元湯 孫九郎 (或同級)", btns: ["nav"], phone: "0578-89-2231" } ] 
+            routeLocs: ["上高地 大正池", "上高地食堂", "新穂高ロープウェイ", "元湯 孫九郎"], 
+            events: [ { time: "08:30", title: "上高地健行 (大正池至河童橋)", btns: ["nav"] }, { time: "12:30", title: "午餐：上高地食堂 (山賊燒定食)", btns: ["nav"] }, { time: "14:30", title: "新穗高高空纜車 (2156m)", btns: ["nav"], mapcode: "898 043 515*00" }, { time: "16:30", title: "入住 元湯 孫九郎 (露天風呂)", btns: ["nav"], phone: "0578-89-2231" } ] 
         },
         { 
-            day: 5, dateStr: "MAY 24", title: "職人壽司與二星懷石", desc: "探索富山玻璃美術館的晶瑩剔透，造訪最美星巴克。夜晚享受二星懷石名店，並搭配特別為你準備的無酒精 Pairing。", tags: ["米其林：二星ふじ居", "無酒精 Pairing 🍸"], guide: "御料理 ふじ居 的職人精神非常講究，他們會為你不喝酒的需求搭配獨特的高級茶飲或特調，絕對是味蕾的極致享受！", heroImg: "day5.jpg", 
+            day: 5, dateStr: "MAY 24", title: "富山：玻璃美學與二星懷石", desc: "品嚐富山灣職人壽司，探索隈研吾設計的玻璃美術館與岩瀨老街。夜晚享受二星懷石名店，搭配專屬無酒精 Pairing。", tags: ["米其林：二星ふじ居", "無酒精 Pairing 🍸"], guide: "抵達岩瀨老街時，別忘了尋找「大塚屋」的三角銅鑼燒，或挑選精緻的職人玻璃器皿。", heroImg: "day5.jpg", 
             weather: { loc: "TOYAMA", q: "Toyama,JP", periods: [{p:"上午", i:"☀️", t:"16°"}, {p:"下午", i:"☀️", t:"21°"}, {p:"晚上", i:"🌙", t:"14°"}] }, 
-            routeLocs: ["富山市玻璃美術館", "寿し栄 総曲輪店", "富岩運河環水公園", "Daiwa Roynet Hotel Toyama-Ekimae", "御料理 ふじ居"], 
-            events: [ { time: "10:30", title: "富山市玻璃美術館", btns: ["nav"] }, { time: "12:30", title: "午餐：壽司榮 總曲輪店", btns: ["nav"], phone: "076-421-7035" }, { time: "15:00", title: "富岩運河環水公園 (星巴克)", btns: ["nav"], mapcode: "33 615 798*11" }, { time: "16:30", title: "入住 Daiwa Roynet Hotel", btns: ["nav"] }, { time: "19:00", title: "晚餐：御料理 ふじ居 (無酒精 Pairing)", btns: ["nav"], phone: "076-456-1527" } ] 
+            routeLocs: ["寿し栄 総曲輪店", "富山市玻璃美術館", "富岩運河環水公園", "岩瀬大町 本通り", "御料理 ふじ居"], 
+            events: [ { time: "11:30", title: "午餐：壽司榮 總曲輪店", btns: ["nav"], phone: "076-421-7035" }, { time: "13:30", title: "玻璃美術館 ➔ 環水公園星巴克", btns: ["nav"] }, { time: "16:00", title: "岩瀨老街散步 (大塚屋三角銅鑼燒)", btns: ["nav"] }, { time: "19:00", title: "晚餐：御料理 ふじ居 (二星懷石)", btns: ["nav"], phone: "076-456-1527" }, { time: "21:30", title: "入住 Daiwa Roynet Hotel", btns: ["nav"] } ] 
         },
         { 
-            day: 6, dateStr: "MAY 25", title: "雲端雪牆大冒險", desc: "換乘 6 種交通工具全日橫斷日本屋脊，見證震撼的雪之大谷與黑部水壩，傍晚返回富山市享用熱血居酒屋。", tags: ["必備：太陽眼鏡", "必吃：水壩咖哩/白蝦丼"], guide: "上山紫外線強，風大且冷，防風保暖衣物與墨鏡缺一不可。居酒屋已經備註安排無酒精特調飲品囉！", heroImg: "day6new.jpg", 
+            day: 6, dateStr: "MAY 25", title: "立山黑部：雲端雪牆冒險", desc: "立山站出發，換乘 6 種交通工具全日橫斷日本屋脊。漫步於震撼的室堂雪之大谷，傍晚返回富山市享用熱血居酒屋。", tags: ["必備：太陽眼鏡", "必吃：水壩咖哩/白蝦丼"], guide: "山上紫外線極強，防風保暖衣物與墨鏡缺一不可。居酒屋已經備註安排無酒精氣泡飲！", heroImg: "day6new.jpg", 
             weather: { loc: "MURODO", q: "Tateyama,JP", periods: [{p:"上午", i:"❄️", t:"1°"}, {p:"下午", i:"⛅", t:"4°"}, {p:"晚上", i:"❄️", t:"-2°"}] }, 
             routeLocs: ["立山駅", "室堂", "吟魚のはなれ 吟チロリ"], 
-            events: [ { time: "08:00", title: "立山站搭乘斜面電車", btns: ["nav"], mapcode: "678 794 135*55" }, { time: "10:30", title: "室堂 雪之大谷漫步", btns: ["nav"] }, { time: "12:30", title: "午餐：室堂站 立山酒店", btns: ["nav"] }, { time: "17:00", title: "傍晚返回富山市", btns: ["nav"] }, { time: "19:30", title: "晚餐：吟魚のはなれ 吟チロリ", btns: ["nav"], phone: "076-431-7780" } ] 
+            events: [ { time: "07:00", title: "立山站出發，換乘 6 種工具", btns: ["nav"], mapcode: "678 794 135*55" }, { time: "10:30", title: "室堂 雪之大谷漫步", btns: ["nav"] }, { time: "12:30", title: "午餐：室堂站 立山酒店", btns: ["nav"] }, { time: "17:00", title: "傍晚返回富山市", btns: ["nav"] }, { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", btns: ["nav"], phone: "076-431-7780" } ] 
         },
         { 
-            day: 7, dateStr: "MAY 26", title: "海線狂飆與二星創菜", desc: "從雨晴海岸到全日本唯一沙灘公路飆速。抵達金澤後，享受二星西班牙創意料理帶來的五感震撼。", tags: ["體驗：沙灘自駕", "米其林：二星 respiración"], guide: "在千里濱沙灘馳騁過癮後，千萬別忘了找附近的洗車場沖洗底盤，避免海水鹽分腐蝕租來的車子！晚餐同樣備妥專屬 Non-alcoholic Pairing。", heroImg: "day7new.jpg", 
+            day: 7, dateStr: "MAY 26", title: "第三階段：海岸馳騁與小京都藝術", desc: "拍下雨晴海岸義經岩絕景，隨後於千里濱沙灘狂飆 8 公里。抵達金澤後，享受二星西班牙創意料理的五感震撼。", tags: ["體驗：沙灘自駕", "米其林：二星 respiración"], guide: "在千里濱沙灘馳騁結束後，務必尋找附近的洗車場沖洗底盤，避免海水鹽分腐蝕。晚餐已安排好無酒精配餐。", heroImg: "day7new.jpg", 
             weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"⛅", t:"18°"}, {p:"下午", i:"☀️", t:"23°"}, {p:"晚上", i:"🌙", t:"17°"}] }, 
-            routeLocs: ["雨晴海岸", "氷見 魚市場食堂", "千里浜なぎさドライブウェイ", "SOKI Kanazawa", "respiración 金沢"], 
-            events: [ { time: "10:00", title: "雨晴海岸", btns: ["nav"], mapcode: "130 081 689*00" }, { time: "11:30", title: "午餐：冰見番屋街", btns: ["nav"], phone: "0766-72-2018" }, { time: "13:30", title: "千里濱渚駕車道 (沙灘馳騁)", btns: ["nav"], mapcode: "135 174 766*66" }, { time: "15:30", title: "尋找洗車場沖洗底盤", btns: ["nav"] }, { time: "16:30", title: "入住 SOKI Kanazawa", btns: ["nav"] }, { time: "18:00", title: "晚餐：respiración (無酒精 Pairing)", btns: ["nav"], phone: "076-225-8681" } ] 
+            routeLocs: ["雨晴海岸", "千里浜なぎさドライブウェイ", "SOKI Kanazawa", "respiración 金沢"], 
+            events: [ { time: "09:30", title: "雨晴海岸 (義經岩與雪山連峰)", btns: ["nav"], mapcode: "130 081 689*00" }, { time: "13:30", title: "千里濱渚駕車道 (結束後洗車)", btns: ["nav"], mapcode: "135 174 766*66" }, { time: "16:30", title: "入住 SOKI Kanazawa", btns: ["nav"] }, { time: "18:00", title: "晚餐：respiración (無酒精配餐)", btns: ["nav"], phone: "076-225-8681" } ] 
         },
         { 
-            day: 8, dateStr: "MAY 27", title: "現代藝術與傳統交織", desc: "早晨在市場享用現開海鮮，接著穿梭於金澤 21 世紀美術館、兼六園與鈴木大拙館，夜晚品嚐極品能登牛。", tags: ["必拍：美術館泳池", "必吃：極品能登牛燒肉"], guide: "21世紀美術館的《泳池》內部展區需要提前預約才能進入！鈴木大拙館的水鏡之庭非常適合沉思冥想。", heroImg: "day8new.jpg", 
+            day: 8, dateStr: "MAY 27", title: "金澤：現代藝術與精品咖啡", desc: "早晨享受近江町海鮮丼，穿梭 21 世紀美術館與兼六園。品嚐精品咖啡與水之冥想後，夜訪東茶屋街與能登牛燒肉。", tags: ["必拍：美術館泳池", "必吃：極品能登牛燒肉"], guide: "Townsfolk Coffee 的極簡空間與單品豆非常棒，是下午極佳的歇息點。美術館的《泳池》內部記得提前預約！", heroImg: "day8new.jpg", 
             weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"☀️", t:"19°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"🌙", t:"18°"}] }, 
-            routeLocs: ["近江町市場", "金沢21世紀美術館", "兼六園", "鈴木大拙館", "ひがし茶屋街", "あぶり肉 がらん"], 
-            events: [ { time: "08:30", title: "早餐：近江町市場 (現開海鮮)", btns: ["nav"], mapcode: "41 528 290*88" }, { time: "10:30", title: "金澤 21 世紀美術館 (預約泳池)", btns: ["nav", "voucher"] }, { time: "13:00", title: "兼六園散策", btns: ["nav"] }, { time: "14:30", title: "鈴木大拙館 (水之冥想)", btns: ["nav"] }, { time: "16:00", title: "東茶屋街漫步", btns: ["nav"] }, { time: "19:00", title: "晚餐：あぶり肉 がらん", btns: ["nav"], phone: "076-224-0029" } ] 
+            routeLocs: ["近江町市場", "金沢21世紀美術館", "Townsfolk Coffee", "鈴木大拙館", "ひがし茶屋街", "あぶり肉 がらん"], 
+            events: [ { time: "09:00", title: "早餐：近江町市場 (現開岩牡蠣)", btns: ["nav"], mapcode: "41 528 290*88" }, { time: "11:30", title: "金澤 21 世紀美術館 (預約泳池)", btns: ["nav", "voucher"] }, { time: "13:45", title: "咖啡：Townsfolk Coffee", btns: ["nav"] }, { time: "15:00", title: "兼六園 ➔ 鈴木大拙館 (水之冥想)", btns: ["nav"] }, { time: "17:15", title: "東茶屋街 (點燈時分漫步)", btns: ["nav"] }, { time: "19:00", title: "晚餐：あぶり肉 がらん (能登牛)", btns: ["nav"], phone: "076-224-0029" } ] 
         },
         { 
-            day: 9, dateStr: "MAY 28", title: "合掌童話與黃金豬排", desc: "深入五箇山相倉聚落與白川鄉合掌村，將世界遺產的美景盡收眼底。長途自駕返回名古屋吃酥脆名店豬排。", tags: ["必訪：五箇山相倉", "必吃：とんかつ 土本"], guide: "今天駕駛里程較長，請適時在 SA/PA 休息站停留換手或伸展。土本的豬排麵衣完美，絕對值得期待！", heroImg: "day9new.jpg", 
+            day: 9, dateStr: "MAY 28", title: "第四階段：童話遺產與城下町尋寶", desc: "享用時髦法式早餐後，探訪白川鄉合掌村。下午登上國寶犬山城，漫步神社大街，最後以黃金酥脆豬排完美作結。", tags: ["必訪：國寶犬山城", "必吃：とんかつ 土本"], guide: "犬山城是全日本最古老的天守閣，三光稻荷神社的紅鳥居和城下町的彩色糰子都超級好拍！", heroImg: "day9new.jpg", 
             weather: { loc: "SHIRAKAWA", q: "Shirakawa,JP", periods: [{p:"上午", i:"🌥️", t:"15°"}, {p:"下午", i:"⛅", t:"18°"}, {p:"晚上", i:"🌙", t:"12°"}] }, 
-            routeLocs: ["相倉合掌造り集落", "白川郷", "Hotel Keihan Nagoya", "とんかつ 土本"], 
-            events: [ { time: "10:00", title: "探訪相倉聚落 (五箇山)", btns: ["nav"] }, { time: "12:30", title: "白川鄉合掌村展望台", btns: ["nav"], mapcode: "549 018 380*60" }, { time: "14:30", title: "長途自駕返回名古屋", btns: ["nav"] }, { time: "17:30", title: "入住 Hotel Keihan Nagoya", btns: ["nav"] }, { time: "19:30", title: "晚餐：とんかつ 土本", btns: ["nav"], phone: "052-935-0010" } ] 
+            routeLocs: ["isotope 金沢", "白川郷", "犬山城", "三光稲荷神社", "とんかつ 土本", "Hotel Keihan Nagoya"], 
+            events: [ { time: "08:30", title: "早餐：isotope (法式吐司)", btns: ["nav"] }, { time: "11:00", title: "白川鄉合掌村展望台與散步", btns: ["nav"], mapcode: "549 018 380*60" }, { time: "14:30", title: "國寶犬山城 (最古老天守閣)", btns: ["nav"], mapcode: "70 096 112*55" }, { time: "16:00", title: "漫步三光稻荷神社及城下町", btns: ["nav"] }, { time: "19:30", title: "晚餐：とんかつ 土本 (黃金豬排)", btns: ["nav"], phone: "052-935-0010" } ] 
         },
         { 
-            day: 10, dateStr: "MAY 29", title: "速度激情與夢幻燈海", desc: "在國際級的鈴鹿賽道喚醒 F1 熱血魂！傍晚前往名花之里沉浸於日本最壯觀的花海與點燈秀中。", tags: ["熱血：鈴鹿賽道", "浪漫：名花之里"], guide: "千龜的炭火燒鳥是名古屋在地人的最愛，烤功一流，配上無酒精飲料一樣能吃得酣暢淋漓！", heroImg: "day10new.jpg", 
+            day: 10, dateStr: "MAY 29", title: "鈴鹿賽道 ➔ 名花之里", desc: "在國際級的鈴鹿賽道喚醒速度激情與熱血！傍晚前往名花之里沉浸於絕美點燈秀，晚餐享用炭火燒鳥名店。", tags: ["熱血：鈴鹿賽道", "浪漫：名花之里"], guide: "千龜的雞肝與手工雞肉丸是必點招牌，烤功一流，配上無酒精飲料一樣能吃得酣暢淋漓！", heroImg: "day10new.jpg", 
             weather: { loc: "SUZUKA", q: "Suzuka,JP", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"26°"}, {p:"晚上", i:"🌙", t:"19°"}] }, 
             routeLocs: ["鈴鹿サーキット", "なばなの里", "焼鳥 千亀"], 
-            events: [ { time: "10:00", title: "鈴鹿賽道熱血體驗", btns: ["nav", "voucher"], mapcode: "38 003 400*22" }, { time: "16:00", title: "名花之里 (賞花與點燈秀)", btns: ["nav", "web"], mapcode: "38 894 482*00" }, { time: "20:30", title: "晚餐：千龜 (炭火燒鳥名店)", btns: ["nav"], phone: "052-262-4848" } ] 
+            events: [ { time: "10:30", title: "鈴鹿賽道 (賽道駕駛/卡丁車)", btns: ["nav", "voucher"], mapcode: "38 003 400*22" }, { time: "17:00", title: "名花之里 (賞花與點燈秀)", btns: ["nav", "web"], mapcode: "38 894 482*00" }, { time: "20:00", title: "晚餐：千龜 (炭火燒鳥名店)", btns: ["nav"], phone: "052-262-4848" } ] 
         },
         { 
-            day: 11, dateStr: "MAY 30", title: "完美收官・滿載賦歸", desc: "前往熱田神宮參拜，品嚐鰻魚飯始祖的經典滋味。在榮商圈完成最後的採買任務，為這趟旅程畫下完美句點。", tags: ["參拜：熱田神宮", "必吃：熱田蓬萊軒"], guide: "還車前記得要把油箱加滿 (Regular 満タンで)，並且請租車公司結算這幾天 CEP Pass 的總金額。", heroImg: "day11new.jpg", 
+            day: 11, dateStr: "MAY 30", title: "名古屋 ➔ 返港：最後衝刺", desc: "神宮參拜與鰻魚飯始祖。下午在大須與榮商圈瘋狂尋寶，包辦假面騎士、寶可夢卡牌、機能服飾與攝影設備升級！", tags: ["購物：大須與榮商圈", "必吃：熱田蓬萊軒"], guide: "還車前記得要把油箱加滿，並且請租車公司結算這幾天 CEP Pass 的過路費總金額。祝尋寶大豐收！", heroImg: "day11new.jpg", 
             weather: { loc: "NAGOYA", q: "Nagoya,JP", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"☁️", t:"21°"}] }, 
-            routeLocs: ["熱田神宮", "あつた蓬莱軒 本店", "栄", "中部國際機場"], 
-            events: [ { time: "09:30", title: "熱田神宮參拜", btns: ["nav"], mapcode: "4 148 440*11" }, { time: "11:30", title: "午餐：熱田蓬萊軒 (鰻魚飯始祖)", btns: ["nav"], mapcode: "4 117 763*88" }, { time: "13:30", title: "榮商圈最後採買", btns: ["nav"] }, { time: "16:30", title: "機場還車與結算路費", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "20:45", title: "航班 UO671 返回香港", btns: ["nav"] } ] 
+            routeLocs: ["熱田神宮", "あつた蓬莱軒 本店", "大須商店街", "中部國際機場"], 
+            events: [ { time: "09:00", title: "熱田神宮參拜", btns: ["nav"], mapcode: "4 148 440*11" }, { time: "11:00", title: "午餐：熱田蓬萊軒 (鰻魚飯三吃)", btns: ["nav"], mapcode: "4 117 763*88" }, { time: "13:00", title: "大須/榮商圈尋寶 (玩具/工裝/相機)", btns: ["nav"] }, { time: "18:00", title: "機場加滿油還車，結算費用", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "20:45", title: "航班 UO671 返回香港", btns: ["nav"] } ] 
         }
     ];
 
