@@ -40,16 +40,20 @@
 
         /* 左側邊欄 */
         .sidebar { width: 80px; background: var(--bg-sidebar); display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 40px) 0 10px; border-right: 1px solid var(--border-light); z-index: 20; transition: background 0.4s ease; }
+        .trip-title { font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; text-align: center; color: var(--text-main); line-height: 1.4; margin-top: 15px; margin-bottom: 25px; letter-spacing: 1px; width: 100%; padding: 0 4px; word-wrap: break-word; }
         .side-btn { width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); transition: 0.3s; }
         .side-btn.active { color: var(--text-main); }
         .side-btn.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 60%; width: 3px; background: var(--accent); }
         
         .nav-days { flex: 1; overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; padding-bottom: 20px; }
+        .nav-days::-webkit-scrollbar { display: none; }
         .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: var(--text-sub); width: 100%; position: relative; transition: 0.3s; }
         .nav-item.active { color: var(--text-main); }
         .nav-item.active::before { content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px; background: var(--accent); }
         .nav-item .day-lbl { font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 600; margin-bottom: 2px;}
         .nav-item .date-lbl { font-family: 'Lato', sans-serif; font-size: 9px; letter-spacing: 1px; }
+
+        .theme-toggle-wrapper { margin-top: auto; width: 100%; }
 
         /* 主內容區 - 支援視差滾動 */
         .main-content { flex: 1; position: relative; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; background: var(--bg-paper); perspective: 1px; }
@@ -70,9 +74,96 @@
         /* 公用元件 */
         .day-badge { display: inline-block; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: 700; color: var(--accent); margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--accent); }
         .day-title { font-size: 32px; font-weight: 700; margin-bottom: 15px; line-height: 1.3; color: var(--text-main); letter-spacing: 0.5px; }
+        .day-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 30px; font-family: 'Noto Serif TC', serif; }
         .section-header { display: flex; justify-content: space-between; align-items: flex-end; font-family: 'Lato', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-sub); margin: 35px 0 15px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
 
+        /* ✅ 補回：倒數計時器 */
+        .countdown-container { display: flex; flex-direction: column; border: 1px solid var(--border-light); background: var(--bg-card); padding: 15px 20px 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.4s ease; border-radius: 4px; }
+        .cd-row { display: flex; width: 100%; justify-content: space-between; }
+        .cd-box { text-align: center; flex: 1; border-right: 1px solid var(--border-light); }
+        .cd-box:last-child { border-right: none; }
+        .cd-num { font-size: 26px; font-family: 'Lato', sans-serif; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+        .cd-lbl { font-size: 9px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
+        .cd-message { width: 100%; text-align: center; font-size: 16px; font-family: 'Noto Serif TC', serif; color: var(--accent); font-weight: bold; letter-spacing: 2px; }
+
+        /* ✅ 補回：總覽列表 */
+        .summary-list { display: flex; flex-direction: column; border-top: 2px solid var(--border-dark); }
+        .sum-item { display: flex; align-items: flex-start; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--border-light); transition: border-color 0.4s ease; }
+        .sum-day { font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: var(--accent); min-width: 40px; margin-top: 2px; }
+        .sum-info { color: var(--text-sub); font-size: 13px; line-height: 1.6; transition: color 0.4s ease; }
+        .sum-info b { color: var(--text-main); font-size: 15px; font-family: 'Noto Serif TC', serif; display: block; margin-bottom: 4px; transition: color 0.4s ease; }
+
+        /* ✅ 補回：標籤與提示 */
+        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
+        .tag { border: 1px solid var(--border-light); padding: 4px 10px; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-main); background: var(--bg-card); letter-spacing: 0.5px; border-radius: 2px; }
+
+        .guide-box { margin: 25px 0; padding: 20px 0 20px 20px; border-left: 3px solid var(--accent); background: transparent; position: relative; }
+        .guide-box::before { content: '\201C'; font-family: 'Noto Serif TC', serif; font-size: 60px; color: var(--border-light); position: absolute; top: -10px; left: 10px; z-index: -1; line-height: 1; }
+        .guide-box-title { color: var(--text-main); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .guide-box-text { font-size: 14px; color: var(--text-main); line-height: 1.8; font-style: italic; font-family: 'Noto Serif TC', serif; }
+
+        .route-btn { display: flex; justify-content: center; align-items: center; gap: 10px; background: var(--text-main); color: var(--bg-paper); padding: 14px 20px; font-size: 12px; font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: none; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 4px; width: 100%; transition: 0.3s; }
+        .route-btn:active { transform: scale(0.98); background: var(--accent); }
+
+        /* ✅ 補回：天氣卡片 */
+        .weather-card { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+        .weather-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 11px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
+        .live-badge { display: flex; align-items: center; gap: 4px; font-size: 8px; font-weight: bold; padding: 2px 6px; border: 1px solid var(--live-green); color: var(--live-green); border-radius: 10px; letter-spacing: 1px; }
+        .live-dot { width: 4px; height: 4px; background-color: var(--live-green); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .weather-forecast { display: flex; justify-content: space-between; gap: 5px; }
+        .w-day { text-align: center; flex: 1; border-right: 1px solid var(--border-light); }
+        .w-day:last-child { border-right: none; }
+        .w-period { font-size: 11px; font-family: 'Noto Serif TC', serif; color: var(--text-sub); margin-bottom: 8px; font-weight: bold; }
+        .w-icon { font-size: 20px; margin-bottom: 5px; color: var(--text-main); }
+        .w-temp { font-size: 14px; font-weight: bold; font-family: 'Lato', sans-serif; color: var(--text-main); }
+
+        /* ✅ 補回：時間軸 */
+        .timeline { margin-bottom: 30px; border-top: 2px solid var(--border-dark); padding-top: 20px; }
+        .tl-item { margin-bottom: 35px; display: flex; gap: 15px; }
+        .tl-time { font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 300; color: var(--accent); min-width: 65px; text-align: right; line-height: 1.1; }
+        .tl-content { flex: 1; border-left: 1px solid var(--border-light); padding-left: 20px; position: relative; }
+        .tl-content::before { content: ''; position: absolute; left: -5px; top: 8px; width: 9px; height: 9px; background: var(--accent); border-radius: 50%; }
+        .tl-title { font-size: 16px; color: var(--text-main); margin-bottom: 6px; font-family: 'Noto Serif TC', serif; font-weight: 600; line-height: 1.4; }
+        .tl-hours { font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 12px; letter-spacing: 0.5px; }
+        .tl-hours i { color: var(--accent); margin-right: 4px; }
+        .tl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 6px 12px; font-size: 10px; color: var(--text-sub); border-radius: 4px; transition: 0.2s; font-weight: bold; cursor: pointer;}
+        .action-btn:active { border-color: var(--text-main); color: var(--text-main); }
+        .action-btn.copy { background: rgba(166, 124, 82, 0.05); color: var(--accent); border-color: var(--accent); }
+
+        /* ✅ 補回：INFO 頁面專屬 */
+        .info-card { background: var(--bg-card); border: 1px solid var(--border-light); padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border-radius: 4px; }
+        .info-card h3 { font-size: 12px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--border-light); padding-bottom: 12px; margin-bottom: 15px; color: var(--accent); }
+        .info-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 15px; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-lbl { color: var(--text-sub); font-family: 'Noto Serif TC', serif; }
+        .info-val { color: var(--text-main); font-family: 'Lato', sans-serif; font-weight: bold; text-align: right; }
+        .info-val a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        
+        .phrase-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px dotted var(--border-light); }
+        .phrase-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .phrase-text { flex: 1; }
+        .p-ch { font-size: 12px; color: var(--text-sub); font-family: 'Noto Serif TC', serif; margin-bottom: 4px; }
+        .p-jp { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 2px; }
+        .p-rm { font-size: 10px; font-family: 'Lato', sans-serif; color: var(--accent); letter-spacing: 0.5px; }
+        
+        .progress-container { margin-bottom: 20px; }
+        .progress-header { display: flex; justify-content: space-between; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
+        .progress-bar { width: 100%; height: 6px; background: var(--progress-bg); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.5s ease; }
+        .check-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; cursor: pointer; }
+        .check-item:last-child { margin-bottom: 0; }
+        .check-box { color: var(--border-light); font-size: 18px; margin-top: 2px; transition: 0.2s;}
+        .check-item.checked .check-box { color: var(--accent); }
+        .check-text { font-size: 14px; font-family: 'Noto Serif TC', serif; color: var(--text-main); line-height: 1.5; transition: 0.3s;}
+        .check-item.checked .check-text { color: var(--text-sub); text-decoration: line-through; }
+
         /* 記帳統計視覺化 */
+        .wallet-hero { text-align: center; padding: 20px 0 20px; border-bottom: 2px solid var(--border-dark); margin-bottom: 20px; }
+        .wallet-total-jpy { font-size: 42px; font-family: 'Lato', sans-serif; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 8px; }
+        .wallet-total-hkd { font-size: 14px; font-family: 'Lato', sans-serif; color: var(--text-sub); letter-spacing: 1px; }
+        
         .expense-stats { margin-bottom: 25px; padding: 15px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; }
         .stat-bar-container { display: flex; width: 100%; height: 10px; border-radius: 5px; overflow: hidden; background: var(--progress-bg); margin-bottom: 15px; }
         .stat-segment { height: 100%; transition: width 0.8s ease; }
@@ -80,22 +171,34 @@
         .legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-sub); }
         .legend-color { width: 8px; height: 8px; border-radius: 50%; }
 
+        .add-expense-box { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; background: var(--bg-card); padding: 15px; border: 1px solid var(--border-light); border-radius: 4px; }
+        .exp-input-group { display: flex; width: 100%; gap: 10px; }
+        .exp-input { flex: 1; padding: 10px; border: none; border-bottom: 1px solid var(--border-light); background: transparent; color: var(--text-main); font-family: 'Lato', sans-serif; font-size: 16px; outline: none; transition: 0.3s; }
+        .exp-input:focus { border-color: var(--accent); }
+        .exp-select { padding: 10px; border: none; border-bottom: 1px solid var(--border-light); background: transparent; color: var(--text-main); font-family: 'Noto Serif TC', serif; font-size: 14px; outline: none; cursor: pointer; }
+        .exp-btn { width: 100%; background: var(--text-main); color: var(--bg-paper); border: none; padding: 12px; font-size: 12px; font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; margin-top: 5px; }
+        
+        .record-list { display: flex; flex-direction: column; gap: 15px; }
+        .record-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px dashed var(--border-light); }
+        .record-left { display: flex; align-items: center; gap: 12px; }
+        .record-icon { font-size: 20px; width: 30px; text-align: center; }
+        .record-note { font-size: 14px; color: var(--text-main); font-family: 'Noto Serif TC', serif; font-weight: 600; margin-bottom: 3px; }
+        .record-date { font-size: 10px; color: var(--text-sub); font-family: 'Lato', sans-serif; }
+        .record-right { display: flex; align-items: center; gap: 15px; }
+        .record-amt { font-size: 16px; font-family: 'Lato', sans-serif; font-weight: bold; color: var(--accent); }
+        .record-del { color: var(--border-light); background: transparent; border: none; cursor: pointer; font-size: 14px; transition: color 0.3s; }
+        .record-del:hover { color: #d9534f; }
+        .empty-wallet { text-align: center; color: var(--text-sub); font-size: 13px; font-family: 'Noto Serif TC', serif; padding: 30px 0; font-style: italic; }
+
         /* FAB 懸浮按鈕 */
-        .fab-btn { position: absolute; bottom: 30px; right: 20px; width: 56px; height: 56px; background-color: var(--accent); color: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; box-shadow: 0 8px 25px rgba(166, 124, 82, 0.4); z-index: 100; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fab-btn { position: absolute; bottom: 30px; right: 20px; width: 56px; height: 56px; background-color: var(--accent); color: var(--bg-card); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; box-shadow: 0 8px 25px rgba(166, 124, 82, 0.4); z-index: 100; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
         .fab-btn:active { transform: scale(0.8) rotate(45deg); }
         
-        /* 語音按鈕效果 */
-        .audio-btn { background: var(--bg-sidebar); color: var(--accent); border: 1px solid var(--border-light); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .audio-btn { background: var(--bg-sidebar); color: var(--accent); border: 1px solid var(--border-light); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer; }
         .audio-btn:active { background: var(--accent); color: white; }
 
-        /* 時間軸線條 */
-        .tl-content { flex: 1; border-left: 1px solid var(--border-light); padding-left: 20px; position: relative; }
-        .tl-content::before { content: ''; position: absolute; left: -5px; top: 8px; width: 9px; height: 9px; background: var(--accent); border-radius: 50%; }
-
-        .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 6px 12px; font-size: 10px; color: var(--text-sub); border-radius: 4px; transition: 0.2s; font-weight: bold; }
-        .action-btn.copy { background: rgba(166, 124, 82, 0.05); color: var(--accent); border-color: var(--accent); }
-
         #offline-badge { display: none; text-align: center; font-size: 9px; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
+        @media (min-width: 481px) { body { background-color: #D3CEC4; } body.dark-mode { background-color: #050505; } }
     </style>
 </head>
 <body>
@@ -113,7 +216,7 @@
         </div>
         <div class="theme-toggle-wrapper">
             <div id="offline-badge">OFFLINE</div>
-            <div class="side-btn" onclick="toggleTheme(); triggerHaptic();" style="border:none"><i class="fa-solid fa-moon" id="theme-icon"></i></div>
+            <div class="side-btn" onclick="toggleTheme(); triggerHaptic();" style="border:none; margin-bottom:0; padding-bottom:10px;"><i class="fa-solid fa-moon" id="theme-icon"></i></div>
         </div>
     </aside>
 
@@ -122,18 +225,15 @@
 
         <div class="content-scroll" id="content-scroll">
             
-            <!-- Index -->
             <div id="home-view" class="view-section active">
                 <div class="day-badge">Trip Overview</div>
                 <h1 class="day-title" style="font-size: 26px; line-height: 1.4;">2026 PAUL & JOYCE<br>日本北陸之旅</h1>
                 <div class="countdown-container" id="countdown-timer"></div>
                 <div class="section-header">Itinerary / 每日行程</div>
                 <div class="summary-list" id="main-summary-list">
-                    <!-- JS 動態生成帶有「今日高亮」邏輯的清單 -->
-                </div>
+                    </div>
             </div>
 
-            <!-- 行程內頁 -->
             <div id="itinerary-view" class="view-section">
                 <div class="day-badge" id="v-badge"></div>
                 <h1 class="day-title" id="v-title"></h1>
@@ -148,7 +248,6 @@
                 <div class="guide-box"><div class="guide-box-title">Editor's Note</div><div class="guide-box-text" id="v-guide"></div></div>
             </div>
 
-            <!-- INFO -->
             <div id="info-view" class="view-section top-padding-view">
                 <div class="day-badge">Travel Info & Prep</div>
                 <h1 class="day-title">資訊與準備</h1>
@@ -173,7 +272,6 @@
                 </div>
             </div>
 
-            <!-- WALLET -->
             <div id="wallet-view" class="view-section top-padding-view">
                 <div class="day-badge">Expense Tracker</div>
                 <h1 class="day-title">旅途記帳</h1>
@@ -197,7 +295,6 @@
             </div>
         </div>
 
-        <!-- FAB 懸浮快捷按鈕 -->
         <div class="fab-btn" id="fab-add-expense" onclick="openWalletQuickAdd(); triggerHaptic();"><i class="fa-solid fa-plus"></i></div>
     </main>
 </div>
@@ -208,17 +305,17 @@
     const CAT_COLORS = { "🍣 飲食": "#FF6B6B", "🚗 交通": "#4ECDC4", "🛍️ 購物": "#FFE66D", "🎫 玩樂": "#9D4EDD", "🏨 住宿": "#118AB2", "💰 其他": "#95A5A6" };
 
     const tripData = [
-        { day: 1, date: "2026-05-20", dateStr: "MAY 20", title: "名古屋：職人鰻魚飯之夜", desc: "抵達中部國際機場辦理租車，晚上享用炭火烤製肝入鰻魚飯。", tags: ["鰻魚富士", "Oasis 21"], guide: "啟動 CEP Pass 後，名古屋市內的收費道路也可以放心開了！", heroImg: "day1new.jpg", weather: { loc: "NAGOYA", periods: [{p:"上午", i:"⛅", t:"20°"}, {p:"下午", i:"☀️", t:"24°"}, {p:"晚上", i:"🌙", t:"18°"}] }, events: [ { time: "15:50", title: "抵達中部機場 (UO690)" }, { time: "16:30", title: "辦理租車啟動 CEP", mapcode: "15 009 514*15" }, { time: "19:00", title: "晚餐：炭燒鰻魚富士", phone: "052-881-0067" }, { time: "21:00", title: "榮商圈夜遊 (Oasis 21)" } ] },
-        { day: 2, date: "2026-05-21", dateStr: "MAY 21", title: "名古屋 ➔ 下呂：頂級手沖與美人湯", desc: "GLITCH 晨間咖啡後前往下呂溫泉，入住半山腰旅館享用會席料理。", tags: ["紫陽花拉麵", "下呂美人湯"], guide: "紫陽花拉麵一定要試！自駕車程約 2.15 小時，路況順暢。", heroImg: "day2.webp", weather: { loc: "GERO", periods: [{p:"上午", i:"☀️", t:"18°"}, {p:"下午", i:"☀️", t:"22°"}, {p:"晚上", i:"☁️", t:"15°"}] }, events: [ { time: "09:30", title: "GLITCH COFFEE 手沖" }, { time: "11:30", title: "午餐：らぁ麺 紫陽花", mapcode: "4 135 683*22" }, { time: "17:00", title: "入住下呂溫泉旅館", phone: "0576-25-7611" } ] },
-        { day: 3, date: "2026-05-22", dateStr: "MAY 22", title: "飛驒古川 ➔ 高山：聖地巡禮", desc: "飛驒古川白壁土藏街散策，品嚐高山最強味藏天國飛驒牛燒肉。", tags: ["你的名字", "飛驒牛燒肉"], guide: "味藏天國不能預約，下午 5 點一定要準時去現場抽號碼牌。", heroImg: "day3.webp", weather: { loc: "TAKAYAMA", periods: [{p:"上午", i:"☁️", t:"16°"}, {p:"下午", i:"🌥️", t:"19°"}, {p:"晚上", i:"🌧️", t:"14°"}] }, events: [ { time: "10:30", title: "飛驒古川 (餵錦鯉)", mapcode: "191 662 133*82" }, { time: "14:00", title: "高山三町筋老街" }, { time: "17:00", title: "晚餐：味藏天國燒肉", phone: "0577-37-1129" } ] },
-        { day: 4, date: "2026-05-23", dateStr: "MAY 23", title: "上高地 ➔ 奧飛驒：神之秘境", desc: "上高地大正池至河童橋健行，搭乘新穗高雙層纜車飽覽殘雪群峰。", tags: ["神之故鄉", "雙層纜車"], guide: "上高地禁止私家車，車要停在平湯停車場轉巴士。山賊燒定食非常酥脆！", heroImg: "day4new.jpg", weather: { loc: "KAMIKOCHI", periods: [{p:"上午", i:"🌦️", t:"10°"}, {p:"下午", i:"☀️", t:"14°"}, {p:"晚上", i:"❄️", t:"5°"}] }, events: [ { time: "08:30", title: "上高地健行 (大正池)" }, { time: "14:30", title: "新穗高雙層纜車", mapcode: "898 043 515*00" }, { time: "16:30", title: "入住奧飛驒溫泉旅館" } ] },
-        { day: 5, date: "2026-05-24", dateStr: "MAY 24", title: "富山：玻璃美學與二星懷石", desc: "探索隈研吾設計美術館，夜晚享受二星懷石名店御料理ふじ居。", tags: ["玻璃美術館", "二星懷石"], guide: "懷石料理已安排無酒精 Pairing，富山灣的白蝦壽司也不容錯過。", heroImg: "day5.jpg", weather: { loc: "TOYAMA", periods: [{p:"上午", i:"☀️", t:"16°"}, {p:"下午", i:"☀️", t:"21°"}, {p:"晚上", i:"🌙", t:"14°"}] }, events: [ { time: "11:30", title: "午餐：壽司榮 總曲輪", phone: "076-421-7035" }, { time: "13:30", title: "玻璃美術館 / 星巴克" }, { time: "19:00", title: "晚餐：御料理 ふじ居" } ] },
-        { day: 6, date: "2026-05-25", dateStr: "MAY 25", title: "立山黑部：雲端雪牆冒險", desc: "全日橫斷日本屋脊，見證震撼雪之大谷，傍晚返回富山居酒屋。", tags: ["雪之大谷", "黑部水壩"], guide: "山上紫外線極強，墨鏡是必需品。室堂的白蝦丼很有特色。", heroImg: "day6new.jpg", weather: { loc: "MURODO", periods: [{p:"上午", i:"❄️", t:"1°"}, {p:"下午", i:"⛅", t:"4°"}, {p:"晚上", i:"❄️", t:"-2°"}] }, events: [ { time: "07:00", title: "立山站出發", mapcode: "678 794 135*55" }, { time: "20:30", title: "晚餐：吟魚のはなれ", phone: "076-431-7780" } ] },
-        { day: 7, date: "2026-05-26", dateStr: "MAY 26", title: "千里濱 ➔ 金澤：海線狂飆", desc: "雨晴海岸拍雪山，沙灘公路馳騁 8 公里，晚餐二星西班牙創意料理。", tags: ["千里濱", "金澤美食"], guide: "沙灘飆完一定要去沖洗底盤！respiración 的無酒精特調非常有創意。", heroImg: "day7new.jpg", weather: { loc: "KANAZAWA", periods: [{p:"上午", i:"⛅", t:"18°"}, {p:"下午", i:"☀️", t:"23°"}, {p:"晚上", i:"🌙", t:"17°"}] }, events: [ { time: "09:30", title: "雨晴海岸絕景", mapcode: "130 081 689*00" }, { time: "13:30", title: "千里濱渚駕車道", mapcode: "135 174 766*66" }, { time: "18:00", title: "晚餐：respiración", phone: "076-225-8681" } ] },
-        { day: 8, date: "2026-05-27", dateStr: "MAY 27", title: "金澤：現代藝術與精品咖啡", desc: "近江町市場海鮮丼，21世紀美術館《泳池》與東茶屋街點燈。", tags: ["泳池", "能登牛"], guide: "Townsfolk Coffee 是金澤極簡咖啡代表，非常適合下午休息。", heroImg: "day8new.jpg", weather: { loc: "KANAZAWA", periods: [{p:"上午", i:"☀️", t:"19°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"🌙", t:"18°"}] }, events: [ { time: "09:00", title: "近江町市場海鮮丼" }, { time: "11:30", title: "21世紀美術館 (泳池)" }, { time: "19:00", title: "晚餐：あぶり肉 がらん", phone: "076-224-0029" } ] },
-        { day: 9, date: "2026-05-28", dateStr: "MAY 28", title: "白川鄉 ➔ 犬山 ➔ 名古屋", desc: "時髦早餐後訪合掌村。下午登頂最古老犬山城，晚餐黃金豬排。", tags: ["白川鄉", "犬山城"], guide: "國寶犬山城樓梯很陡，請小心走。神社的紅鳥居必拍！", heroImg: "day9new.jpg", weather: { loc: "SHIRAKAWA", periods: [{p:"上午", i:"🌥️", t:"15°"}, {p:"下午", i:"⛅", t:"18°"}, {p:"晚上", i:"🌙", t:"12°"}] }, events: [ { time: "08:30", title: "早餐：isotope (時髦法式)" }, { time: "11:00", title: "白川鄉合掌村展望台", mapcode: "549 018 380*60" }, { time: "14:30", title: "國寶犬山城登頂", mapcode: "70 096 112*55" }, { time: "19:30", title: "晚餐：とんかつ 土本", phone: "052-935-0010" } ] },
-        { day: 10, date: "2026-05-29", dateStr: "MAY 29", title: "鈴鹿賽道 ➔ 名花之里", desc: "鈴鹿賽道 F1 熱血體驗，名花之里花海點燈，炭火燒鳥名店。", tags: ["Suzuka", "名花之里"], guide: "千龜的雞肉丸(Tsukune)必點，配無酒精氣泡飲超正！", heroImg: "day10new.jpg", weather: { loc: "SUZUKA", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"26°"}, {p:"晚上", i:"🌙", t:"19°"}] }, events: [ { time: "10:30", title: "鈴鹿賽道 (卡丁車體驗)", mapcode: "38 003 400*22" }, { time: "17:00", title: "名花之里點燈秀", mapcode: "38 894 482*00" }, { time: "20:00", title: "晚餐：千龜燒鳥", phone: "052-262-4848" } ] },
-        { day: 11, date: "2026-05-30", dateStr: "MAY 30", title: "名古屋 ➔ 返港：最後衝刺", desc: "熱田神宮參拜，蓬萊軒鰻魚飯，大須榮商圈瘋狂尋寶。", tags: ["玩具尋寶", "返港"], guide: "機場還車前記得加滿油 (満タン)。祝尋寶大收穫！", heroImg: "day11new.jpg", weather: { loc: "NAGOYA", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"☁️", t:"21°"}] }, events: [ { time: "09:00", title: "熱田神宮平安祈福" }, { time: "11:00", title: "熱田蓬萊軒 (鰻魚飯)", mapcode: "4 117 763*88" }, { time: "13:00", title: "大須/榮商圈尋寶購物" }, { time: "18:00", title: "機場還車 / 機場購物", mapcode: "15 009 514*15" } ] }
+        { day: 1, date: "2026-05-20", dateStr: "MAY 20", title: "名古屋：職人鰻魚飯之夜", desc: "抵達中部國際機場辦理租車，晚上享用炭火烤製肝入鰻魚飯。", tags: ["鰻魚富士", "Oasis 21"], guide: "啟動 CEP Pass 後，名古屋市內的收費道路也可以放心開了！", heroImg: "day1new.jpg", weather: { loc: "NAGOYA", periods: [{p:"上午", i:"⛅", t:"20°"}, {p:"下午", i:"☀️", t:"24°"}, {p:"晚上", i:"🌙", t:"18°"}] }, events: [ { time: "15:50", title: "抵達中部機場 (UO690)", btns: ["nav"] }, { time: "16:30", title: "辦理租車啟動 CEP", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "18:30", title: "入住 Lamp Light Books Hotel", btns: ["nav"], mapcode: "4 286 288*63" }, { time: "19:00", title: "晚餐：炭燒鰻魚富士", btns: ["nav"], phone: "052-881-0067" }, { time: "21:00", title: "榮商圈夜遊 (Oasis 21)", btns: ["nav"] } ] },
+        { day: 2, date: "2026-05-21", dateStr: "MAY 21", title: "名古屋 ➔ 下呂：頂級手沖與美人湯", desc: "GLITCH 晨間咖啡後前往下呂溫泉，入住半山腰旅館享用會席料理。", tags: ["紫陽花拉麵", "下呂美人湯"], guide: "紫陽花拉麵一定要試！自駕車程約 2.15 小時，路況順暢。", heroImg: "day2.webp", weather: { loc: "GERO", periods: [{p:"上午", i:"☀️", t:"18°"}, {p:"下午", i:"☀️", t:"22°"}, {p:"晚上", i:"☁️", t:"15°"}] }, events: [ { time: "09:30", title: "GLITCH COFFEE 手沖", btns: ["nav"] }, { time: "11:30", title: "午餐：らぁ麺 紫陽花", btns: ["nav"], mapcode: "4 135 683*22" }, { time: "14:00", title: "自駕前往下呂溫泉", btns: ["nav"] }, { time: "17:00", title: "入住 下呂温泉 しょうげつ", btns: ["nav"], phone: "0576-25-7611" }, { time: "19:00", title: "晚餐：精緻旅館會席料理", btns: [] } ] },
+        { day: 3, date: "2026-05-22", dateStr: "MAY 22", title: "飛驒古川 ➔ 高山：聖地巡禮", desc: "飛驒古川白壁土藏街散策，品嚐高山最強味藏天國飛驒牛燒肉。", tags: ["你的名字", "飛驒牛燒肉"], guide: "味藏天國不能預約，下午 5 點一定要準時去現場抽號碼牌。", heroImg: "day3.webp", weather: { loc: "TAKAYAMA", periods: [{p:"上午", i:"☁️", t:"16°"}, {p:"下午", i:"🌥️", t:"19°"}, {p:"晚上", i:"🌧️", t:"14°"}] }, events: [ { time: "10:30", title: "飛驒古川 (餵錦鯉)", btns: ["nav"], mapcode: "191 662 133*82" }, { time: "12:00", title: "午餐：蕎麥麵 正覺", btns: ["nav"] }, { time: "14:00", title: "高山三町筋老街", btns: ["nav"] }, { time: "17:00", title: "晚餐：味藏天國燒肉", btns: ["nav"], phone: "0577-37-1129" }, { time: "20:00", title: "入住 KOKO HOTEL Hida Takayama", btns: ["nav"] } ] },
+        { day: 4, date: "2026-05-23", dateStr: "MAY 23", title: "上高地 ➔ 奧飛驒：神之秘境", desc: "上高地大正池至河童橋健行，搭乘新穗高雙層纜車飽覽殘雪群峰。", tags: ["神之故鄉", "雙層纜車"], guide: "上高地禁止私家車，車要停在平湯停車場轉巴士。山賊燒定食非常酥脆！", heroImg: "day4new.jpg", weather: { loc: "KAMIKOCHI", periods: [{p:"上午", i:"🌦️", t:"10°"}, {p:"下午", i:"☀️", t:"14°"}, {p:"晚上", i:"❄️", t:"5°"}] }, events: [ { time: "08:30", title: "上高地健行 (大正池)", btns: ["nav"] }, { time: "12:30", title: "午餐：上高地食堂", btns: ["nav"] }, { time: "14:30", title: "新穗高雙層纜車", btns: ["nav"], mapcode: "898 043 515*00" }, { time: "16:30", title: "入住元湯 孫九郎", btns: ["nav"], phone: "0578-89-2231" } ] },
+        { day: 5, date: "2026-05-24", dateStr: "MAY 24", title: "富山：玻璃美學與二星懷石", desc: "探索隈研吾設計美術館，夜晚享受二星懷石名店御料理ふじ居。", tags: ["玻璃美術館", "二星懷石"], guide: "懷石料理已安排無酒精 Pairing，富山灣的白蝦壽司也不容錯過。", heroImg: "day5.jpg", weather: { loc: "TOYAMA", periods: [{p:"上午", i:"☀️", t:"16°"}, {p:"下午", i:"☀️", t:"21°"}, {p:"晚上", i:"🌙", t:"14°"}] }, events: [ { time: "11:30", title: "午餐：壽司榮 總曲輪", btns: ["nav"], phone: "076-421-7035" }, { time: "13:30", title: "玻璃美術館 / 星巴克", btns: ["nav"] }, { time: "16:00", title: "岩瀨老街散步", btns: ["nav"] }, { time: "19:00", title: "晚餐：御料理 ふじ居", btns: ["nav"], phone: "076-456-1527" }, { time: "21:30", title: "入住 Daiwa Roynet Hotel", btns: ["nav"] } ] },
+        { day: 6, date: "2026-05-25", dateStr: "MAY 25", title: "立山黑部：雲端雪牆冒險", desc: "全日橫斷日本屋脊，見證震撼雪之大谷，傍晚返回富山居酒屋。", tags: ["雪之大谷", "黑部水壩"], guide: "山上紫外線極強，墨鏡是必需品。室堂的白蝦丼很有特色。", heroImg: "day6new.jpg", weather: { loc: "MURODO", periods: [{p:"上午", i:"❄️", t:"1°"}, {p:"下午", i:"⛅", t:"4°"}, {p:"晚上", i:"❄️", t:"-2°"}] }, events: [ { time: "07:00", title: "立山站出發", btns: ["nav"], mapcode: "678 794 135*55" }, { time: "10:30", title: "室堂 雪之大谷漫步", btns: ["nav"] }, { time: "12:30", title: "午餐：立山酒店", btns: ["nav"] }, { time: "17:00", title: "返回富山市", btns: ["nav"] }, { time: "20:30", title: "晚餐：吟魚のはなれ", btns: ["nav"], phone: "076-431-7780" } ] },
+        { day: 7, date: "2026-05-26", dateStr: "MAY 26", title: "千里濱 ➔ 金澤：海線狂飆", desc: "雨晴海岸拍雪山，沙灘公路馳騁 8 公里，晚餐二星西班牙創意料理。", tags: ["千里濱", "金澤美食"], guide: "沙灘飆完一定要去沖洗底盤！respiración 的無酒精特調非常有創意。", heroImg: "day7new.jpg", weather: { loc: "KANAZAWA", periods: [{p:"上午", i:"⛅", t:"18°"}, {p:"下午", i:"☀️", t:"23°"}, {p:"晚上", i:"🌙", t:"17°"}] }, events: [ { time: "09:30", title: "雨晴海岸絕景", btns: ["nav"], mapcode: "130 081 689*00" }, { time: "13:30", title: "千里濱渚駕車道", btns: ["nav"], mapcode: "135 174 766*66" }, { time: "15:30", title: "尋找洗車場洗車", btns: ["nav"] }, { time: "16:30", title: "入住 SOKI Kanazawa", btns: ["nav"] }, { time: "18:00", title: "晚餐：respiración", btns: ["nav"], phone: "076-225-8681" } ] },
+        { day: 8, date: "2026-05-27", dateStr: "MAY 27", title: "金澤：現代藝術與精品咖啡", desc: "近江町市場海鮮丼，21世紀美術館《泳池》與東茶屋街點燈。", tags: ["泳池", "能登牛"], guide: "Townsfolk Coffee 是金澤極簡咖啡代表，非常適合下午休息。", heroImg: "day8new.jpg", weather: { loc: "KANAZAWA", periods: [{p:"上午", i:"☀️", t:"19°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"🌙", t:"18°"}] }, events: [ { time: "09:00", title: "近江町市場海鮮丼", btns: ["nav"], mapcode: "41 528 290*88" }, { time: "11:30", title: "21世紀美術館 (泳池)", btns: ["nav"] }, { time: "13:45", title: "咖啡：Townsfolk Coffee", btns: ["nav"] }, { time: "15:00", title: "兼六園 / 鈴木大拙館", btns: ["nav"] }, { time: "17:15", title: "東茶屋街漫步", btns: ["nav"] }, { time: "19:00", title: "晚餐：あぶり肉 がらん", btns: ["nav"], phone: "076-224-0029" } ] },
+        { day: 9, date: "2026-05-28", dateStr: "MAY 28", title: "白川鄉 ➔ 犬山 ➔ 名古屋", desc: "時髦早餐後訪合掌村。下午登頂最古老犬山城，晚餐黃金豬排。", tags: ["白川鄉", "犬山城"], guide: "國寶犬山城樓梯很陡，請小心走。神社的紅鳥居必拍！", heroImg: "day9new.jpg", weather: { loc: "SHIRAKAWA", periods: [{p:"上午", i:"🌥️", t:"15°"}, {p:"下午", i:"⛅", t:"18°"}, {p:"晚上", i:"🌙", t:"12°"}] }, events: [ { time: "08:30", title: "早餐：isotope", btns: ["nav"] }, { time: "11:00", title: "白川鄉合掌村展望台", btns: ["nav"], mapcode: "549 018 380*60" }, { time: "14:30", title: "國寶犬山城登頂", btns: ["nav"], mapcode: "70 096 112*55" }, { time: "16:00", title: "三光稻荷神社 / 城下町", btns: ["nav"] }, { time: "19:30", title: "晚餐：とんかつ 土本", btns: ["nav"], phone: "052-935-0010" }, { time: "21:00", title: "入住 Hotel Keihan Nagoya", btns: ["nav"] } ] },
+        { day: 10, date: "2026-05-29", dateStr: "MAY 29", title: "鈴鹿賽道 ➔ 名花之里", desc: "鈴鹿賽道 F1 熱血體驗，名花之里花海點燈，炭火燒鳥名店。", tags: ["Suzuka", "名花之里"], guide: "千龜的雞肉丸必點，配無酒精氣泡飲超正！", heroImg: "day10new.jpg", weather: { loc: "SUZUKA", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"26°"}, {p:"晚上", i:"🌙", t:"19°"}] }, events: [ { time: "10:30", title: "鈴鹿賽道體驗", btns: ["nav"], mapcode: "38 003 400*22" }, { time: "17:00", title: "名花之里點燈秀", btns: ["nav"], mapcode: "38 894 482*00" }, { time: "20:00", title: "晚餐：千龜燒鳥", btns: ["nav"], phone: "052-262-4848" } ] },
+        { day: 11, date: "2026-05-30", dateStr: "MAY 30", title: "名古屋 ➔ 返港：最後衝刺", desc: "熱田神宮參拜，蓬萊軒鰻魚飯，大須榮商圈瘋狂尋寶。", tags: ["玩具尋寶", "返港"], guide: "機場還車前記得加滿油 (満タン)。祝尋寶大收穫！", heroImg: "day11new.jpg", weather: { loc: "NAGOYA", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"☁️", t:"21°"}] }, events: [ { time: "09:00", title: "熱田神宮參拜", btns: ["nav"], mapcode: "4 148 440*11" }, { time: "11:00", title: "熱田蓬萊軒 (鰻魚飯)", btns: ["nav"], mapcode: "4 117 763*88" }, { time: "13:00", title: "大須/榮商圈尋寶", btns: ["nav"] }, { time: "18:00", title: "機場還車結算", btns: ["nav"], mapcode: "15 009 514*15" }, { time: "20:45", title: "航班 UO671 返回香港", btns: ["nav"] } ] }
     ];
 
     window.onload = () => { 
@@ -227,23 +324,16 @@
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
     };
 
-    // 觸感回饋震動
     function triggerHaptic() { if (window.navigator.vibrate) window.navigator.vibrate(10); }
 
     function buildSummary() {
         const list = document.getElementById('main-summary-list');
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
-
+        const todayStr = new Date().toISOString().split('T')[0];
         list.innerHTML = tripData.map((d, i) => {
             const isToday = (d.date === todayStr);
-            return `
-            <div class="sum-item ${isToday ? 'is-today' : ''}" onclick="showItineraryView(); renderDay(${i}); triggerHaptic();">
+            return `<div class="sum-item ${isToday ? 'is-today' : ''}" onclick="showItineraryView(); renderDay(${i}); triggerHaptic();">
                 <div class="sum-day">${String(d.day).padStart(2,'0')}</div>
-                <div class="sum-info">
-                    <b>${d.title} ${isToday ? '<span class="today-tag">TODAY</span>' : ''}</b>
-                    ${d.desc}
-                </div>
+                <div class="sum-info"><b>${d.title} ${isToday ? '<span class="today-tag">TODAY</span>' : ''}</b>${d.desc}</div>
             </div>`;
         }).join('');
     }
@@ -252,9 +342,7 @@
         const area = document.getElementById('main-scroll-area');
         area.addEventListener('scroll', () => {
             const scroll = area.scrollTop;
-            if (scroll < 300) {
-                document.getElementById('hero-img').style.transform = `scale(${1 + scroll/1500}) translateY(${scroll/2}px)`;
-            }
+            if (scroll < 300) document.getElementById('hero-img').style.transform = `scale(${1 + scroll/1500}) translateY(${scroll/2}px)`;
         });
     }
 
@@ -273,7 +361,7 @@
     function showWalletView() { currentDayIndex = -3; deactivateAll(); document.getElementById('hero-img').style.display = 'none'; document.getElementById('wallet-view').classList.add('active'); document.getElementById('nav-btn-wallet').classList.add('active'); document.getElementById('fab-add-expense').style.display = 'none'; renderWalletList(); }
     function showItineraryView() { deactivateAll(); document.getElementById('itinerary-view').classList.add('active'); document.getElementById('fab-add-expense').style.display = 'flex'; }
     function deactivateAll() { document.querySelectorAll('.view-section, .nav-item, .side-btn').forEach(el => el.classList.remove('active')); document.getElementById('main-scroll-area').scrollTop = 0; }
-    function updateHeroImage(url) { const h = document.getElementById('hero-img'); h.style.backgroundImage = `url('${url}')`; h.style.display = (url.includes("index")) ? 'block' : 'block'; }
+    function updateHeroImage(url) { const h = document.getElementById('hero-img'); h.style.backgroundImage = `url('${url}')`; h.style.display = 'block'; }
 
     function renderDay(idx) {
         const d = tripData[idx];
@@ -287,13 +375,11 @@
         document.getElementById('v-weather').innerHTML = d.weather.periods.map(p => `<div class="w-day"><div class="w-period">${p.p}</div><div class="w-icon">${p.i}</div><div class="w-temp">${p.t}</div></div>`).join('');
         
         const rBtn = document.getElementById('v-route-btn'); 
-        if (d.routeLocs) { 
-            rBtn.style.display = 'flex'; 
-            rBtn.onclick = () => { triggerHaptic(); window.open(`https://www.google.com/maps/dir/${d.routeLocs.map(l=>encodeURIComponent(l)).join('/')}`); };
-        } else rBtn.style.display = 'none';
+        if (d.routeLocs) { rBtn.style.display = 'flex'; rBtn.onclick = () => { triggerHaptic(); window.open(`https://www.google.com/maps/dir/$${d.routeLocs.map(l=>encodeURIComponent(l)).join('/')}`); }; } 
+        else rBtn.style.display = 'none';
 
         document.getElementById('v-timeline').innerHTML = d.events.map(e => {
-            let bHtml = `<button class="action-btn" onclick="triggerHaptic(); window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.title)}')">NAV</button>`;
+            let bHtml = `<button class="action-btn" onclick="triggerHaptic(); window.open('https://www.google.com/maps/search/?api=1&query=$${encodeURIComponent(e.title)}')">NAV</button>`;
             if (e.mapcode) bHtml += `<button class="action-btn copy" onclick="triggerHaptic(); copyToClipboard('${e.mapcode}')">MC: ${e.mapcode}</button>`;
             if (e.phone) bHtml += `<button class="action-btn copy" onclick="triggerHaptic(); copyToClipboard('${e.phone}')">TEL: ${e.phone}</button>`;
             return `<div class="tl-item"><div class="tl-time">${e.time}</div><div class="tl-content"><div class="tl-title">${e.title}</div><div class="tl-actions">${bHtml}</div></div></div>`;
@@ -301,26 +387,18 @@
     }
 
     function initSwipeGestures() {
-        let sX = 0, sY = 0;
-        const area = document.getElementById('main-scroll-area');
+        let sX = 0, sY = 0; const area = document.getElementById('main-scroll-area');
         area.addEventListener('touchstart', e => { sX = e.touches[0].screenX; sY = e.touches[0].screenY; }, {passive:true});
         area.addEventListener('touchend', e => {
-            const dX = e.changedTouches[0].screenX - sX;
-            const dY = e.changedTouches[0].screenY - sY;
-            // 左右切換天數
+            const dX = e.changedTouches[0].screenX - sX, dY = e.changedTouches[0].screenY - sY;
             if (Math.abs(dX) > 100 && Math.abs(dY) < 50) {
-                if (dX < 0 && currentDayIndex < tripData.length-1) { currentDayIndex++; showItineraryView(); renderDay(currentDayIndex); triggerHaptic(); }
-                else if (dX > 100) { 
-                    if (currentDayIndex > 0) { currentDayIndex--; showItineraryView(); renderDay(currentDayIndex); triggerHaptic(); }
-                    else if (currentDayIndex === 0) { showHome(); triggerHaptic(); }
-                }
+                if (dX < 0 && currentDayIndex >= -1 && currentDayIndex < tripData.length-1) { currentDayIndex++; showItineraryView(); renderDay(currentDayIndex); triggerHaptic(); }
+                else if (dX > 100) { if (currentDayIndex > 0) { currentDayIndex--; showItineraryView(); renderDay(currentDayIndex); triggerHaptic(); } else if (currentDayIndex === 0) { showHome(); triggerHaptic(); } }
             }
-            // 下拉返回首頁
             if (dY > 150 && area.scrollTop <= 0 && currentDayIndex >= 0) { showHome(); triggerHaptic(); }
         }, {passive:true});
     }
 
-    // (其餘 Wallet, Checklist, TTS, Theme, Countdown 功能保持不變...)
     function toggleTheme() { document.body.classList.toggle('dark-mode'); localStorage.setItem('pauljoy_dark_mode', document.body.classList.contains('dark-mode')); document.getElementById('theme-icon').className = document.body.classList.contains('dark-mode') ? 'fa-solid fa-sun' : 'fa-solid fa-moon'; }
     function initTheme() { if (localStorage.getItem('pauljoy_dark_mode') === 'true') { document.body.classList.add('dark-mode'); document.getElementById('theme-icon').className = 'fa-solid fa-sun'; } }
     function speakText(t) { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(t); u.lang = 'ja-JP'; window.speechSynthesis.speak(u); } }
@@ -358,8 +436,7 @@
         const exps = JSON.parse(localStorage.getItem('pauljoy_expenses')) || []; const cont = document.getElementById('record-list-container');
         let total = 0; let catTotals = { "🍣 飲食":0, "🚗 交通":0, "🛍️ 購物":0, "🎫 玩樂":0, "🏨 住宿":0, "💰 其他":0 };
         cont.innerHTML = exps.map(e => { total += e.a; if (catTotals[e.c] !== undefined) catTotals[e.c] += e.a; return `<div class="record-item"><div class="record-left"><div class="record-icon">${e.c.split(" ")[0]}</div><div class="record-details"><div class="record-note">${e.n}</div><div class="record-date">${e.c.split(" ")[1]} • ${e.d}</div></div></div><div class="record-right"><div class="record-amt">¥${e.a.toLocaleString()}</div><button class="record-del" onclick="delExp(${e.id}); triggerHaptic();"><i class="fa-solid fa-trash"></i></button></div></div>`; }).join('');
-        document.getElementById('wallet-total-jpy').innerText = `¥ ${total.toLocaleString()}`;
-        document.getElementById('wallet-total-hkd').innerText = `≈ $ ${(total * EXCH_RATE).toFixed(2)} HKD`;
+        document.getElementById('wallet-total-jpy').innerText = `¥ ${total.toLocaleString()}`; document.getElementById('wallet-total-hkd').innerText = `≈ $ ${(total * EXCH_RATE).toFixed(2)} HKD`;
         const barCont = document.getElementById('stat-bar-container'); const legendCont = document.getElementById('stat-legend');
         if (total > 0) { document.getElementById('expense-stats').style.display='block'; barCont.innerHTML=''; legendCont.innerHTML='';
             for (const [cat, amt] of Object.entries(catTotals)) { if (amt > 0) { const pct = (amt / total) * 100; barCont.innerHTML += `<div class="stat-segment" style="width: ${pct}%; background-color: ${CAT_COLORS[cat]};"></div>`; legendCont.innerHTML += `<div class="legend-item"><div class="legend-color" style="background-color: ${CAT_COLORS[cat]};"></div><span>${cat.split(" ")[1]} ${Math.round(pct)}%</span></div>`; } }
