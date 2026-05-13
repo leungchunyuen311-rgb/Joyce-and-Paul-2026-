@@ -25,6 +25,8 @@
             --text-main: #2C2C2C; --text-sub: #7A7A7A; --accent: #A67C52;
             --border-light: #E8E5DF; --border-dark: #2C2C2C; --progress-bg: #E8E5DF;
             --live-green: #4CAF50; --today-highlight: rgba(166, 124, 82, 0.08);
+            /* 新增：預約標籤顏色 */
+            --booked-bg: #E7F3E8; --booked-text: #2D5A27;
         }
 
         body.dark-mode {
@@ -32,6 +34,8 @@
             --text-main: #EAEAEA; --text-sub: #9E9E9E; --accent: #D4A373;
             --border-light: #333333; --border-dark: #888888; --progress-bg: #444444;
             --live-green: #81C784; --today-highlight: rgba(212, 163, 115, 0.15);
+            /* 新增：深色模式預約標籤顏色 */
+            --booked-bg: #1E2B1E; --booked-text: #A5D6A7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -89,7 +93,6 @@
         .cd-lbl { font-size: 9px; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); }
         .cd-message { width: 100%; text-align: center; font-size: 16px; font-family: 'Noto Serif TC', serif; color: var(--accent); font-weight: bold; letter-spacing: 2px; }
 
-        /* 進度條共用樣式 */
         .progress-container { margin-bottom: 20px; }
         .progress-header { display: flex; justify-content: space-between; font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
         .progress-bar { width: 100%; height: 6px; background: var(--progress-bg); border-radius: 3px; overflow: hidden; }
@@ -108,6 +111,7 @@
         .guide-box::before { content: '\201C'; font-family: 'Noto Serif TC', serif; font-size: 60px; color: var(--border-light); position: absolute; top: -10px; left: 10px; z-index: -1; line-height: 1; }
         .guide-box-title { color: var(--text-main); font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
         .guide-box-text { font-size: 14px; color: var(--text-main); line-height: 1.8; font-style: italic; font-family: 'Noto Serif TC', serif; }
+        
         .route-btn { display: flex; justify-content: center; align-items: center; gap: 10px; background: var(--text-main); color: var(--bg-paper); padding: 14px 20px; font-size: 12px; font-family: 'Lato', sans-serif; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: none; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 4px; width: 100%; transition: 0.3s; }
         .route-btn:active { transform: scale(0.98); background: var(--accent); }
 
@@ -123,15 +127,15 @@
         .w-icon { font-size: 20px; margin-bottom: 5px; color: var(--text-main); }
         .w-temp { font-size: 14px; font-weight: bold; font-family: 'Lato', sans-serif; color: var(--text-main); }
 
+        /* 時間軸 & 預約標籤 */
         .timeline { margin-bottom: 30px; border-top: 2px solid var(--border-dark); padding-top: 20px; }
         .tl-item { margin-bottom: 35px; display: flex; gap: 15px; }
         .tl-time { font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 300; color: var(--accent); min-width: 65px; text-align: right; line-height: 1.1; }
         .tl-content { flex: 1; border-left: 1px solid var(--border-light); padding-left: 20px; position: relative; }
         .tl-content::before { content: ''; position: absolute; left: -5px; top: 8px; width: 9px; height: 9px; background: var(--accent); border-radius: 50%; }
         .tl-title { font-size: 16px; color: var(--text-main); margin-bottom: 6px; font-family: 'Noto Serif TC', serif; font-weight: 600; line-height: 1.4; }
-        .tl-hours { font-size: 11px; font-family: 'Lato', sans-serif; color: var(--text-sub); margin-bottom: 12px; letter-spacing: 0.5px; }
-        .tl-hours i { color: var(--accent); margin-right: 4px; }
-        .tl-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .booking-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; background: var(--booked-bg); color: var(--booked-text); padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-family: 'Lato', sans-serif; font-weight: bold; vertical-align: middle; }
+        .tl-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
         .action-btn { background: transparent; border: 1px solid var(--border-light); padding: 6px 12px; font-size: 10px; color: var(--text-sub); border-radius: 4px; transition: 0.2s; font-weight: bold; cursor: pointer; }
         .action-btn:active { border-color: var(--text-main); color: var(--text-main); }
         .action-btn.copy { background: rgba(166, 124, 82, 0.05); color: var(--accent); border-color: var(--accent); }
@@ -233,15 +237,13 @@
                 
                 <div class="countdown-container" id="countdown-timer"></div>
                 
-                <div class="progress-container" id="journey-progress-container" style="margin-bottom: 30px; display: none;">
-                    <div class="progress-header"><span>Trip Progress / 旅程進度</span><span id="journey-progress-text">0%</span></div>
+                <div class="progress-container" id="journey-progress-container" style="display: none;">
+                    <div class="progress-header"><span>旅程進度 Progress</span><span id="journey-progress-text">Day 1 / 11</span></div>
                     <div class="progress-bar"><div class="progress-fill" id="journey-fill"></div></div>
                 </div>
 
                 <div class="section-header">Itinerary / 每日行程</div>
-                <div class="summary-list" id="main-summary-list">
-                    <!-- JS 動態生成 -->
-                </div>
+                <div class="summary-list" id="main-summary-list"></div>
             </div>
 
             <!-- ====== 行程內頁 ====== -->
@@ -250,7 +252,7 @@
                 <h1 class="day-title" id="v-title"></h1>
                 <p class="day-desc" id="v-desc"></p>
                 <div class="tags-container" id="v-tags"></div>
-                <button class="route-btn" id="v-route-btn" style="display: none;"><i class="fa-solid fa-map-location-dot"></i> 開啟 Google Maps 路線導航</button>
+                <button class="route-btn" id="v-route-btn"><i class="fa-solid fa-map-location-dot"></i> 開啟 Google Maps 路線導航</button>
                 <div class="weather-card">
                     <div class="weather-header"><span class="weather-loc" id="v-w-loc"></span><div class="live-badge"><div class="live-dot"></div>LIVE DATA</div></div>
                     <div class="weather-forecast" id="v-weather"></div>
@@ -260,10 +262,11 @@
             </div>
 
             <!-- ====== INFO ====== -->
-            <div id="info-view" class="view-section">
+            <div id="info-view" class="view-section top-padding-view">
                 <div class="day-badge">Travel Info & Prep</div>
                 <h1 class="day-title">資訊與準備</h1>
-                
+                <p class="day-desc">緊急聯絡、實用語句及出發清單。</p>
+
                 <div class="info-card" style="border-left: 4px solid var(--accent);">
                     <h3>✈️ Flight / 航班資訊 (HK Express)</h3>
                     <div class="info-row"><div class="info-lbl">5/20 去程 UO690</div><div class="info-val">HKG 11:00 ➔ NGO 15:50</div></div>
@@ -283,7 +286,6 @@
                     <h3>🚨 Emergency / 緊急聯絡</h3>
                     <div class="info-row"><div class="info-lbl">報警 / 救護車</div><div class="info-val"><a href="tel:110">110</a> / <a href="tel:119">119</a></div></div>
                     <div class="info-row"><div class="info-lbl">HK 入境處</div><div class="info-val"><a href="tel:+8521868">+852 1868</a></div></div>
-                    <button class="route-btn" style="margin-top: 15px; margin-bottom: 0; background: #e74c3c;" onclick="shareLocation(); triggerHaptic();"><i class="fa-solid fa-location-crosshairs"></i> 獲取並分享當前 GPS 座標</button>
                 </div>
 
                 <div class="info-card">
@@ -304,7 +306,7 @@
             </div>
 
             <!-- ====== WALLET ====== -->
-            <div id="wallet-view" class="view-section">
+            <div id="wallet-view" class="view-section top-padding-view">
                 <div class="day-badge">Expense Tracker</div>
                 <h1 class="day-title">旅途記帳</h1>
                 <div class="wallet-hero">
@@ -338,16 +340,16 @@
     const TRIP_START_DATE = new Date("May 20, 2026 11:00:00").getTime();
 
     const tripData = [
-        { day: 1, date: "2026-05-20", dateStr: "MAY 20", title: "第一階段：都會職人與溫泉洗禮", shortDesc: "名古屋抵達 ➔ 炭燒鰻魚飯 ➔ 榮商圈夜遊", desc: "抵達中部國際機場辦理租車。晚上享用職人炭火烤製、外焦內嫩的極品肝入鰻魚飯，並於榮商圈夜遊拍攝宇宙船。", tags: ["必吃：肝入り上ひつまぶし", "住宿：Lamp Light Books"], guide: "出發前記得在機場確認 CEP Pass 已經成功啟動，這幾天的高速公路過路費就靠它了！", heroImg: "day1new.jpg", weather: { loc: "NAGOYA", q: "Nagoya,JP", periods: [{p:"上午", i:"⛅", t:"20°"}, {p:"下午", i:"☀️", t:"24°"}, {p:"晚上", i:"🌙", t:"18°"}] }, routeLocs: ["中部國際機場", "Lamp Light Books Hotel Nagoya", "炭焼 うな富士 本店", "Oasis 21"], events: [ { time: "15:50", title: "抵達中部機場 (UO690)" }, { time: "16:30", title: "辦理租車並啟動 CEP Pass", mapcode: "15 009 514*15" }, { time: "18:30", title: "入住 Lamp Light Books Hotel", mapcode: "4 286 288*63", phone: "052-231-7011" }, { time: "19:00", title: "晚餐：炭焼 うな富士 本店", phone: "052-881-0067" }, { time: "21:00", title: "榮商圈散策 (Oasis 21 夜景)" } ] },
-        { day: 2, date: "2026-05-21", dateStr: "MAY 21", title: "名古屋 ➔ 下呂：頂級手沖與美人湯", shortDesc: "頂級手沖咖啡 ➔ 冠軍拉麵 ➔ 下呂美人湯", desc: "用 GLITCH COFFEE 頂級手沖喚醒旅行靈魂，品嚐名古屋醬油拉麵巔峰。午後自駕前往下呂溫泉，享受美人湯與飛驒牛會席料理。", tags: ["必吃：紫陽花拉麵", "必泡：下呂美人湯"], guide: "從名古屋前往下呂的車程約 2 小時 15 分，路途風景優美，拉麵店極受歡迎記得預留時間。", heroImg: "day2.webp", weather: { loc: "GERO", q: "Gero,JP", periods: [{p:"上午", i:"☀️", t:"18°"}, {p:"下午", i:"☀️", t:"22°"}, {p:"晚上", i:"☁️", t:"15°"}] }, routeLocs: ["GLITCH COFFEE NAGOYA", "らぁ麺 紫陽花", "下呂温泉 しょうげつ"], events: [ { time: "09:30", title: "GLITCH COFFEE 頂級手沖" }, { time: "11:30", title: "午餐：らぁ麺 紫陽花", mapcode: "4 135 683*22" }, { time: "14:00", title: "自駕前往下呂溫泉" }, { time: "17:00", title: "入住 下呂温泉 しょうげつ", phone: "0576-25-7611" }, { time: "19:00", title: "晚餐：精緻旅館會席料理 (飛驒牛)" } ] },
+        { day: 1, date: "2026-05-20", dateStr: "MAY 20", title: "第一階段：都會職人與溫泉洗禮", shortDesc: "名古屋抵達 ➔ 炭燒鰻魚飯 ➔ 榮商圈夜遊", desc: "抵達中部國際機場辦理租車。晚上享用職人炭火烤製、外焦內嫩的極品肝入鰻魚飯，並於榮商圈夜遊拍攝宇宙船。", tags: ["必吃：肝入り上ひつまぶし", "住宿：Lamp Light Books"], guide: "出發前記得在機場確認 CEP Pass 已經成功啟動，這幾天的高速公路過路費就靠它了！", heroImg: "day1new.jpg", weather: { loc: "NAGOYA", q: "Nagoya,JP", periods: [{p:"上午", i:"⛅", t:"20°"}, {p:"下午", i:"☀️", t:"24°"}, {p:"晚上", i:"🌙", t:"18°"}] }, routeLocs: ["中部國際機場", "Lamp Light Books Hotel Nagoya", "炭焼 うな富士 本店", "Oasis 21"], events: [ { time: "15:50", title: "抵達中部機場 (UO690)" }, { time: "16:30", title: "辦理租車並啟動 CEP Pass", mapcode: "15 009 514*15" }, { time: "18:30", title: "入住 Lamp Light Books Hotel", mapcode: "4 286 288*63", phone: "052-231-7011" }, { time: "19:00", title: "晚餐：炭焼 うな富士 本店", booked: true, phone: "052-881-0067" }, { time: "21:00", title: "榮商圈散策 (Oasis 21 夜景)" } ] },
+        { day: 2, date: "2026-05-21", dateStr: "MAY 21", title: "名古屋 ➔ 下呂：頂級手沖與美人湯", shortDesc: "頂級手沖咖啡 ➔ 冠軍拉麵 ➔ 下呂美人湯", desc: "用 GLITCH COFFEE 頂級手沖喚醒旅行靈魂，品嚐名古屋醬油拉麵巔峰。午後自駕前往下呂溫泉，享受美人湯與飛驒牛會席料理。", tags: ["必吃：紫陽花拉麵", "必泡：下呂美人湯"], guide: "從名古屋前往下呂的車程約 2 小時 15 分，路途風景優美，拉麵店極受歡迎記得預留時間。", heroImg: "day2.webp", weather: { loc: "GERO", q: "Gero,JP", periods: [{p:"上午", i:"☀️", t:"18°"}, {p:"下午", i:"☀️", t:"22°"}, {p:"晚上", i:"☁️", t:"15°"}] }, routeLocs: ["GLITCH COFFEE NAGOYA", "らぁ麺 紫陽花", "下呂温泉 しょうげつ"], events: [ { time: "09:30", title: "GLITCH COFFEE 頂級手沖" }, { time: "11:30", title: "午餐：らぁ麺 紫陽花", booked: true, mapcode: "4 135 683*22" }, { time: "14:00", title: "自駕前往下呂溫泉" }, { time: "17:00", title: "入住 下呂温泉 しょうげつ", phone: "0576-25-7611" }, { time: "19:00", title: "晚餐：精緻旅館會席料理 (飛驒牛)" } ] },
         { day: 3, date: "2026-05-22", dateStr: "MAY 22", title: "第二階段：飛驒秘境與雲端雪牆", shortDesc: "飛驒古川巡禮 ➔ 高山老街 ➔ 最強飛驒牛燒肉", desc: "漫步飛驒古川白壁土藏街與高山老街，拍攝《你的名字》場景。夜晚在味藏天國品嚐入口即化的高山最強飛驒牛燒肉。", tags: ["漫步：高山老街", "必吃：味藏天國拼盤"], guide: "味藏天國燒肉極度熱門且無法預約，請務必在 17:00 準時去現場抽號碼牌！", heroImg: "day3.webp", weather: { loc: "TAKAYAMA", q: "Takayama,JP", periods: [{p:"上午", i:"☁️", t:"16°"}, {p:"下午", i:"🌥️", t:"19°"}, {p:"晚上", i:"🌧️", t:"14°"}] }, routeLocs: ["飛驒古川", "蕎麥麵 正覺", "高山老街", "味藏天國", "KOKO HOTEL Hida Takayama"], events: [ { time: "10:30", title: "飛驒古川白壁土藏街散策", mapcode: "191 662 133*82" }, { time: "12:00", title: "午餐：蕎麥麵 正覺" }, { time: "14:00", title: "高山老街巡禮 (飛驒特牛壽司)" }, { time: "17:00", title: "晚餐：味藏天國 (現場領號)", phone: "0577-37-1129" }, { time: "20:00", title: "入住 KOKO HOTEL Hida Takayama" } ] },
         { day: 4, date: "2026-05-23", dateStr: "MAY 23", title: "上高地 ➔ 奧飛驒：神之秘境", shortDesc: "上高地大正池健行 ➔ 雙層高空纜車 ➔ 露天溫泉", desc: "清晨前往上高地，在翠綠山林與殘雪中健行。下午搭乘新穗高雙層纜車直達 2156m 展望台，入住源泉掛流露天溫泉。", tags: ["健行：上高地", "必搭：新穗高雙層纜車"], guide: "上高地大正池到河童橋是精華路線，食堂的山賊燒定食酥脆多汁，非常推薦！", heroImg: "day4new.jpg", weather: { loc: "KAMIKOCHI", q: "Matsumoto,JP", periods: [{p:"上午", i:"🌦️", t:"10°"}, {p:"下午", i:"☀️", t:"14°"}, {p:"晚上", i:"❄️", t:"5°"}] }, routeLocs: ["上高地 大正池", "上高地食堂", "新穂高ロープウェイ", "元湯 孫九郎"], events: [ { time: "08:30", title: "上高地健行 (大正池至河童橋)" }, { time: "12:30", title: "午餐：上高地食堂 (山賊燒定食)" }, { time: "14:30", title: "新穗高高空纜車 (2156m)", mapcode: "898 043 515*00" }, { time: "16:30", title: "入住 元湯 孫九郎 (露天風呂)", phone: "0578-89-2231" } ] },
-        { day: 5, date: "2026-05-24", dateStr: "MAY 24", title: "富山：玻璃美學與二星懷石", shortDesc: "富山玻璃美術館 ➔ 巖瀨老街 ➔ 二星懷石 Pairing", desc: "品嚐富山灣職人壽司，探索隈研吾設計的玻璃美術館與岩瀨老街。夜晚享受二星懷石名店，搭配專屬無酒精 Pairing。", tags: ["米其林：二星ふじ居", "無酒精 Pairing 🍸"], guide: "抵達岩瀨老街時，別忘了尋找「大塚屋」的三角銅鑼燒，或挑選精緻的職人玻璃器皿。", heroImg: "day5.jpg", weather: { loc: "TOYAMA", q: "Toyama,JP", periods: [{p:"上午", i:"☀️", t:"16°"}, {p:"下午", i:"☀️", t:"21°"}, {p:"晚上", i:"🌙", t:"14°"}] }, routeLocs: ["寿し栄 総曲輪店", "富山市玻璃美術館", "富岩運河環水公園", "岩瀬大町 本通り", "御料理 ふじ居"], events: [ { time: "11:30", title: "午餐：壽司榮 總曲輪店", phone: "076-421-7035" }, { time: "13:30", title: "玻璃美術館 ➔ 環水公園星巴克" }, { time: "16:00", title: "岩瀨老街散步 (大塚屋三角銅鑼燒)" }, { time: "19:00", title: "晚餐：御料理 ふじ居 (二星懷石)", phone: "076-456-1527" }, { time: "21:30", title: "入住 Daiwa Roynet Hotel" } ] },
-        { day: 6, date: "2026-05-25", dateStr: "MAY 25", title: "立山黑部：雲端雪牆冒險", shortDesc: "橫斷雪之大谷 ➔ 黑部水壩 ➔ 熱血居酒屋", desc: "立山站出發，換乘 6 種交通工具全日橫斷日本屋脊。漫步於震撼的室堂雪之大谷，傍晚返回富山市享用熱血居酒屋。", tags: ["必備：太陽眼鏡", "必吃：水壩咖哩/白蝦丼"], guide: "山上紫外線極強，防風保暖衣物與墨鏡缺一不可。居酒屋已經備註安排無酒精氣泡飲！", heroImg: "day6new.jpg", weather: { loc: "MURODO", q: "Tateyama,JP", periods: [{p:"上午", i:"❄️", t:"1°"}, {p:"下午", i:"⛅", t:"4°"}, {p:"晚上", i:"❄️", t:"-2°"}] }, routeLocs: ["立山駅", "室堂", "吟魚のはなれ 吟チロリ"], events: [ { time: "07:00", title: "立山站出發，換乘 6 種工具", mapcode: "678 794 135*55" }, { time: "10:30", title: "室堂 雪之大谷漫步" }, { time: "12:30", title: "午餐：室堂站 立山酒店" }, { time: "17:00", title: "傍晚返回富山市" }, { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", phone: "076-431-7780" } ] },
-        { day: 7, date: "2026-05-26", dateStr: "MAY 26", title: "第三階段：海岸馳騁與小京都藝術", shortDesc: "雨晴海岸 ➔ 千里濱沙灘狂飆 ➔ 二星西班牙菜", desc: "拍下雨晴海岸義經岩絕景，隨後於千里濱沙灘狂飆 8 公里。抵達金澤後，享受二星西班牙創意料理的五感震撼。", tags: ["體驗：沙灘自駕", "米其林：二星 respiración"], guide: "在千里濱沙灘馳騁結束後，務必尋找附近的洗車場沖洗底盤，避免海水鹽分腐蝕。晚餐已安排好無酒精配餐。", heroImg: "day7new.jpg", weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"⛅", t:"18°"}, {p:"下午", i:"☀️", t:"23°"}, {p:"晚上", i:"🌙", t:"17°"}] }, routeLocs: ["雨晴海岸", "千里浜なぎさドライブウェイ", "SOKI Kanazawa", "respiración 金沢"], events: [ { time: "09:30", title: "雨晴海岸 (義經岩與雪山連峰)", mapcode: "130 081 689*00" }, { time: "13:30", title: "千里濱渚駕車道 (結束後洗車)", mapcode: "135 174 766*66" }, { time: "16:30", title: "入住 SOKI Kanazawa" }, { time: "18:00", title: "晚餐：respiración (無酒精配餐)", phone: "076-225-8681" } ] },
-        { day: 8, date: "2026-05-27", dateStr: "MAY 27", title: "金澤：現代藝術與精品咖啡", shortDesc: "近江町海鮮 ➔ 21世紀美術館 ➔ 能登牛燒肉", desc: "早晨享受近江町海鮮丼，穿梭 21 世紀美術館與兼六園。品嚐精品咖啡與水之冥想後，夜訪東茶屋街與能登牛燒肉。", tags: ["必拍：美術館泳池", "必吃：極品能登牛燒肉"], guide: "Townsfolk Coffee 的極簡空間與單品豆非常棒，是下午極佳的歇息點。美術館的《泳池》內部記得提前預約！", heroImg: "day8new.jpg", weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"☀️", t:"19°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"🌙", t:"18°"}] }, routeLocs: ["近江町市場", "金沢21世紀美術館", "Townsfolk Coffee", "鈴木大拙館", "ひがし茶屋街", "あぶり肉 がらん"], events: [ { time: "09:00", title: "早餐：近江町市場 (現開岩牡蠣)", mapcode: "41 528 290*88" }, { time: "11:30", title: "金澤 21 世紀美術館 (預約泳池)" }, { time: "13:45", title: "咖啡：Townsfolk Coffee" }, { time: "15:00", title: "兼六園 ➔ 鈴木大拙館 (水之冥想)" }, { time: "17:15", title: "東茶屋街 (點燈時分漫步)" }, { time: "19:00", title: "晚餐：あぶり肉 がらん (能登牛)", phone: "076-224-0029" } ] },
-        { day: 9, date: "2026-05-28", dateStr: "MAY 28", title: "第四階段：童話遺產與城下町尋寶", shortDesc: "白川鄉合掌村 ➔ 國寶犬山城 ➔ 黃金酥脆豬排", desc: "享用時髦法式早餐後，探訪白川鄉合掌村。下午登上國寶犬山城，漫步神社大街，最後以黃金酥脆豬排完美作結。", tags: ["必訪：國寶犬山城", "必吃：とんかつ 土本"], guide: "犬山城是全日本最古老的天守閣，三光稻荷神社的紅鳥居和城下町的彩色糰子都超級好拍！", heroImg: "day9new.jpg", weather: { loc: "SHIRAKAWA", q: "Shirakawa,JP", periods: [{p:"上午", i:"🌥️", t:"15°"}, {p:"下午", i:"⛅", t:"18°"}, {p:"晚上", i:"🌙", t:"12°"}] }, routeLocs: ["isotope 金沢", "白川郷", "犬山城", "三光稲荷神社", "とんかつ 土本", "Hotel Keihan Nagoya"], events: [ { time: "08:30", title: "早餐：isotope (法式吐司)" }, { time: "11:00", title: "白川鄉合掌村展望台與散步", mapcode: "549 018 380*60" }, { time: "14:30", title: "國寶犬山城 (最古老天守閣)", mapcode: "70 096 112*55" }, { time: "16:00", title: "漫步三光稻荷神社及城下町" }, { time: "19:30", title: "晚餐：とんかつ 土本 (黃金豬排)", phone: "052-935-0010" } ] },
-        { day: 10, date: "2026-05-29", dateStr: "MAY 29", title: "鈴鹿賽道 ➔ 名花之里", shortDesc: "鈴鹿賽道熱血體驗 ➔ 名花之里點燈 ➔ 炭火燒鳥", desc: "在國際級的鈴鹿賽道喚醒速度激情與熱血！傍晚前往名花之里沉浸於絕美點燈秀，晚餐享用炭火燒鳥名店。", tags: ["熱血：鈴鹿賽道", "浪漫：名花之里"], guide: "千龜的雞肝與手工雞肉丸是必點招牌，烤功一流，配上無酒精飲料一樣能吃得酣暢淋漓！", heroImg: "day10new.jpg", weather: { loc: "SUZUKA", q: "Suzuka,JP", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"26°"}, {p:"晚上", i:"🌙", t:"19°"}] }, routeLocs: ["鈴鹿サーキット", "なばなの里", "焼鳥 千亀"], events: [ { time: "10:30", title: "鈴鹿賽道 (賽道駕駛/卡丁車)", mapcode: "38 003 400*22" }, { time: "17:00", title: "名花之里 (賞花與點燈秀)", mapcode: "38 894 482*00" }, { time: "20:00", title: "晚餐：千龜 (炭火燒鳥名店)", phone: "052-262-4848" } ] },
+        { day: 5, date: "2026-05-24", dateStr: "MAY 24", title: "富山：玻璃美學與二星懷石", shortDesc: "富山玻璃美術館 ➔ 巖瀨老街 ➔ 二星懷石 Pairing", desc: "品嚐富山灣職人壽司，探索隈研吾設計的玻璃美術館與岩瀨老街。夜晚享受二星懷石名店，搭配專屬無酒精 Pairing。", tags: ["米其林：二星ふじ居", "無酒精 Pairing 🍸"], guide: "抵達岩瀨老街時，別忘了尋找「大塚屋」的三角銅鑼燒，或挑選精緻的職人玻璃器皿。", heroImg: "day5.jpg", weather: { loc: "TOYAMA", q: "Toyama,JP", periods: [{p:"上午", i:"☀️", t:"16°"}, {p:"下午", i:"☀️", t:"21°"}, {p:"晚上", i:"🌙", t:"14°"}] }, routeLocs: ["寿し栄 総曲輪店", "富山市玻璃美術館", "富岩運河環水公園", "岩瀬大町 本通り", "御料理 ふじ居"], events: [ { time: "11:30", title: "午餐：壽司榮 總曲輪店", phone: "076-421-7035" }, { time: "13:30", title: "玻璃美術館 ➔ 環水公園星巴克" }, { time: "16:00", title: "岩瀨老街散步 (大塚屋三角銅鑼燒)" }, { time: "19:00", title: "晚餐：御料理 ふじ居 (二星懷石)", booked: true, phone: "076-456-1527" }, { time: "21:30", title: "入住 Daiwa Roynet Hotel" } ] },
+        { day: 6, date: "2026-05-25", dateStr: "MAY 25", title: "立山黑部：雲端雪牆冒險", shortDesc: "橫斷雪之大谷 ➔ 黑部水壩 ➔ 熱血居酒屋", desc: "立山站出發，換乘 6 種交通工具全日橫斷日本屋脊。漫步於震撼的室堂雪之大谷，傍晚返回富山市享用熱血居酒屋。", tags: ["必備：太陽眼鏡", "必吃：水壩咖哩/白蝦丼"], guide: "山上紫外線極強，防風保暖衣物與墨鏡缺一不可。居酒屋已經備註安排無酒精氣泡飲！", heroImg: "day6new.jpg", weather: { loc: "MURODO", q: "Tateyama,JP", periods: [{p:"上午", i:"❄️", t:"1°"}, {p:"下午", i:"⛅", t:"4°"}, {p:"晚上", i:"❄️", t:"-2°"}] }, routeLocs: ["立山駅", "室堂", "吟魚のはなれ 吟チロリ"], events: [ { time: "07:00", title: "立山站出發，換乘 6 種工具", mapcode: "678 794 135*55" }, { time: "10:30", title: "室堂 雪之大谷漫步" }, { time: "12:30", title: "午餐：室堂站 立山酒店" }, { time: "17:00", title: "傍晚返回富山市" }, { time: "20:30", title: "晚餐：吟魚のはなれ 吟チロリ", booked: true, phone: "076-431-7780" } ] },
+        { day: 7, date: "2026-05-26", dateStr: "MAY 26", title: "第三階段：海岸馳騁與小京都藝術", shortDesc: "雨晴海岸 ➔ 千里濱沙灘狂飆 ➔ 二星西班牙菜", desc: "拍下雨晴海岸義經岩絕景，隨後於千里濱沙灘狂飆 8 公里。抵達金澤後，享受二星西班牙創意料理的五感震撼。", tags: ["體驗：沙灘自駕", "米其林：二星 respiración"], guide: "在千里濱沙灘馳騁結束後，務必尋找附近的洗車場沖洗底盤，避免海水鹽分腐蝕。晚餐已安排好無酒精配餐。", heroImg: "day7new.jpg", weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"⛅", t:"18°"}, {p:"下午", i:"☀️", t:"23°"}, {p:"晚上", i:"🌙", t:"17°"}] }, routeLocs: ["雨晴海岸", "千里浜なぎさドライブウェイ", "SOKI Kanazawa", "respiración 金沢"], events: [ { time: "09:30", title: "雨晴海岸 (義經岩與雪山連峰)", mapcode: "130 081 689*00" }, { time: "13:30", title: "千里濱渚駕車道 (結束後洗車)", mapcode: "135 174 766*66" }, { time: "16:30", title: "入住 SOKI Kanazawa" }, { time: "18:00", title: "晚餐：respiración (無酒精配餐)", booked: true, phone: "076-225-8681" } ] },
+        { day: 8, date: "2026-05-27", dateStr: "MAY 27", title: "金澤：現代藝術與精品咖啡", shortDesc: "近江町海鮮 ➔ 21世紀美術館 ➔ 能登牛燒肉", desc: "早晨享受近江町海鮮丼，穿梭 21 世紀美術館與兼六園。品嚐精品咖啡與水之冥想後，夜訪東茶屋街與能登牛燒肉。", tags: ["必拍：美術館泳池", "必吃：極品能登牛燒肉"], guide: "Townsfolk Coffee 的極簡空間與單品豆非常棒，是下午極佳的歇息點。美術館的《泳池》內部記得提前預約！", heroImg: "day8new.jpg", weather: { loc: "KANAZAWA", q: "Kanazawa,JP", periods: [{p:"上午", i:"☀️", t:"19°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"🌙", t:"18°"}] }, routeLocs: ["近江町市場", "金沢21世紀美術館", "Townsfolk Coffee", "鈴木大拙館", "ひがし茶屋街", "あぶり肉 がらん"], events: [ { time: "09:00", title: "早餐：近江町市場 (現開岩牡蠣)", mapcode: "41 528 290*88" }, { time: "11:30", title: "金澤 21 世紀美術館 (預約泳池)" }, { time: "13:45", title: "咖啡：Townsfolk Coffee" }, { time: "15:00", title: "兼六園 ➔ 鈴木大拙館 (水之冥想)" }, { time: "17:15", title: "東茶屋街 (點燈時分漫步)" }, { time: "19:00", title: "晚餐：あぶり肉 がらん (能登牛)", booked: true, phone: "076-224-0029" } ] },
+        { day: 9, date: "2026-05-28", dateStr: "MAY 28", title: "第四階段：童話遺產與城下町尋寶", shortDesc: "白川鄉合掌村 ➔ 國寶犬山城 ➔ 黃金酥脆豬排", desc: "享用時髦法式早餐後，探訪白川鄉合掌村。下午登上國寶犬山城，漫步神社大街，最後以黃金酥脆豬排完美作結。", tags: ["必訪：國寶犬山城", "必吃：とんかつ 土本"], guide: "犬山城是全日本最古老的天守閣，三光稻荷神社的紅鳥居和城下町的彩色糰子都超級好拍！", heroImg: "day9new.jpg", weather: { loc: "SHIRAKAWA", q: "Shirakawa,JP", periods: [{p:"上午", i:"🌥️", t:"15°"}, {p:"下午", i:"⛅", t:"18°"}, {p:"晚上", i:"🌙", t:"12°"}] }, routeLocs: ["isotope 金沢", "白川郷", "犬山城", "三光稲荷神社", "とんかつ 土本", "Hotel Keihan Nagoya"], events: [ { time: "08:30", title: "早餐：isotope (法式吐司)" }, { time: "11:00", title: "白川鄉合掌村展望台與散步", mapcode: "549 018 380*60" }, { time: "14:30", title: "國寶犬山城 (最古老天守閣)", mapcode: "70 096 112*55" }, { time: "16:00", title: "漫步三光稻荷神社及城下町" }, { time: "19:30", title: "晚餐：とんかつ 土本 (黃金豬排)", booked: true, phone: "052-935-0010" } ] },
+        { day: 10, date: "2026-05-29", dateStr: "MAY 29", title: "鈴鹿賽道 ➔ 名花之里", shortDesc: "鈴鹿賽道熱血體驗 ➔ 名花之里點燈 ➔ 炭火燒鳥", desc: "在國際級的鈴鹿賽道喚醒速度激情與熱血！傍晚前往名花之里沉浸於絕美點燈秀，晚餐享用炭火燒鳥名店。", tags: ["熱血：鈴鹿賽道", "浪漫：名花之里"], guide: "千龜的雞肝與手工雞肉丸是必點招牌，烤功一流，配上無酒精飲料一樣能吃得酣暢淋漓！", heroImg: "day10new.jpg", weather: { loc: "SUZUKA", q: "Suzuka,JP", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"26°"}, {p:"晚上", i:"🌙", t:"19°"}] }, routeLocs: ["鈴鹿サーキット", "なばなの里", "焼鳥 千亀"], events: [ { time: "10:30", title: "鈴鹿賽道 (賽道駕駛/卡丁車)", mapcode: "38 003 400*22" }, { time: "17:00", title: "名花之里 (賞花與點燈秀)", mapcode: "38 894 482*00" }, { time: "20:00", title: "晚餐：千龜 (炭火燒鳥名店)", booked: true, phone: "052-262-4848" } ] },
         { day: 11, date: "2026-05-30", dateStr: "MAY 30", title: "名古屋 ➔ 返港：最後衝刺", shortDesc: "熱田神宮參拜 ➔ 蓬萊軒鰻魚飯 ➔ 大須榮商圈尋寶", desc: "神宮參拜與鰻魚飯始祖。下午在大須與榮商圈瘋狂尋寶，包辦假面騎士、寶可夢卡牌、機能服飾與攝影設備升級！", tags: ["購物：大須與榮商圈", "必吃：熱田蓬萊軒"], guide: "還車前記得要把油箱加滿，並且請租車公司結算這幾天 CEP Pass 的過路費總金額。祝尋寶大豐收！", heroImg: "day11new.jpg", weather: { loc: "NAGOYA", q: "Nagoya,JP", periods: [{p:"上午", i:"☀️", t:"20°"}, {p:"下午", i:"☀️", t:"25°"}, {p:"晚上", i:"☁️", t:"21°"}] }, routeLocs: ["熱田神宮", "あつた蓬莱軒 本店", "大須商店街", "中部國際機場"], events: [ { time: "09:00", title: "熱田神宮參拜", mapcode: "4 148 440*11" }, { time: "11:00", title: "午餐：熱田蓬萊軒 (鰻魚飯三吃)", mapcode: "4 117 763*88" }, { time: "13:00", title: "大須/榮商圈尋寶 (玩具/工裝/相機)" }, { time: "18:00", title: "機場加滿油還車，結算費用", mapcode: "15 009 514*15" }, { time: "20:45", title: "航班 UO671 返回香港" } ] }
     ];
 
@@ -399,9 +401,9 @@
 
     function showHome() { 
         currentDayIndex = -1; deactivateAll(); 
-        updateHeroImage("indexnew.jpeg"); 
         document.getElementById('hero-img').style.display = 'block'; 
         document.getElementById('content-scroll').classList.remove('no-hero-scroll');
+        updateHeroImage("indexnew.jpeg"); 
         document.getElementById('home-view').classList.add('active'); 
         document.getElementById('nav-item-home').classList.add('active'); 
         document.getElementById('fab-add-expense').style.display = 'flex'; 
@@ -455,10 +457,11 @@
         } else rBtn.style.display = 'none';
 
         document.getElementById('v-timeline').innerHTML = d.events.map(e => {
+            let bookedTag = e.booked ? `<span class="booking-badge"><i class="fa-solid fa-check-circle"></i> BOOKED</span>` : '';
             let bHtml = `<button class="action-btn" onclick="triggerHaptic(); window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.title)}')">NAV</button>`;
             if (e.mapcode) bHtml += `<button class="action-btn copy" onclick="triggerHaptic(); copyToClipboard('${e.mapcode}')">MC: ${e.mapcode}</button>`;
             if (e.phone) bHtml += `<button class="action-btn copy" onclick="triggerHaptic(); copyToClipboard('${e.phone}')">TEL: ${e.phone}</button>`;
-            return `<div class="tl-item"><div class="tl-time">${e.time}</div><div class="tl-content"><div class="tl-title">${e.title}</div><div class="tl-actions">${bHtml}</div></div></div>`;
+            return `<div class="tl-item"><div class="tl-time">${e.time}</div><div class="tl-content"><div class="tl-title">${e.title}${bookedTag}</div><div class="tl-actions">${bHtml}</div></div></div>`;
         }).join('');
     }
 
@@ -484,23 +487,6 @@
     function initTheme() { if (localStorage.getItem('pauljoy_dark_mode') === 'true') { document.body.classList.add('dark-mode'); document.getElementById('theme-icon').className = 'fa-solid fa-sun'; } }
     function speakText(t) { if ('speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(t); u.lang = 'ja-JP'; window.speechSynthesis.speak(u); } }
     function copyToClipboard(t) { navigator.clipboard.writeText(t).then(() => alert("已複製: " + t)); }
-    
-    function shareLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-                const text = `我在這附近需要協助！\nGPS: ${lat}, ${lng}\nGoogle Maps: https://www.google.com/maps?q=${lat},${lng}`;
-                if (navigator.share) {
-                    navigator.share({ title: '我的位置', text: text }).catch(console.error);
-                } else {
-                    copyToClipboard(text);
-                }
-            }, () => { alert("無法取得定位，請確認手機是否開啟 GPS 權限。"); });
-        } else {
-            alert("此裝置不支援定位功能。");
-        }
-    }
 
     function startCountdown() {
         const cd = document.getElementById('countdown-timer');
@@ -517,7 +503,7 @@
                 let daysPassed = Math.floor(Math.abs(dist) / (1000 * 60 * 60 * 24)) + 1;
                 if (daysPassed > 11) daysPassed = 11;
                 
-                document.getElementById('journey-progress-text').innerText = `Day ${daysPassed} of 11`;
+                document.getElementById('journey-progress-text').innerText = `Day ${daysPassed} / 11`;
                 document.getElementById('journey-fill').style.width = `${(daysPassed / 11) * 100}%`;
                 
                 if(daysPassed >= 11) {
